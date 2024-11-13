@@ -16,6 +16,10 @@ The tasks can then be segmented as
 
 # Project Board
 Added TODOs for the sprint 
+- Kirsten, Hanzhe and Madhusudhan for CI/CD actions
+- Sudhansh, Matcha and Akash for main repo code merge
+- Botao and Jialin for looking into Journal view repository
+
 
 Attendance -
 1. Akash
