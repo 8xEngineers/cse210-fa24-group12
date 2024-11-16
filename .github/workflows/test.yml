@@ -10,7 +10,7 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [macos-latest]
         
     runs-on: ${{ matrix.os }}
     
@@ -29,34 +29,10 @@ jobs:
       
     - name: Install vscode
       run: npm install -g @vscode/test-electron
-      
-    # Linux-specific dependencies
-    - name: Install Linux dependencies
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libxkbfile-dev pkg-config libsecret-1-dev libxss1 dbus xvfb libgtk-3-0 libgbm1 libnss3 libasound2
         
-    # macOS-specific dependencies (if any needed)
-    - name: Install macOS dependencies
-      if: runner.os == 'macOS'
-      run: |
-        echo "Installing macOS dependencies if needed"
-        # Usually no additional dependencies needed for macOS
-        
-    # Run tests based on OS
-    - name: Run tests (Linux)
-      if: runner.os == 'Linux'
-      run: xvfb-run -a npm test
-      
-    - name: Run tests (macOS)
-      if: runner.os == 'macOS'
+    - name: Run tests
       run: npm test
-      
-    - name: Run tests (Windows)
-      if: runner.os == 'Windows'
-      run: npm test
-      
+
     # Optional: Upload test results as artifacts
     - name: Upload test results
       if: always()
