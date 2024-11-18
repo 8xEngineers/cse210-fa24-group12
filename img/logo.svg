@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="D:\Users\pmaue\_Private\Projekte\02.trials\vscode-journal\vscode-journal\img\logo.png"
+   inkscape:export-xdpi="46.73"
+   inkscape:export-ydpi="46.73">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="496.22346"
+     inkscape:cy="739.60675"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1538"
+     inkscape:window-height="878"
+     inkscape:window-x="54"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#164450;fill-opacity:1;stroke:none;stroke-width:2.66000009;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4138"
+       cx="355.5737"
+       cy="494.758"
+       r="288.90363"
+       inkscape:export-xdpi="46"
+       inkscape:export-ydpi="46" />
+    <circle
+       style="fill:#37abc8;fill-opacity:1;stroke:none;stroke-width:2.66000009;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4138-6"
+       cx="355.5737"
+       cy="494.758"
+       r="252.53813"
+       inkscape:export-xdpi="46"
+       inkscape:export-ydpi="46" />
+    <path
+       style="fill:#d7eef4;fill-opacity:1;stroke:none;stroke-width:2.66000009;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 154.35613,342.70427 372.39491,-33.57114 c 102.69984,95.00914 88.58351,205.47222 60.62386,287.20277 L 162.94333,658.7768 C 63.295865,534.31813 90.613766,410.44788 154.35613,342.70427 Z"
+       id="rect4159-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-xdpi="46"
+       inkscape:export-ydpi="46" />
+    <path
+       style="fill:#164450;fill-opacity:1;stroke:none;stroke-width:2.66000009;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 102.85713,390.64791 544.36618,311.13811 568.5307,324.2638 613.3131,426.87807 621.69468,580.893 105,604.93361 95.932439,481.77144 Z"
+       id="rect4159"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-xdpi="46"
+       inkscape:export-ydpi="46" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:162.5px;line-height:286.99998856%;font-family:sans-serif;letter-spacing:-8.30000019px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="19.26392"
+       y="579.04547"
+       id="text4155"
+       sodipodi:linespacing="286.99999%"
+       transform="matrix(0.9846307,-0.17464931,0.17464931,0.9846307,0,0)"
+       inkscape:export-xdpi="46"
+       inkscape:export-ydpi="46"><tspan
+         sodipodi:role="line"
+         id="tspan4157"
+         x="19.26392"
+         y="579.04547"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:162.5px;line-height:286.99998856%;font-family:'Segoe Script';-inkscape-font-specification:'Segoe Script';letter-spacing:-8.30000019px;fill:#d5e5ff">Today</tspan></text>
+  </g>
+</svg>

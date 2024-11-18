@@ -1,6 +1,6 @@
 {
   "name": "vscode-journal",
-  "displayName": "VSCode Journal",
+  "displayName": "VSCode Journal - 8x Engineers",
   "description": "Lightweight journal and simple notes support for Visual Studio Code",
   "keywords": [
     "journal",
@@ -13,7 +13,7 @@
   "license": "GPL-3.0-or-later",
   "publisher": "pajoma",
   "engines": {
-    "vscode": "^1.94.0"
+    "vscode": "^1.92.0"
   },
   "author": {
     "name": "Patrick Maué"
@@ -331,7 +331,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.94.0",
+    "@types/vscode": "^1.92.0",
     "@types/mocha": "^10.0.9",
     "@types/node": "20.x",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
