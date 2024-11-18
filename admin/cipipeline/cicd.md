@@ -4,9 +4,10 @@
 ## Currently Functional Pipeline
 - **Linting and code style check:**
     We have added a GitHub action for linting so that each code pushed to the repository would first be checked for the linting so that all the
-    code in the repository would follow a single format and it would be easy for another developer to go through our repository. If the action
-    fails then the linting would provide the file where it is failing as well as line and reason for why it is failing so that developer can
-    easily fix that part.
+    code in the repository would follow a single format and it would be easy for another developer to go through our repository. We use Super
+    Linter as a linting tool, which is concise and efficient. It runs every time a push or pull request is made to the main branch to ensure that
+    the code quality meets the standards.If the action fails then the linting would provide the file where it is failing as well as line and 
+    reason for why it is failing so that developer can easily fix that part.
 
 - **Unit test via automation:**
     Our VS Code extension employs @vscode/test-electron as its primary testing framework, enabling comprehensive unit testing of all features.
@@ -30,7 +31,3 @@
 - **Documentaion generation via automation:**
     For each .js/.ts file this GitHub action would generate a document summarizing what the specific file is doing. So every time a change is there in
     a file this GitHub action would provide a documentation for all those files where there is a change.
-
-- **Code style checking:**
-    Linting with ESLint or TSLint. we plan to integrate ESLint or TSLint to implement code style checking and static analysis instead of custom
-    linting rules. These tools provide a wide range of rule sets that can help us maintain code consistency and standardization.
