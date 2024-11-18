@@ -1,0 +1,25 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "@typescript-eslint/naming-convention": "warn",  // From Journal Extension
+        "@typescript-eslint/class-name-casing": "warn", // From Tagged File Extension
+        "@typescript-eslint/semi": "warn",             // Common in both
+        "curly": "warn",                               // Common in both
+        "eqeqeq": "warn",                              // Common in both
+        "no-throw-literal": "warn",                    // Common in both
+        "semi": "off"                                  // Common in both
+    },
+    "ignorePatterns": [
+        "out",       // From Journal Extension
+        "dist",      // From Journal Extension
+        "**/*.d.ts"  // From Journal Extension
+    ]
+}
