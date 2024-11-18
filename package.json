@@ -9,14 +9,14 @@
     "memo",
     "tasks"
   ],
-  "version": "1.0.3",
+  "version": "1.0.0",
   "license": "GPL-3.0-or-later",
-  "publisher": "pajoma",
+  "publisher": "8xEngineers",
   "engines": {
     "vscode": "^1.92.0"
   },
   "author": {
-    "name": "Patrick Maué"
+    "name": "8x Engineers"
   },
   "icon": "img/logo.png",
   "galleryBanner": {
