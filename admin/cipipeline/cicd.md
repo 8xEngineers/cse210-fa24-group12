@@ -19,3 +19,6 @@
 
 - **Documentaion generation via automation:**
     For each .js/.ts file this github action would generate a document summarizing what the specific file is doing. So every time a change is there in a file this github action would provide a documentation for all those files where there is a change.
+
+- **Code style checking:**
+    Linting with ESLint or TSLint. we plan to integrate ESLint or TSLint to implement code style checking and static analysis instead of custom linting rules. These tools provide a wide range of rule sets that can help us maintain code consistency and standardization.
