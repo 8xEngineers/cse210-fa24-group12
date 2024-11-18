@@ -6,7 +6,7 @@
     We have added a GitHub action for linting so that each code pushed to the repository would first be checked for the linting so that all the
     code in the repository would follow a single format and it would be easy for another developer to go through our repository. We use Super
     Linter as a linting tool, which is concise and efficient. It runs every time a push or pull request is made to the main branch to ensure that
-    the code quality meets the standards.If the action fails then the linting would provide the file where it is failing as well as line and 
+    the code quality meets the standards.If the action fails then the linting would provide the file where it is failing as well as line and
     reason for why it is failing so that developer can easily fix that part.
 
 - **Unit test via automation:**
@@ -24,7 +24,7 @@
 
 
 ## Planned to Add in the future
-- **Code quality:** 
+- **Code quality:**
     We are planning to add a code quality report which would provide the number of test case passed/failed or skipped. This can also provide the
     code coverage metrics which would help us to look into which all edge cases we have missed.
 
