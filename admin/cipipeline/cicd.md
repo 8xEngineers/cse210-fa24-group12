@@ -14,5 +14,8 @@
 
 
 ## Planned to Add in the future
-- **Code quality:**
+- **Code quality:** 
+    We are planning to add a code quality report which would provide the number of test case passed/failed or skipped. This can also provide the code coverage metrics which would help us to look into which all edge cases we have missed.
+
 - **Documentaion generation via automation:**
+    For each .js/.ts file this github action would generate a document summarizing what the specific file is doing. So every time a change is there in a file this github action would provide a documentation for all those files where there is a change.
