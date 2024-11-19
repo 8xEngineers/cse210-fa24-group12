@@ -408,6 +408,7 @@
     "watch": "webpack --watch",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
+    "lint": "eslint src",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "test": "vscode-test",
     "webpack": "webpack --mode development",
