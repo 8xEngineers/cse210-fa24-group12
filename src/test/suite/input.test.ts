@@ -7,6 +7,18 @@ import * as vscode from 'vscode';
 import * as J from '../..';
 import { TestLogger } from '../TestLogger';
 
+// Helper function to reduce duplication in date input tests
+async function testDateInput(inputString: string, expectedOffsetCondition: (offset: number) => boolean) {
+	let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
+	let ctrl = new J.Util.Ctrl(config);
+	ctrl.logger = new TestLogger(false); 
+
+	let parser = new J.Actions.Parser(ctrl);
+	let input = await parser.parseInput(inputString); 
+
+	assert.strictEqual(expectedOffsetCondition(input.offset), true);
+}
+
 suite.skip('Open Journal Entries', () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
@@ -31,43 +43,16 @@ suite.skip('Open Journal Entries', () => {
 	; 
 
 	test("Input '2021-05-12'", async () => {
-		let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
-		let ctrl = new J.Util.Ctrl(config);
-		ctrl.logger = new TestLogger(false); 
-
-
-		let parser = new J.Actions.Parser(ctrl);
-		let input = await parser.parseInput("2021-05-12"); 
-
-		assert.strictEqual(input.offset > 0 || input.offset <= 0, true); 
-	})
-	; 
+		testDateInput("2021-05-12", (offset) => offset > 0 || offset <= 0);
+	});
 
 	test("Input '05-12'", async () => {
-		let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
-		let ctrl = new J.Util.Ctrl(config);
-		ctrl.logger = new TestLogger(false); 
-
-
-		let parser = new J.Actions.Parser(ctrl);
-		let input = await parser.parseInput("05-12"); 
-
-		assert.strictEqual(input.offset > 0 || input.offset <= 0, true); 
-	})
-	; 
+		testDateInput("05-12", (offset) => offset > 0 || offset <= 0);
+	});
 
 	test("Input '12'", async () => {
-		let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
-		let ctrl = new J.Util.Ctrl(config);
-		ctrl.logger = new TestLogger(false); 
-
-
-		let parser = new J.Actions.Parser(ctrl);
-		let input = await parser.parseInput("12"); 
-
-		assert.strictEqual(input.offset > 0 || input.offset <= 0, true); 
-	})
-	; 
+		testDateInput("12", (offset) => offset > 0 || offset <= 0);
+	});
 
 	test("Input 'next monday'", async () => {
 		let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");

@@ -59,31 +59,36 @@ export class ConsoleLogger implements Logger {
     }
 
     public trace(message: string, ...optionalParams: any[]): void {
-        if (this.devMode === true) {
-            this.appendCurrentTime();
-            this.channel.append(" [trace] "); 
-
-            this.channel.append(message); 
-            optionalParams.forEach(msg => this.channel.append(msg+"")); 
-
-            this.channel.appendLine(""); 
-
-            console.info("[TRACE]", message, ...optionalParams);
-        }
+        this.logMessage("trace", message, optionalParams);
     }
 
-
     public debug(message: string, ...optionalParams: any[]): void {
+        this.logMessage("debug", message, optionalParams);
+    }
+
+    /**
+     * Utility function to log messages with a specific log level.
+     */
+    private logMessage(level: string, message: string, optionalParams: any[]): void {
         if (this.devMode === true) {
             this.appendCurrentTime();
-            this.channel.append(" [debug] "); 
+            this.channel.append(` [${level}] `);
 
-            this.channel.append(message); 
-            optionalParams.forEach(msg => this.channel.append(msg+"")); 
+            this.channel.append(message);
+            optionalParams.forEach(msg => this.channel.append(msg + ""));
 
-            this.channel.appendLine(""); 
+            this.channel.appendLine("");
 
-            console.log("[DEBUG]", message, ...optionalParams);
+            // Log to console based on the level
+            switch (level) {
+                case "trace":
+                    console.trace(`[TRACE]`, message, ...optionalParams);
+                    break;
+                case "debug":
+                    console.log(`[DEBUG]`, message, ...optionalParams);
+                    break;
+                // Add more cases if needed for other log levels
+            }
         }
     }
 

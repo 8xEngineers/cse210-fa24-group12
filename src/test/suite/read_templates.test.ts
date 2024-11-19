@@ -21,7 +21,8 @@ suite('Read templates from configuration', () => {
 
     });
 
-
+    // Utility function to create Input objects
+    const createInput = (text: string) => new J.Model.Input(0, text);
 
     test.skip('Sync scopes', async () => {
         const scopes = ctrl.config.getScopes();
@@ -29,14 +30,12 @@ suite('Read templates from configuration', () => {
     });
 
     test.skip('Test resolving note paths', async () => {
-        const inPriv = new J.Model.Input(0); 
-        inPriv.text = "#priv a note created in private scope";
+        const inPriv = createInput("#priv a note created in private scope"); 
         const pathPriv = await ctrl.parser.resolveNotePathForInput(inPriv); 
         const uriPriv = vscode.Uri.file(pathPriv); 
 
 
-        const inWork = new J.Model.Input(0); 
-        inWork.text = "#work a note created in work scope";
+        const inWork = createInput("#work a note created in work scope");
         const pathWork = await ctrl.parser.resolveNotePathForInput(inWork); 
         const uriWork = vscode.Uri.file(pathWork); 
 

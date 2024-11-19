@@ -11,6 +11,14 @@ import { TestLogger } from '../TestLogger';
 
 suite.skip('Test Notes Syncing', () => {
 
+    // Helper function to open today's journal and return the editor
+    async function openTodayJournal(): Promise<vscode.TextEditor> {
+        await vscode.commands.executeCommand("journal.today");
+        let editor = vscode.window.activeTextEditor;
+        assert.ok(editor, "Failed to open today's journal");
+        return editor;
+    }
+
     test('Sync notes', async () => {
        
 
@@ -19,10 +27,7 @@ suite.skip('Test Notes Syncing', () => {
 		ctrl.logger = new TestLogger(false); 
 
         // create a new entry.. remember length
-        await vscode.commands.executeCommand("journal.today");
-        let editor = vscode.window.activeTextEditor; 
-        assert.ok(editor, "Failed to open today's journal");
-
+        let editor = await openTodayJournal();
         let originalLength  = editor.document.getText().length; 
         assert.ok(originalLength > 0, "Nothing in document"); 
 
@@ -35,10 +40,7 @@ suite.skip('Test Notes Syncing', () => {
 
         await new Promise( resolve => setTimeout(resolve, 2000));  
 
-        await vscode.commands.executeCommand("journal.today");
-        let editorAgain = vscode.window.activeTextEditor; 
-        assert.ok(editorAgain, "Failed to open today's journal");
-
+        let editorAgain = await openTodayJournal();
         let newLength  = editorAgain.document.getText().length; 
 
         assert.ok(newLength > originalLength, "Notes link wasn't injected"); 
