@@ -1,5 +1,6 @@
 # Sprint Review Meeting
 ## Tasks completed
+- Finished reading presentation ppt.
 - Kirsten: Add test.yml for GitHub action. It will run `runTest.ts` to run all the test cases. Need further modification once the main source code merge into main branch.
 - Sudhansh & Akash: Create icon for our extension. Try to run the code and merge source code into our repository. Will add icon and things into Botao's branch before it merges.
 - Botao:
