@@ -1,0 +1,46 @@
+name: VS Code Extension Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest]
+        
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Install vscode
+      run: npm install -g @vscode/test-electron
+        
+    - name: Run tests
+      run: npm test
+
+    # Optional: Upload test results as artifacts
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-${{ matrix.os }}
+        path: |
+          out/test/**/*.xml
+          coverage/**
+          .vscode-test/**/*.log
+        if-no-files-found: ignore
