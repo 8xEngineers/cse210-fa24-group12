@@ -1,7 +1,7 @@
 {
   "name": "vscode-journal",
-  "displayName": "VSCode Journal",
-  "description": "Lightweight journal and simple notes support for Visual Studio Code",
+  "displayName": "VSCode Journal - 8x-Engineers",
+  "description": "Lightweight journal and simple notes support for Visual Studio Code along with file ",
   "keywords": [
     "journal",
     "diary",
@@ -13,7 +13,7 @@
     "todo",
     "fixme"
   ],
-  "version": "1.0.3",
+  "version": "1.1.0",
   "license": "GPL-3.0-or-later",
   "publisher": "pajoma",
   "engines": {
