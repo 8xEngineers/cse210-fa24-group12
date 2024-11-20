@@ -12,10 +12,11 @@
 
 We updated the project board
 We are attacking the test fixing parallely
-- Some are trying to fix the code for the current tests
-- Some are trying to rewrite the tests and correct the versions
-- Some are fixing the lint errors
-- Some are working with Github workflows
+- Some are trying to fix the code for the current tests - Botao, Hanzhe
+- Some are trying to rewrite the tests and correct the versions - Kirsten, Jialin
+- Some are fixing the lint errors - Akash, Matcha, Sudhansh
+- Some are working with Github workflows - Madhusudhan
+- Merge the journal-view merging - Akash, Sudhansh
 All the assignees can be seen on the board.
 
 
