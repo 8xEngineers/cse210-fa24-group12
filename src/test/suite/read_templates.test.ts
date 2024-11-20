@@ -14,12 +14,12 @@ import path = require('path');
 suite('Read templates from configuration', () => {
     let ctrl: J.Util.Ctrl;
 
-    before(() => {
-        let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
-        ctrl = new J.Util.Ctrl(config);
-        ctrl.logger = new TestLogger(true);
+    // before(() => {
+    //    let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
+    //    ctrl = new J.Util.Ctrl(config);
+    //    ctrl.logger = new TestLogger(true);
 
-    });
+    //});
 
     // Utility function to create Input objects
     const createInput = (text: string) => new J.Model.Input(0, text);
