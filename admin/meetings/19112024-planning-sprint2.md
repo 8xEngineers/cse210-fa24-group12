@@ -10,7 +10,13 @@
 - Jialin, Matcha are fixing the aforementioned extension test errors
 - Akash and Sudhansh are also managing stuff in the repository (adding notes and project board update) and fixing lint errors
 
-
+We updated the project board
+We are attacking the test fixing parallely
+- Some are trying to fix the code for the current tests
+- Some are trying to rewrite the tests and correct the versions
+- Some are fixing the lint errors
+- Some are working with Github workflows
+All the assignees can be seen on the board.
 
 
 
