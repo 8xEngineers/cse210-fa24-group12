@@ -31,7 +31,7 @@ const extensionConfig = {
     rules: [
       {
         test: /\.ts$/,
-        exclude: [/node_modules/, /read_templates\.test\.ts$/, ]// Exclude the problematic test file
+        exclude: [/node_modules/, /read_templates\.test\.ts$/], // Exclude the problematic test file
         use: [
           {
             loader: 'ts-loader'
