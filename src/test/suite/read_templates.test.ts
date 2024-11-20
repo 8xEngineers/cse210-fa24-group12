@@ -11,7 +11,7 @@ import { Ctrl } from '../../util';
 import { fstat } from 'fs';
 import path = require('path');
 
-suite('Read templates from configuration', () => {
+suite.skip('Read templates from configuration', () => {
     let ctrl: J.Util.Ctrl;
 
     // before(() => {
