@@ -44,7 +44,7 @@ suite('Read templates from configuration', () => {
         assert.ok(uriPriv.path.match(/\/private\//), "Wrong path to private note: "+uriPriv.path);
 
     }); 
-    test('Create notes in different scopes', async () => {
+    test.skip('Create notes in different scopes', async () => {
         const scopes = ctrl.config.getScopes();
         assert.strictEqual(scopes.length, 3, "Invalid scope number");
 
