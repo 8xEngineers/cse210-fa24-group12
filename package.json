@@ -1,17 +1,436 @@
 {
-    "scripts": {
-        "build": "tsc",
-        "test": "npm run build && node ./out/test/runTest.js"
+  "name": "vscode-journal",
+  "displayName": "VSCode Journal - 8x-Engineers",
+  "description": "Lightweight journal and simple notes support for Visual Studio Code along with file ",
+  "keywords": [
+    "journal",
+    "diary",
+    "notes",
+    "memo",
+    "tasks",
+    "tag",
+    "bookmark",
+    "todo",
+    "fixme"
+  ],
+  "version": "1.1.0",
+  "license": "GPL-3.0-or-later",
+  "publisher": "pajoma",
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "author": {
+    "name": "Patrick Maué"
+  },
+  "icon": "img/logo.png",
+  "galleryBanner": {
+    "color": "#d7eef4",
+    "theme": "light"
+  },
+  "categories": [
+    "Other"
+  ],
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pajoma/vscode-journal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pajoma/vscode-journal/issues",
+    "email": "pajoma@gmail.com"
+  },
+  "activationEvents": [
+    "onCommand:journal.day",
+    "onCommand:journal.entry",
+    "onCommand:journal.today",
+    "onCommand:journal.yesterday",
+    "onCommand:journal.tomorrow",
+    "onCommand:journal.note",
+    "onCommand:journal.memo",
+    "onCommand:journal.open",
+    "onCommand:journal.printDuration",
+    "onCommand:journal.printTime",
+    "onCommand:journal.printSum",
+    "onCommand:journal.test",
+    "onCommand:extension.TagFile",
+    "onCommand:extension.OpenTaggedFile",
+    "onCommand:extension.DeleteTagFromFile",
+    "onCommand:extension.DeleteTagAndUntagFiles",
+    "onView:fileTagsExplorer"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "markdown.markdownItPlugins": true,
+    "commands": [
+      {
+        "command": "journal.test",
+        "title": "Run Test feature",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.today",
+        "title": "Open Today",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.yesterday",
+        "title": "Open Yesterday",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.tomorrow",
+        "title": "Open Tomorrow",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.memo",
+        "title": "Enter Quick Memo",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.note",
+        "title": "New Journal Note",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.printTime",
+        "title": "Print time",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.printDuration",
+        "title": "Print elapsed hours between selected times",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.printSum",
+        "title": "Print the sum of the selected numbers",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.day",
+        "title": "Enter specific day",
+        "category": "Journal"
+      },
+      {
+        "command": "journal.open",
+        "title": "Open the Journal",
+        "category": "Journal"
+      },
+      {
+        "command": "extension.TagFile",
+        "title": "Tag file"
+      },
+      {
+        "command": "fileTagsExplorer.Refresh",
+        "title": "Refresh tags"
+      },
+      {
+        "command": "extension.OpenTaggedFile",
+        "title": "Open",
+        "icon": {
+          "light": "./icons/light/icon-open-file.svg",
+          "dark": "./icons/light/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "extension.DeleteTagFromFile",
+        "title": "Delete",
+        "icon": {
+          "light": "./icons/light/icon-close.svg",
+          "dark": "./icons/light/icon-close.svg"
+        }
+      },
+      {
+        "command": "extension.DeleteTagAndUntagFiles",
+        "title": "Delete tag and untag files",
+        "icon": {
+          "light": "./icons/light/icon-close.svg",
+          "dark": "./icons/light/icon-close.svg"
+        }
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "journal.day",
+        "key": "ctrl+shift+j",
+        "mac": "cmd+shift+j"
+      },
+      {
+        "command": "journal.printDuration",
+        "key": "ctrl+j d",
+        "mac": "cmd+j d",
+        "when": "editorTextFocus && editorHasMultipleSelections"
+      },
+      {
+        "command": "journal.printSum",
+        "key": "ctrl+j s",
+        "mac": "cmd+j s",
+        "when": "editorTextFocus && editorHasMultipleSelections"
+      }
+    ],
+    "grammars": [
+      {
+        "scopeName": "text.markdown.journal",
+        "path": "./res/syntax/journal-markdown.json",
+        "injectTo": [
+          "text.html.markdown"
+        ]
+      }
+    ],
+    "snippets": [
+      {
+        "language": "markdown",
+        "path": "./res/snippets/markdown.json"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "extension.TagFile",
+          "when": "filesExplorerFocus",
+          "group": "7_modification"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "fileTagsExplorer.Refresh",
+          "when": "view == fileTagsExplorer",
+          "group": "inline"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "extension.OpenTaggedFile",
+          "when": "view == fileTagsExplorer && viewItem == taggedFile",
+          "group": "inline"
+        },
+        {
+          "command": "extension.DeleteTagFromFile",
+          "when": "view == fileTagsExplorer && viewItem == taggedFile",
+          "group": "inline"
+        },
+        {
+          "command": "extension.DeleteTagAndUntagFiles",
+          "when": "view == fileTagsExplorer && viewItem == tag",
+          "group": "inline"
+        }
+      ]
     },
-    "devDependencies": {
-        "@types/glob": "^8.1.0",
-        "@types/mocha": "^10.0.9",
-        "@types/node": "^22.9.0",
-        "@types/vscode": "^1.95.0",
-        "@vscode/test-electron": "^2.4.1",
-        "glob": "^7.2.3",
-        "mocha": "^10.8.2",
-        "vscode": "^1.1.37",
-        "typescript": "^4.7.4"
+    "views": {
+      "explorer": [
+        {
+          "id": "fileTagsExplorer",
+          "name": "File Tags"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "VSCode Journal ",
+      "properties": {
+        "journal.base": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "The base directory for your notes. Defaults to the directory 'Journal' in your home directory. Supports embedded variables as described in der [Guide](https://github.com/pajoma/vscode-journal/blob/develop/docs/settings.md#journal-configuration)."
+        },
+        "journal.ext": {
+          "type": "string",
+          "default": "md",
+          "description": "The default extension of your notes and journal entries. Defaults to markdown (.md)- "
+        },
+        "journal.locale": {
+          "type": "string",
+          "default": "",
+          "description": "The locale to use (required for the date format). Defaults to the language setting from Visual Studio Code"
+        },
+        "journal.syntax-highlighting": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Enable extension specific syntax highlighting (default is false)"
+        },
+        "journal.patterns": {
+          "type": "object",
+          "editPresentation": "multilineText",
+          "default": {
+            "notes": {
+              "path": "${base}/${year}/${month}/${day}",
+              "file": "${input}.${ext}"
+            },
+            "entries": {
+              "path": "${base}/${year}/${month}",
+              "file": "${day}.${ext}"
+            },
+            "weeks": {
+              "path": "${base}/${year}",
+              "file": "week_${week}.${ext}"
+            }
+          },
+          "description": "Individual patterns which define where and how notes and entries are stored. Check the wiki for defaults and options."
+        },
+        "journal.tpl-entry": {
+          "type": "string",
+          "default": "",
+          "description": "The template string for your daily journal entries. Please edit directly in settings.json to include linebreaks. ",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-time": {
+          "type": "string",
+          "default": "",
+          "description": "The template string for inserting the current time at the cursor location. Defaults to local time. ",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-note": {
+          "type": "string",
+          "default": "",
+          "description": "The template string for your notes.",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-memo": {
+          "type": "string",
+          "default": "- MEMO: ${input}",
+          "description": "The template string for new memos (new lines).",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-memo-after": {
+          "type": "string",
+          "default": "",
+          "description": "Where to place new memos. (Default is empty, which means after the header)",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-task": {
+          "type": "string",
+          "default": "- [ ] TASK: ${input}",
+          "description": "The template string for new tasks.",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-task-after": {
+          "type": "string",
+          "default": "",
+          "description": "Where to place the tasks. (Default is empty, which means after the header).",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-todo": {
+          "type": "string",
+          "default": "",
+          "description": "The template string for new todos.",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-todo-after": {
+          "type": "string",
+          "default": "",
+          "description": "Where to place the todos. (Default is empty, which means after the header).",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-files": {
+          "type": "string",
+          "default": "",
+          "description": "Template for the link to notes",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.tpl-files-after": {
+          "type": "string",
+          "default": "",
+          "description": "Where to place the file links to notes and more. (Default is empty, which means after the header).",
+          "markdownDeprecationMessage": "This setting is outdated, please use the setting `#journal.templates#` instead.",
+          "deprecationMessage ": "This setting is outdated, please use the setting `#journal.templates#` instead."
+        },
+        "journal.dev": {
+          "type": "boolean",
+          "default": "false",
+          "description": "If enabled, the features in development will be activated (other features might be broken!!) "
+        },
+        "journal.openInNewEditorGroup": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, the journal pages and new notes will split the editor view. "
+        },
+        "journal.scopes": {
+          "type": "array",
+          "editPresentation": "multilineText",
+          "default": {},
+          "markdownDescription": "Define your own scopes here, see [Guide](https://github.com/pajoma/vscode-journal/blob/develop/docs/scopes.md#scopes) for more details. "
+        },
+        "journal.templates": {
+          "type": "array",
+          "editPresentation": "multilineText",
+          "default": [
+            {
+              "name": "memo",
+              "template": "- MEMO ${localTime}: ${input}"
+            },
+            {
+              "name": "task",
+              "template": "- [] ${d:LL} - Task: ${input}",
+              "after": "## Tasks"
+            },
+            {
+              "name": "entry",
+              "template": "# ${d:dddd, MMMM DD YYYY}\n\n## Tasks\n\n## Notes\n\n"
+            },
+            {
+              "name": "time",
+              "template": "${localTime}"
+            },
+            {
+              "name": "note",
+              "template": "# ${input}\n\n${tags}\n"
+            },
+            {
+              "name": "files",
+              "template": "- NOTE: [${title}](${link})",
+              "after": "## Notes"
+            },
+            {
+              "name": "weekly",
+              "template": "# Week ${week}\n\n"
+            }
+          ],
+          "markdownDescription": "Definition of templates used when generate content for the journal. See [Guide](https://github.com/pajoma/vscode-journal/blob/develop/docs/settings.md#templates) for more details. "
+        }
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "tsc-watch": "tsc -watch -p ./",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile && npm run compile-tests && npm run compile",
+    "test": "node ./out/test/runTest.js",
+    "file-tag-test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.92.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "glob": "^7.2.0",
+    "mocha": "^9.2.2",
+    "rimraf": "^3.0.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.3",
+    "vscode-test": "^1.3.0",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@vscode/extension-telemetry": "^0.5.0",
+    "moment": "^2.29.4"
+  }
 }
