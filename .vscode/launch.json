@@ -5,47 +5,46 @@
 {
 	"version": "0.2.0",
 	"configurations": [
-		
-		{
-			"name": "Run Extension",
-			"type": "extensionHost",
-			"request": "launch",
-			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}", 
-				"${workspaceFolder}/test/ws_manual/"
-			],
-			"outFiles": [
-				"${workspaceFolder}/dist/**/*.js"
-			],
-			"preLaunchTask": "${defaultBuildTask}"
-		},
-		{
-			"name": "Run Extension without Workspace",
-			"type": "extensionHost",
-			"request": "launch",
-			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}", 
-				"${workspaceFolder}/test/ws_empty/"
-			],
-			"outFiles": [
-				"${workspaceFolder}/dist/**/*.js"
-			],
-			"preLaunchTask": "${defaultBuildTask}"
-		},
-		{
-			"name": "Extension Tests",
-			"type": "extensionHost",
-			"request": "launch",
-			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--extensionTestsPath=${workspaceFolder}/out/test/suite/index", 
-				"${workspaceFolder}/test/ws_unittests/"
-			],
-			"outFiles": [
-				"${workspaceFolder}/out/**/*.js",
-				"${workspaceFolder}/dist/**/*.js"
-			],
-			"preLaunchTask": "tasks: watch-tests"
-		}
+	  {
+		"name": "Run Extension",
+		"type": "extensionHost",
+		"request": "launch",
+		"runtimeExecutable": "${execPath}",
+		"args": [
+		  "--extensionDevelopmentPath=${workspaceFolder}",
+		  "${workspaceFolder}/test/ws_manual/"
+		],
+		"outFiles": ["${workspaceFolder}/dist/**/*.js"],
+		"preLaunchTask": "${defaultBuildTask}"
+	  },
+	  {
+		"name": "Run Extension without Workspace",
+		"type": "extensionHost",
+		"request": "launch",
+		"runtimeExecutable": "${execPath}",
+		"args": [
+		  "--extensionDevelopmentPath=${workspaceFolder}",
+		  "${workspaceFolder}/test/ws_empty/"
+		],
+		"outFiles": ["${workspaceFolder}/dist/**/*.js"],
+		"preLaunchTask": "${defaultBuildTask}"
+	  },
+	  {
+		"name": "Extension Tests",
+		"type": "extensionHost",
+		"request": "launch",
+		"runtimeExecutable": "${execPath}",
+		"args": [
+		  "--extensionDevelopmentPath=${workspaceFolder}",
+		  "--extensionTestsPath=${workspaceFolder}/dist/test/suite/index",
+		  "${workspaceFolder}/test/ws_unittests/"
+		],
+		"outFiles": [
+		  "${workspaceFolder}/dist/test/**/*.js",
+		  "${workspaceFolder}/out/**/*.js",
+		  "${workspaceFolder}/dist/**/*.js"
+		],
+		"preLaunchTask": "tasks: watch-tests"
+	  }
 	]
-}
+  }

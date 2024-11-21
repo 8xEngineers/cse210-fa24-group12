@@ -1,10 +1,25 @@
 {
     "compilerOptions": {
-      "module": "commonjs",
-      "target": "es6",
-      "outDir": "./out",
-      "rootDir": "./src",
-      "strict": true
+        "skipLibCheck": true,
+        "module": "Node16",
+        "target": "ES2022",
+        "lib": [
+            "ES2022"
+        ],
+        "outDir": "out",
+        "rootDirs": ["src"],
+        "resolveJsonModule": true,
+        "strict": true,
+        "sourceMap": true,
+        "declaration": true
     },
-    "include": ["src/**/*.ts", "test/**/*.ts"]
-  }
+    "include": [
+        "src/**/*",
+        // other includes if necessary
+    ],
+    "exclude": [
+        "node_modules",
+        "src/test/suite/read_templates.test.ts",
+        // other excludes if necessary
+    ]
+}
