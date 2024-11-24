@@ -19,6 +19,7 @@ suite.skip('Test Notes Syncing', () => {
         return editor;
     }
 
+
     test('Sync notes', async () => {
        
 
@@ -28,7 +29,8 @@ suite.skip('Test Notes Syncing', () => {
 
         // create a new entry.. remember length
         let editor = await openTodayJournal();
-        let originalLength  = editor.document.getText().length; 
+        let originalLength  = editor.document.getText().length;
+        
         assert.ok(originalLength > 0, "Nothing in document"); 
 
         // create a new note
@@ -42,7 +44,7 @@ suite.skip('Test Notes Syncing', () => {
 
         let editorAgain = await openTodayJournal();
         let newLength  = editorAgain.document.getText().length; 
-
+        
         assert.ok(newLength > originalLength, "Notes link wasn't injected"); 
 
         // check length of new entry

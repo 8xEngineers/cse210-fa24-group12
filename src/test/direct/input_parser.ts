@@ -1,17 +1,11 @@
 import { MatchInput } from '../../provider';
 import { TestLogger } from '../TestLogger';
 
-let inputMatcher = new MatchInput(new TestLogger(false), "en-US");
-
-testExpr1(); 
-
-async function testExpr1() {
+(async function runTest() {
+    let inputMatcher = new MatchInput(new TestLogger(false), "en-US");
     let str = "next monday";
-    let input = await inputMatcher.parseInput(str); 
-    console.log(input.flags);
+    let input = await inputMatcher.parseInput(str);
 
-
-}
-
-
-
+    // Output to console
+    console.log("Parsed flags:", input.flags);
+})();

@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import moment = require('moment');
+import moment from 'moment';
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
@@ -9,27 +9,32 @@ import { TestLogger } from '../TestLogger';
 import { suite, before, test } from 'mocha';
 import { Ctrl } from '../../util';
 import { fstat } from 'fs';
-import path = require('path');
+import * as path from 'path';
 
-suite.skip('Read templates from configuration', () => {
+suite('Read templates from configuration', () => {
     let ctrl: J.Util.Ctrl;
 
-    // before(() => {
-    //    let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
-    //    ctrl = new J.Util.Ctrl(config);
-    //    ctrl.logger = new TestLogger(true);
+    before(() => {
+        let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
+        ctrl = new J.Util.Ctrl(config);
+        ctrl.logger = new TestLogger(true);
 
-    //});
+    });
 
     // Utility function to create Input objects
-    const createInput = (text: string) => new J.Model.Input(0, text);
+    //const createInput = (text: string) => new J.Model.Input(0, text);
+    const createInput = (text: string) => {
+        const input = new J.Model.Input();
+        input.text = text;
+        return input;
+    };
 
-    test.skip('Sync scopes', async () => {
+    test('Sync scopes', async () => {
         const scopes = ctrl.config.getScopes();
         assert.strictEqual(scopes.length, 3, "Invalid scope number");
     });
 
-    test.skip('Test resolving note paths', async () => {
+    test('Test resolving note paths', async () => {
         const inPriv = createInput("#priv a note created in private scope"); 
         const pathPriv = await ctrl.parser.resolveNotePathForInput(inPriv); 
         const uriPriv = vscode.Uri.file(pathPriv); 
@@ -44,7 +49,7 @@ suite.skip('Read templates from configuration', () => {
         assert.ok(uriPriv.path.match(/\/private\//), "Wrong path to private note: "+uriPriv.path);
 
     }); 
-    test.skip('Create notes in different scopes', async () => {
+    test('Create notes in different scopes', async () => {
         const scopes = ctrl.config.getScopes();
         assert.strictEqual(scopes.length, 3, "Invalid scope number");
 
