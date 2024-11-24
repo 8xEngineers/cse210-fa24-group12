@@ -9,7 +9,7 @@ import { LoadNotes } from '../../provider';
 import { ShowEntryForInputCommand, ShowEntryForTodayCommand } from '../../provider/commands';
 import { TestLogger } from '../TestLogger';
 
-suite.skip('Test Notes Syncing', () => {
+suite('Test Notes Syncing', () => {
 
     // Helper function to open today's journal and return the editor
     async function openTodayJournal(): Promise<vscode.TextEditor> {
