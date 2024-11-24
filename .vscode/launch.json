@@ -53,7 +53,7 @@
 		"runtimeExecutable": "${execPath}",
 		"args": [
 		  "--extensionDevelopmentPath=${workspaceFolder}",
-		  "--extensionTestsPath=${workspaceFolder}/out/test/direct/input_parser.js"
+		  "--extensionTestsPath=${workspaceFolder}/out/test/suite/directTestRunner"
 		],
 		"outFiles": ["${workspaceFolder}/out/**/*.js"]
 	  }
