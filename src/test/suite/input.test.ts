@@ -19,7 +19,7 @@ async function testDateInput(inputString: string, expectedOffsetCondition: (offs
 	assert.strictEqual(expectedOffsetCondition(input.offset), true);
 }
 
-suite.skip('Open Journal Entries', () => {
+suite('Open Journal Entries', () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
 	/* */
