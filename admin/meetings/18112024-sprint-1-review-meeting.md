@@ -14,7 +14,7 @@
 
 ## Attendence
 1. Akash
-2. Madhusudhan
+2. Madhusudan
 3. Kirsten
 4. Botao
 5. Matcha
