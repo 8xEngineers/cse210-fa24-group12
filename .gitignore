@@ -12,3 +12,4 @@ test/workspace
 test/test
 *.code-workspace
 .vscode-test/
+**/*.DS_Store/*
