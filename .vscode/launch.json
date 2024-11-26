@@ -45,6 +45,17 @@
 		  "${workspaceFolder}/dist/**/*.js"
 		],
 		"preLaunchTask": "tasks: watch-tests"
+	  },
+	  {
+		"name": "Run Direct Test",
+		"type": "extensionHost",
+		"request": "launch",
+		"runtimeExecutable": "${execPath}",
+		"args": [
+		  "--extensionDevelopmentPath=${workspaceFolder}",
+		  "--extensionTestsPath=${workspaceFolder}/out/test/suite/directTestRunner"
+		],
+		"outFiles": ["${workspaceFolder}/out/**/*.js"]
 	  }
 	]
   }

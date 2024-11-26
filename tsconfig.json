@@ -15,6 +15,7 @@
     },
     "include": [
         "src/**/*",
+        "src/**/*.ts",
         // other includes if necessary
     ],
     "exclude": [

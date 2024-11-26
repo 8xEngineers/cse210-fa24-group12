@@ -26,7 +26,7 @@ const runCommonAssertions = (input: any, expectedWeek: number) => {
 	assert.strictEqual(input.week, expectedWeek, "weeks mismatch");
 };
 
-suite.skip('Open Week Entries', () => {
+suite('Open Week Entries', () => {
 	vscode.window.showInformationMessage('Start all tests.');
 	let ctrl: J.Util.Ctrl; 
 
