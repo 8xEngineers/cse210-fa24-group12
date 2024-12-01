@@ -1,6 +1,5 @@
 import * as assert from 'assert';
 
-
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
@@ -17,7 +16,6 @@ suite('Test Notes Syncing', () => {
         assert.ok(editor, "Failed to open today's journal");
         return editor;
     }
-
 
     test('Sync notes', async () => {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
@@ -43,8 +41,5 @@ suite('Test Notes Syncing', () => {
         const newLength = editorAgain.document.getText().length;
         
         assert.ok(newLength > originalLength, "Notes link wasn't injected"); 
-
-        // check length of new entry
-	}).timeout(5000)
-	; 
-}); 
+    }).timeout(5000);
+});

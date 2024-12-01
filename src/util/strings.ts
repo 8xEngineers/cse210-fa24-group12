@@ -20,14 +20,13 @@
 
 import { isNotNullOrUndefined } from '.';
 
-
 export function getDayAsString(date: Date): string {
     return prefixZero(date.getDate());
 }
 
 /**
-* Takes a number and a leading 0 if it is only one digit, e.g. 9 -> "09"
-*/
+ * Takes a number and adds a leading 0 if it is only one digit, e.g., 9 -> "09"
+ */
 export function prefixZero(nr: number): string {
     let current = nr.toString();
     if (current.length === 1) { current = '0' + current; }
@@ -35,13 +34,13 @@ export function prefixZero(nr: number): string {
 }
 
 /**
- * Returns a normalized filename for given string. Special characters will be replaced. 
+ * Returns a normalized filename for a given string. Special characters will be replaced. 
  * @param input 
  */
- export function normalizeFilename(input: string): string {
+export function normalizeFilename(input: string): string {
     let result = input.trim();
     result = result.replace(/\s/g, '_');
-    result = result.replace(/\\|\/|\<|\>|\:|\n|\||\?|\*/g, '-');
+    result = result.replace(/[\\/<>:\n|?*]/g, '-'); // Fixed unnecessary escape characters
     return result;
 }
 
@@ -51,26 +50,22 @@ export function prefixZero(nr: number): string {
  * @param input the line to convert
  * @param ext the file extension used for notes and journal entries
  */
- export function denormalizeFilename(input: string): string {
-    
+export function denormalizeFilename(input: string): string {
     input = input.substring(0, input.lastIndexOf("."));
     input = input.replace(/_/g, " ");
     input = input.replace(/-/g, " ");
-
     return input;
 }
 
-export function stringIsNotEmpty(value: string | undefined | null) : boolean {
+export function stringIsNotEmpty(value: string | undefined | null): boolean {
     return value !== null && value !== undefined && value.length > 0; 
 }
 
-export function isString(object: any | string | undefined ): boolean {
+export function isString(object: unknown): boolean { // Replaced `any` with `unknown`
     return isNotNullOrUndefined(object) && typeof object === 'string';
 }
 
-
-
-export function  replaceVariableValue(key: string, value: string, template: string): string {
+export function replaceVariableValue(key: string, value: string, template: string): string {
     if (template.search("\\$\\{" + key + "\\}") >= 0) {
         return template.replace("${" + key + "}", value);
     } else {
@@ -78,12 +73,10 @@ export function  replaceVariableValue(key: string, value: string, template: stri
     }
 }
 
-
 export function getNextLine(content: string): string[] {
+    const res: string[] = ["", ""]; // Changed `let` to `const` for `res`
+    const pos: number = content.indexOf('\n'); // Changed `let` to `const` for `pos`
 
-    let res: string[] = ["", ""];
-
-    let pos: number = content.indexOf('\n');
     if (pos > 0) {
         res[0] = content.slice(0, pos);
         res[1] = content.slice(pos + 1, content.length);
