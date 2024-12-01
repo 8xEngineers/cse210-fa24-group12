@@ -30,7 +30,7 @@ class RegisterCommands implements IRegister {
       }),
       commands.registerCommand("extension.OpenTaggedFile", async (tag: Tag) => {
         if (tag.path) {
-          const command = new OpenTaggedFileCommand(Uri.parse(tag.path));
+          const command = new OpenTaggedFileCommand(Uri.file(tag.path).fsPath);
           await command.execute();
         }
       }),
