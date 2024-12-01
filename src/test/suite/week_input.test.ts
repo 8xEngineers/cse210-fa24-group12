@@ -16,7 +16,7 @@ const createCtrl = () => {
 	return ctrl;
 };
 
-// Utility function to run common assertions
+// Utility function to run common assertions are provided below
 const runCommonAssertions = (input: J.Model.Input, expectedWeek: number) => {
 	assert.ok(!input.hasOffset(), "Offset is set, is " + input.offset);
 	assert.ok(!input.hasFlags(), "Input has flags " + JSON.stringify(input));
