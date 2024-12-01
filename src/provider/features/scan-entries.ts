@@ -1,3 +1,4 @@
+import * as J from '../..';
 import * as fs from 'fs';
 import * as Path from 'path';
 import { SCOPE_DEFAULT } from '../../ext';
@@ -44,13 +45,15 @@ export class ScanEntries {
                         return;
                     }
 
-                    this.walkDirSync(directory.path, thresholdInMs, (entry: J.Model.FileEntry) => {
-                        entry.type = J.Util.inferType(
-                            Path.parse(entry.path),
-                            this.ctrl.config.getFileExtension()
-                        );
-                        entry.scope = directory.scope;
-                        this.cache.set(entry.path, entry);
+                    this.walkDirSync(directory.path, thresholdInMs, (entries: J.Model.FileEntry[]) => {
+                        entries.forEach(entry => {
+                            entry.type = J.Util.inferType(
+                                Path.parse(entry.path),
+                                this.ctrl.config.getFileExtension()
+                            );
+                            entry.scope = directory.scope;
+                            this.cache.set(entry.path, entry);
+                        });
                     });
                 });
 
@@ -158,7 +161,7 @@ export class ScanEntries {
     private async walkDirSync(
         dir: string,
         thresholdDateInMs: number,
-        callback: (entries: FileEntry[]) => void
+        callback: (entries: J.Model.FileEntry[]) => void
     ): Promise<void> {
         fs.readdirSync(dir).forEach((f) => {
             if (f.startsWith('.')) return;

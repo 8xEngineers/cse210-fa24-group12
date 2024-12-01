@@ -23,7 +23,7 @@ import * as J from '..';
 import * as Path from 'path';
 import { isNotNullOrUndefined,  } from '../util';
 import { SCOPE_DEFAULT } from './conf';
-import moment from 'moment';
+import moment = require('moment');
 import {  JournalPageType } from '../models';
 import {  sortPickEntries } from '../provider';
 
@@ -511,11 +511,9 @@ export class Dialogues {
      * 
      * Note: This is a trigger as callback, has no access to current class members
      * 
-     * @param entries 
-     * @param input 
-     * @param type 
+     * @param fe 
      */
-function addItemToPickList(entries: J.Model.FileEntry[], input: J.Model.TimedQuickPick, type: J.Model.JournalPageType) {
+function addItemToPickList(entries: J.Model.FileEntry[], picker: J.Model.TimedQuickPick, type: J.Model.JournalPageType) {
     const items: J.Model.DecoratedQuickPickItem[] = []; 
 
     entries.forEach(fe => {
@@ -524,7 +522,7 @@ function addItemToPickList(entries: J.Model.FileEntry[], input: J.Model.TimedQui
         if (fe.type !== type) { return; }
 
         // check if already present
-        if (input.items.findIndex(item => fe.path === item.path) >= 0) { return; }
+        if (picker.items.findIndex(item => fe.path === item.path) >= 0) { return; }
 
         let displayName = fe.name; 
 
@@ -571,14 +569,6 @@ function addItemToPickList(entries: J.Model.FileEntry[], input: J.Model.TimedQui
             fileEntry: fe,
             description: displayDescription
         };
-        input.items = input.items.concat(item); 
+        picker.items = picker.items.concat(item); 
     }); 
-
-    // Sort the items list
-    input.items = Array.from(input.items).sort((a, b) => sortPickEntries(a.fileEntry!, b.fileEntry!));
-    
-    // Stop the spinner if necessary
-    if((input.items.length > 20) || (((new Date().getTime()) - input.start!) > 3000 )) {
-        input.busy = false; 
-    }
 }
