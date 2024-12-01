@@ -104,14 +104,15 @@ export class ConsoleLogger implements Logger {
             if (J.Util.isString(msg)) {
                 this.channel.append(msg + ""); 
             } else if (J.Util.isError(msg)) { 
-                if (J.Util.isNotNullOrUndefined(msg.stack)) {
-                    const method: string | undefined = /at \w+\.(\w+)/.exec(msg.stack!.split('\n')[2])?.pop(); 
+                const errorMsg = msg as Error;
+                if (J.Util.isNotNullOrUndefined(errorMsg.stack)) {
+                    const method: string | undefined = /at \w+\.(\w+)/.exec(errorMsg.stack!.split('\n')[2])?.pop(); 
                     this.channel.append("(" + method + ")"); 
                 }
 
                 this.channel.appendLine("See Exception below."); 
-                if (J.Util.isNotNullOrUndefined(msg.stack)) {
-                    this.channel.append(msg.stack); 
+                if (errorMsg.stack) {
+                    this.channel.append(errorMsg.stack); 
                 }
             } else {
                 this.channel.appendLine(JSON.stringify(msg)); 
