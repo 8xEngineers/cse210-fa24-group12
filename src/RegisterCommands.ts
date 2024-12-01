@@ -8,6 +8,12 @@ import DeleteTagAndUntagFilesCommand from "./commands/DeleteTagAndUntagFiles";
 import Tag from "./models/Tag";
 import { IRegister } from "./interfaces/IRegister";
 
+interface TagFileArgs {
+  // Define the properties of args here
+  // For example:
+  someProperty: string; // Replace with actual properties
+}
+
 class RegisterCommands implements IRegister {
   private context: ExtensionContext;
   private tagDataProvider: TagDataProvider;
@@ -19,7 +25,7 @@ class RegisterCommands implements IRegister {
 
   registerAll(): Disposable[] {
     const subscriptions = [
-      commands.registerCommand("extension.TagFile", async (args: any) => {
+      commands.registerCommand("extension.TagFile", async (args: TagFileArgs) => {
         const command = new TagFileCommand(args, this.context);
         await command.execute();
         this.tagDataProvider.refresh();
