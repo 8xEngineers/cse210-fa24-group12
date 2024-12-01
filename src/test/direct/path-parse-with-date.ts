@@ -1,8 +1,8 @@
 import * as assert from 'assert';
-import moment = require('moment');
+import moment from 'moment';
 
 const regExpDateFormats: RegExp = new RegExp(/\$\{(?:(year|month|day|localTime|localDate|weekday)|(d:[\s\S]+?))\}/g);
-let base = "c:\\Users\\user\\Git\\vscode-journal\\test\\workspace\\journal";
+const base = "c:\\Users\\user\\Git\\vscode-journal\\test\\workspace\\journal";
 
 // Test cases
 const testCases = [
@@ -48,7 +48,7 @@ export async function getDateFromURI(
         pathTemplate = pathTemplate.substring("${base}/".length);
     }
 
-    let pathParts = uri.split("/");
+    const pathParts = uri.split("/");
 
     // Extract path and file parts
     let pathStr = "";
@@ -74,8 +74,8 @@ export async function getDateFromURI(
     const entryMomentTpl = replaceDateTemplatesWithMomentsFormats(fileTemplate);
     const pathMomentTpl = replaceDateTemplatesWithMomentsFormats(pathTemplate);
 
-    let parsedFile = moment(fileStr, entryMomentTpl, true); // Strict parsing
-    let parsedPath = moment(pathStr, pathMomentTpl, true); // Strict parsing
+    const parsedFile = moment(fileStr, entryMomentTpl, true); // Strict parsing
+    const parsedPath = moment(pathStr, pathMomentTpl, true); // Strict parsing
 
     console.log("Parsed file string:", parsedFile.isValid() ? parsedFile.format() : "Invalid date");
     console.log("Parsed path string:", parsedPath.isValid() ? parsedPath.format() : "Invalid date");
@@ -97,7 +97,7 @@ export async function getDateFromURI(
 }
 
 export function replaceDateTemplatesWithMomentsFormats(template: string): string {
-    let matches: RegExpMatchArray | null = template.match(regExpDateFormats);
+    const matches: RegExpMatchArray | null = template.match(regExpDateFormats);
     if (matches === null) {
         return template;
     }
@@ -124,7 +124,7 @@ export function replaceDateTemplatesWithMomentsFormats(template: string): string
                 break;
             default:
                 if (match.startsWith("${d:")) {
-                    let modifier = match.substring(match.indexOf("d:") + 2, match.length - 1);
+                    const modifier = match.substring(match.indexOf("d:") + 2, match.length - 1);
                     template = template.replace(match, modifier);
                 }
                 break;
@@ -140,8 +140,8 @@ function assertCorrectDate(date: Date): void {
         throw new Error("Invalid Date object");
     }
 
-    let iso = date.toISOString();
-    let result = iso.substring(0, iso.indexOf("T"));
+    const iso = date.toISOString();
+    const result = iso.substring(0, iso.indexOf("T"));
     console.log("Parsed result is: ", result);
     assert.match(result, /2020-07-09/, "Date does not match expected value");
 }
