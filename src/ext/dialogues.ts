@@ -513,16 +513,18 @@ export class Dialogues {
      * 
      * @param fe 
      */
-function addItemToPickList(entries: J.Model.FileEntry[], picker: J.Model.TimedQuickPick, type: J.Model.JournalPageType) {
-    const items: J.Model.DecoratedQuickPickItem[] = []; 
+function addItemToPickList(entries: J.Model.FileEntry[], input: J.Model.TimedQuickPick, type: J.Model.JournalPageType) {
+
+    const items:  J.Model.DecoratedQuickPickItem[] = []; 
 
     entries.forEach(fe => {
-        Object.freeze(fe); // immutable
+        Object.freeze(fe);     // immutable
 
         if (fe.type !== type) { return; }
 
+        
         // check if already present
-        if (picker.items.findIndex(item => fe.path === item.path) >= 0) { return; }
+        if (input.items.findIndex(item => fe.path === item.path) >= 0) { return; }
 
         let displayName = fe.name; 
 
@@ -537,20 +539,29 @@ function addItemToPickList(entries: J.Model.FileEntry[], picker: J.Model.TimedQu
             displayName = J.Util.denormalizeFilename(fe.name);
         }
 
+        /* and we prefix the scope (#122) 
+        if (fe.scope && fe.scope.length > 0 && fe.scope !== J.Extension.SCOPE_DEFAULT) {
+            fe.name = `#${fe.scope} ${fe.name}`; 
+        }*/
+
         // add icons
         switch(fe.type) {
             case JournalPageType.note: {
-                if(fe.scope === SCOPE_DEFAULT) { displayName = `$(circle-large-outline) ${displayName}`; break; }
-                else { displayName = `$(circle-large-filled) ${displayName}`; break; }
+               if(fe.scope === SCOPE_DEFAULT)  { displayName = `$(circle-large-outline) ${displayName}`; break;  }
+               else {displayName = `$(circle-large-filled) ${displayName}`; break; }
             }  
-            case JournalPageType.entry: displayName = `$(clock) ${displayName}`; break; 
-            case JournalPageType.attachement: displayName = `$(package) ${displayName}`; break; 
+            case JournalPageType.entry:  displayName = `$(clock) ${displayName}`; break; 
+            case JournalPageType.attachement:  displayName = `$(package) ${displayName}`; break; 
         }
+        
 
         // format description
+        // if its with the last week, we just print the weekday.. 
+        
         let displayDescription = ""; 
         try {
             let displayDate = moment(fe.createdAt);
+        
             if(displayDate.isAfter(moment().subtract(7, "d"))) {
                 displayDescription += displayDate.format(J.Extension.getPickDetailsTranslation(2));
             } else {
@@ -559,16 +570,31 @@ function addItemToPickList(entries: J.Model.FileEntry[], picker: J.Model.TimedQu
         } catch (error) {
             console.error("Failed to extract date from entry with name: ", displayName, error); 
         }
+        console.log("adding file in scope", fe.scope); 
         if (fe.scope !== SCOPE_DEFAULT) { 
             displayDescription += ` | #${fe.scope}`; 
         }
 
+        
+    
         let item: J.Model.DecoratedQuickPickItem = {
             label: displayName,
             path: fe.path,
             fileEntry: fe,
             description: displayDescription
         };
-        picker.items = picker.items.concat(item); 
+        input.items = input.items.concat(item); 
+    
     }); 
+
+
+    /* we have to sort the items list */
+    input.items = Array.from(input.items).sort((a, b) => sortPickEntries(a.fileEntry!, b.fileEntry!));
+    
+    /* Some voodoo to stop the spinner. Since it's a mess to find out when the recursive directory walker is finished, we simply finish after 3 seconds.  */
+    if((input.items.length > 20) || (((new Date().getTime()) - input.start!) > 3000 )) {
+        input.busy = false; 
+    }
+    
+
 }
