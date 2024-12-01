@@ -191,7 +191,7 @@ export class Configuration {
  * @param _scopeId default or individual
  */
     public getNotesPathPattern(_scopeId?: string): string {
-        const result: string | undefined;
+        let result: string | undefined;
 
         if (this.resolveScope(_scopeId) === SCOPE_DEFAULT) {
             result = this.config.get<PatternDefinition>("patterns")?.notes?.path;
@@ -242,7 +242,7 @@ export class Configuration {
     public async getNotesFilePattern(date: Date, input: string, _scopeId?: string): Promise<ScopedTemplate> {
         return new Promise((resolve, reject) => {
             try {
-                const definition: string | undefined;
+                let definition: string | undefined;
                 const scopedTemplate: ScopedTemplate = {
                     scope: SCOPE_DEFAULT,
                     template: ""
@@ -797,7 +797,7 @@ export class Configuration {
         return new Promise<InlineTemplate>((resolve, reject) => {
             try {
                 const key: string = _scopeId + "." + _id;
-                const pattern: InlineTemplate = <InlineTemplate>this.patterns.get(key);
+                let pattern: InlineTemplate = <InlineTemplate>this.patterns.get(key);
                 if (isNullOrUndefined(pattern)) {
                     const tpl = this.config.get<string>(_id);
                     const after = this.config.get<string>(_id + '-after');

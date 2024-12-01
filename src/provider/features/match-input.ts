@@ -1,8 +1,8 @@
-import { Logger } from './logger';
-import { isNullOrUndefined, isNotNullOrUndefined,  getDayOfWeekForString} from './util/';
-import { Input } from './models/input';
-import moment from "moment";
-import { getMonthForString } from './util/dates';
+import { Logger } from "../../util/logger";
+import { isNullOrUndefined, isNotNullOrUndefined,  getDayOfWeekForString} from "../../util/";
+import { Input } from "../../models/input";
+import moment = require("moment");
+import { getMonthForString } from "../../util/dates";
 
 /**
  * Feature responsible for parsing the user input and and extracting offset, flags and text. 
@@ -22,7 +22,8 @@ export class MatchInput {
          *
          * @param {string} inputString the value to be parsed
          * @param {boolean} replaceSpecialCharacters if special characters like the # have to be normalized (e.g. for file names)
-         * @returns {Promise<Input>} the resolved input object
+         * @returns {Q.Promise<J.Model.Input>} the resolved input object
+         * @memberof Parser
          */
     public async parseInput(inputString: string): Promise<Input> {
 
@@ -35,9 +36,9 @@ export class MatchInput {
             }
 
             try {
-                const parsedInput = new Input();
+                let parsedInput = new Input();
 
-                const res: RegExpMatchArray | null = inputString.match(this.getExpression());
+                let res: RegExpMatchArray | null = inputString.match(this.getExpression());
                 if (res === null) { 
                     reject("cancel"); 
                 }
@@ -94,7 +95,7 @@ export class MatchInput {
      * @memberof Parser
      */
     private extractTags(inputString: string): string[] {
-        const res: RegExpMatchArray | null = inputString.match(this.scopeExpression);
+        let res: RegExpMatchArray | null = inputString.match(this.scopeExpression);
         return isNullOrUndefined(res) ? [""] : res!;
     }
 
@@ -332,7 +333,8 @@ export class MatchInput {
      * It translates something like "next wednesday" into "4" (if next wednesday is in four days). 
      *
      * @param {string} value the string to be processed
-     * @returns {Promise<number>}  the resolved offeset
+     * @returns {Q.Promise<number>}  the resolved offeset
+     * @memberof Parser
      */
     private getExpression(): RegExp {
         /*
@@ -340,7 +342,7 @@ export class MatchInput {
         (?:(task|todo)\s)?(?:(?:(today|tod|yesterday|yes|tomorrow|tom|0)(?:\s|$))|(?:((?:\+|\-)\d+)(?:\s|$))|(?:((?:\d{4}\-\d{1,2}\-\d{1,2})|(?:\d{1,2}\-\d{1,2})|(?:\d{1,2}))(?:\s|$))|(?:(next|last|n|l)?\s?(monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun|montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)\s?))?(?:(task|todo)\s)?(.*)
 
         v8 (with Month + Day) https://regex101.com/r/sCtPOb/7
-      ^(?:(?<flag>task|todo)\s)?(?:(?:(?:(?<shortcut>today|tod|yesterday|yes|tomorrow|tom|0)(?:\s|$)))|(?:(?<offset>(?:\+|\-)\d+)(?:\s|$))|(?:(?<iso>(?:\d{4}(?:\-|\\)\d{1,2}(?:\-|\\)\d{1,2})|(?:\d{1,2}(?:\\-|\\)\d{1,2})|(?:\d{1,2}))(?:\s|$))|(?:(?<modifier>next|last|n|l)?\s?(?:(?<weekday>monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun|montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)?|(?<week>w(?:eek)?(?:\s\D|$)))?\s?)|(?:w(?:eek)?\s?(?<weekNum>[1-5]?[0-9])(?:\s|$))|(?:(?<month>Jan|Feb|Mar|Apr|Apr(?:il)?|May|June?|July?|Aug(?:gust)?|Sep(?:tember)?|Oct(?:ober)?|Nov|Dec)+)+\s?(?<dayOfMonth>(?:[1-9]|1[0-9]|2[0-9]|3[0-1])(?:\s|$))+)?(?:(?<flagPost>task|todo)\s)?(?<text>.*)$
+      ^(?:(?<flag>task|todo)\s)?(?:(?:(?:(?<shortcut>today|tod|yesterday|yes|tomorrow|tom|0)(?:\s|$)))|(?:(?<offset>(?:\+|\-)\d+)(?:\s|$))|(?:(?<iso>(?:\d{4}(?:\-|\\)\d{1,2}(?:\-|\\)\d{1,2})|(?:\d{1,2}(?:\-|\\)\d{1,2})|(?:\d{1,2}))(?:\s|$))|(?:(?<modifier>next|last|n|l)?\s?(?:(?<weekday>monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun|montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)?|(?<week>w(?:eek)?(?:\s\D|$)))?\s?)|(?:w(?:eek)?\s?(?<weekNum>[1-5]?[0-9])(?:\s|$))|(?:(?<month>Jan|Feb|Mar|Apr|Apr(?:il)?|May|June?|July?|Aug(?:gust)?|Sep(?:tember)?|Oct(?:ober)?|Nov|Dec)+)+\s?(?<dayOfMonth>(?:[1-9]|1[0-9]|2[0-9]|3[0-1])(?:\s|$))+)?(?:(?<flagPost>task|todo)\s)?(?<text>.*)$
         
 
     

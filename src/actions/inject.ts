@@ -114,7 +114,15 @@ export class Inject {
                 });
                 content = this.adjustLineBreak(tpl, content); 
                 
-                const position = this.computePositionForInput(doc, tpl);
+                let position: vscode.Position = new vscode.Position(1, 0);
+                if (tpl.after.length !== 0) {
+                    const offset: number = doc.getText().indexOf(tpl.after);
+
+                    if (offset > 0) {
+                        position = doc.validatePosition(doc.positionAt(offset));
+                        position = position.translate(1);
+                    }
+                }
 
                 resolve({
                     position: position,
@@ -143,7 +151,7 @@ export class Inject {
   }
 
     public computePositionForInput(doc: vscode.TextDocument, tpl: J.Model.InlineTemplate): vscode.Position {
-        const position: vscode.Position = new vscode.Position(1, 0);
+        let position: vscode.Position = new vscode.Position(1, 0);
         if (tpl.after.length !== 0) {
             const offset: number = doc.getText().indexOf(tpl.after);
 
