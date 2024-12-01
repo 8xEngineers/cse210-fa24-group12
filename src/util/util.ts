@@ -21,17 +21,16 @@
 'use strict';
 import { types } from 'util';
 
-export function isNullOrUndefined(value: any | undefined | null): boolean {
+export function isNullOrUndefined(value: unknown): boolean {
     return value === null || value === undefined;
 }
 
-
-export function isNotNullOrUndefined(value: any | undefined | null): boolean {
+export function isNotNullOrUndefined(value: unknown): boolean {
     return value !== null && value !== undefined;
 }
 
-
-export function isError(object: any | Error | undefined ): boolean {
+export function isError(object: unknown): boolean {
     return isNotNullOrUndefined(object) && types.isNativeError(object);
 }
+
 
