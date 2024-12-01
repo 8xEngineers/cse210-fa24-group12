@@ -38,7 +38,7 @@ type PatternDefinition = {
     weeks: { path: string; file: string };
 };
 
-var defaultPatternDefinition: PatternDefinition =
+const defaultPatternDefinition: PatternDefinition =
 {
     notes: {
         path: "${base}/${year}/${month}/${day}",
@@ -82,9 +82,7 @@ export class Configuration {
 
 
     public getLocale(): string {
-
-        let locale: string | undefined = this.config.get<string>('locale');
-
+        const locale: string | undefined = this.config.get<string>('locale');
         return (isNullOrUndefined(locale) || (locale!.length === 0)) ? vscode.env.language : locale!;
     }
 
@@ -93,8 +91,8 @@ export class Configuration {
      * Returns all known scopes in the settings
      */
     public getScopes(): string[] {
-        let res = [SCOPE_DEFAULT];
-        let scopes: ScopeDefinition[] | undefined = this.config.get<[ScopeDefinition]>("scopes");
+        const res: string[] = [SCOPE_DEFAULT];
+        const scopes: ScopeDefinition[] | undefined = this.config.get<ScopeDefinition[]>("scopes");
         if (isNotNullOrUndefined(scopes) && scopes!.length > 0) {
             scopes!.map(sd => sd.name).forEach(name => res.push(name));
         }
@@ -173,12 +171,10 @@ export class Configuration {
             console.error("You requested a scoped file extensions, this is not supported.");
         }
 
-        let ext: string | undefined = this.config.get<string>('ext');
-        ext = (isNullOrUndefined(ext) && (ext!.length === 0)) ? 'md' : ext!;
+        const ext: string | undefined = this.config.get<string>('ext');
+        const finalExt = (isNullOrUndefined(ext) || (ext!.length === 0)) ? 'md' : ext!;
 
-        if (ext.startsWith(".")) { ext = ext.substring(1, ext.length); }
-
-        return ext!;
+        return finalExt.startsWith(".") ? finalExt.substring(1) : finalExt;
     }
 
 
@@ -195,7 +191,7 @@ export class Configuration {
  * @param _scopeId default or individual
  */
     public getNotesPathPattern(_scopeId?: string): string {
-        let result: string | undefined;
+        const result: string | undefined;
 
         if (this.resolveScope(_scopeId) === SCOPE_DEFAULT) {
             result = this.config.get<PatternDefinition>("patterns")?.notes?.path;
@@ -203,11 +199,7 @@ export class Configuration {
             result = this.config.get<ScopeDefinition[]>("scopes")?.find(sd => sd.name === _scopeId)?.patterns?.notes?.path; 
         }
 
-        if (isNullOrUndefined(result) || result!.length === 0) {
-            result = defaultPatternDefinition.entries.path;
-        }
-
-        return result!;
+        return isNullOrUndefined(result) || result!.length === 0 ? defaultPatternDefinition.entries.path : result!;
     }
 
     /**
@@ -250,8 +242,8 @@ export class Configuration {
     public async getNotesFilePattern(date: Date, input: string, _scopeId?: string): Promise<ScopedTemplate> {
         return new Promise((resolve, reject) => {
             try {
-                let definition: string | undefined;
-                let scopedTemplate: ScopedTemplate = {
+                const definition: string | undefined;
+                const scopedTemplate: ScopedTemplate = {
                     scope: SCOPE_DEFAULT,
                     template: ""
                 };
@@ -465,19 +457,30 @@ export class Configuration {
      * FIXME: Externalise to properties (multilanguage)
      */
     public getInputDetailsTimeFormat() {
-        let labels: string[] = new Array(4);
+        const labels: string[] = new Array(4);
 
         if (this.getLocale().startsWith("en")) {
-            labels = ["for today", "for tomorrow", "for yesterday", "last"];
+            labels[0] = "for today";
+            labels[1] = "for tomorrow";
+            labels[2] = "for yesterday";
+            labels[3] = "last";
         } else if (this.getLocale().startsWith("de")) {
-            labels = ["für heute", "für morgen", " für gestern", "letzten"];
+            labels[0] = "für heute";
+            labels[1] = "für morgen";
+            labels[2] = "für gestern";
+            labels[3] = "letzten";
         } else if (this.getLocale().startsWith("fr")) {
-            labels = ["pour aujourd'hui", "pour demain", "d'hier"];
+            labels[0] = "pour aujourd'hui";
+            labels[1] = "pour demain";
+            labels[2] = "d'hier";
         } else if (this.getLocale().startsWith("es")) {
-            labels = ["para hoy", "de mañana", "de ayer", "del último"];
+            labels[0] = "para hoy";
+            labels[1] = "de mañana";
+            labels[2] = "de ayer";
+            labels[3] = "del último";
         }
 
-        let config = {
+        const config = {
             sameDay: `[${labels[0]}]`,
             nextDay: `[${labels[1]}]`,
             nextWeek: 'dddd',
@@ -515,9 +518,9 @@ export class Configuration {
     /**
      * Helper Method, threshold (maximal age) of files shown in the quick picker
      */
-    getInputTimeThreshold(): number {
-        let offset = -60;
-        let d: Date = new Date();
+    public getInputTimeThreshold(): number {
+        const offset = -60;
+        const d: Date = new Date();
         d.setDate(d.getDate() + offset);
         return d.getTime();
     }
@@ -792,14 +795,12 @@ export class Configuration {
      */
     private getInlineTemplateCached(_id: string, _defaultValue: string, _scopeId: string): Promise<InlineTemplate> {
         return new Promise<InlineTemplate>((resolve, reject) => {
-
             try {
-                let key: string = _scopeId + "." + _id;
-                let pattern: InlineTemplate = <InlineTemplate>this.patterns.get(key);
+                const key: string = _scopeId + "." + _id;
+                const pattern: InlineTemplate = <InlineTemplate>this.patterns.get(key);
                 if (isNullOrUndefined(pattern)) {
-
-                    let tpl = this.config.get<string>(_id);
-                    let after = this.config.get<string>(_id + '-after');
+                    const tpl = this.config.get<string>(_id);
+                    const after = this.config.get<string>(_id + '-after');
 
                     pattern = {
                         scope: this.resolveScope(_scopeId),
@@ -807,8 +808,6 @@ export class Configuration {
                         after: isNullOrUndefined(after) ? '' : after!
                     };
                     this.patterns.set(key, pattern);
-
-
                 }
 
                 pattern.value = pattern.template;
@@ -816,7 +815,6 @@ export class Configuration {
             } catch (error) {
                 reject(error);
             }
-
         });
     }
 

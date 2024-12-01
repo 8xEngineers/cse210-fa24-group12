@@ -51,7 +51,7 @@ export class Reader {
      * Loads the weekly page for the given week number (of the year)
      * @param week the week of the current year
      */
-    public async loadEntryForWeek(week: Number): Promise<vscode.TextDocument> {
+    public async loadEntryForWeek(week: number): Promise<vscode.TextDocument> {
         return new Promise<vscode.TextDocument>((resolve, reject) => {
             this.ctrl.logger.trace("Entering loadEntryForWeek() in actions/reader.ts for week " + week);
 
@@ -65,7 +65,7 @@ export class Reader {
                 path = J.Util.resolvePath(pathname.value!, filename.value!);
                 return this.ctrl.ui.openDocument(path);
 
-            }).catch((reason: any) => {
+            }).catch((reason: Error) => {
                 if (reason instanceof Error) {
                     if (!reason.message.startsWith("cannot open file:")) {
                         this.ctrl.logger.printError(reason);
