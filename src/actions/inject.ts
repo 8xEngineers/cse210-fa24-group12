@@ -47,29 +47,28 @@ export class Inject {
         return new Promise<vscode.TextDocument>((resolve, reject) => {
             try {
                 if (!input.hasMemo() || !input.hasFlags()) {
-                    // this.ctrl.logger.error("Failed to identify flags in the input.")
                     resolve(doc);
                 } else {
                     if (input.flags.match("memo")) {
                         this.ctrl.config.getMemoInlineTemplate()
                             .then((tplInfo: J.Model.InlineTemplate) => this.buildInlineString(doc, tplInfo, ["${input}", input.text]))
                             .then((val: J.Model.InlineString) => this.injectInlineString(val))
-                            .then((doc: vscode.TextDocument | PromiseLike<vscode.TextDocument>) => resolve(doc))
-                            .catch((err: any) => reject(err));
+                            .then((doc: vscode.TextDocument) => resolve(doc))
+                            .catch((err: Error) => reject(err));
 
                     } else if (input.flags.match("task")) {
                         this.ctrl.config.getTaskInlineTemplate()
                             .then((tplInfo: J.Model.InlineTemplate) => this.buildInlineString(doc, tplInfo, ["${input}", input.text]))
                             .then((val: J.Model.InlineString) => this.injectInlineString(val))
-                            .then((doc: vscode.TextDocument | PromiseLike<vscode.TextDocument>) => resolve(doc))
-                            .catch((err: any) => reject(err));
+                            .then((doc: vscode.TextDocument) => resolve(doc))
+                            .catch((err: Error) => reject(err));
 
                     } else if (input.flags.match("todo")) {
                         this.ctrl.config.getTaskInlineTemplate()
                             .then((tplInfo: J.Model.InlineTemplate) => this.buildInlineString(doc, tplInfo, ["${input}", input.text]))
                             .then((val: J.Model.InlineString) => this.injectInlineString(val))
-                            .then((doc: vscode.TextDocument | PromiseLike<vscode.TextDocument>) => resolve(doc))
-                            .catch((err: any) => reject(err));
+                            .then((doc: vscode.TextDocument) => resolve(doc))
+                            .catch((err: Error) => reject(err));
                     } else {
                         reject("Failed to handle input");
                     }
@@ -144,18 +143,16 @@ export class Inject {
   }
 
     public computePositionForInput(doc: vscode.TextDocument, tpl: J.Model.InlineTemplate): vscode.Position {
-          // if (tpl-after) is empty, we will inject directly after header
-          let position: vscode.Position = new vscode.Position(1, 0);
-          if (tpl.after.length !== 0) {
-              let offset: number = doc.getText().indexOf(tpl.after);
+        const position: vscode.Position = new vscode.Position(1, 0);
+        if (tpl.after.length !== 0) {
+            const offset: number = doc.getText().indexOf(tpl.after);
 
-
-              if (offset > 0) {
-                  position = doc.validatePosition(doc.positionAt(offset));
-                  position = position.translate(1);
-              }
-          } 
-          return position; 
+            if (offset > 0) {
+                position = doc.validatePosition(doc.positionAt(offset));
+                position = position.translate(1);
+            }
+        }
+        return position;
     }
 
     /**
@@ -192,9 +189,9 @@ export class Inject {
 
             try {
 
-                let edit = new vscode.WorkspaceEdit();
+                const edit = new vscode.WorkspaceEdit();
 
-                let modifiedContent = this.formatContent(content);
+                const modifiedContent = this.formatContent(content);
 
                 edit.insert(modifiedContent.document.uri, modifiedContent.position, modifiedContent.value);
 
@@ -214,7 +211,7 @@ export class Inject {
                                 resolve(content.document);
                             } else {
                                 this.ctrl.logger.error("Failed inject inline string '", content.value, "'");
-                                reject("Failed to applied edit");
+                                reject("Failed to apply edit");
                             }
                         }, rejected => {
                             this.ctrl.logger.error("Failed inject inline string, reason: ", rejected);
@@ -235,7 +232,7 @@ export class Inject {
         }
 
         // if string to be injected at position zero, we assume a request for a new line (if requested line is occupied)
-        let newLine: boolean = (content.position.character === 0);
+        const newLine: boolean = (content.position.character === 0);
 
         // if target line exceeds document length, we always inject at the end of the last line (position is adjusted accordingly)
         content.position = content.document.validatePosition(content.position);
@@ -244,7 +241,7 @@ export class Inject {
         if ((newLine === true) && (!content.document.lineAt(content.position.line).isEmptyOrWhitespace)) {
 
             // if we are at end of the file we prefix another linebreak to make room
-            let end: vscode.Position = content.document.lineAt(content.document.lineCount - 1).range.end;
+            const end: vscode.Position = content.document.lineAt(content.document.lineCount - 1).range.end;
 
             if (content.position.isAfterOrEqual(end)) {
                 content.value = '\n' + content.value;
