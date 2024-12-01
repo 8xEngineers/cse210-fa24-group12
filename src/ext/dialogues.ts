@@ -23,7 +23,7 @@ import * as J from '..';
 import * as Path from 'path';
 import { isNotNullOrUndefined,  } from '../util';
 import { SCOPE_DEFAULT } from './conf';
-import moment = require('moment');
+import moment from 'moment';
 import {  JournalPageType } from '../models';
 import {  sortPickEntries } from '../provider';
 
