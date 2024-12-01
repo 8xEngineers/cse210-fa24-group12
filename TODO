@@ -1,0 +1,4 @@
+@sync-note-links
+- we have to change the logic here: first generate the link according to template, then check if the generated text is already in the document
+- we invoke the scan of the notes directory in parallel
+
