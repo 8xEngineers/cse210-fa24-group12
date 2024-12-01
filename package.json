@@ -148,6 +148,14 @@
           "light": "./icons/light/icon-close.svg",
           "dark": "./icons/light/icon-close.svg"
         }
+      },
+      {
+        "command": "extension.RenameTag",
+        "title": "Rename",
+        "icon": {
+          "light": "./icons/light/icon-rename.svg",
+          "dark": "./icons/dark/icon-rename.svg"
+        }
       }
     ],
     "keybindings": [
@@ -213,6 +221,11 @@
         {
           "command": "extension.DeleteTagAndUntagFiles",
           "when": "view == fileTagsExplorer && viewItem == tag",
+          "group": "inline"
+        },
+        {
+          "command": "extension.RenameTag",
+          "when": "viewItem == tag",
           "group": "inline"
         }
       ]

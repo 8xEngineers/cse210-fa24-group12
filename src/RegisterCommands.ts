@@ -7,6 +7,7 @@ import UntagFileCommand from "./commands/UntagFile";
 import DeleteTagAndUntagFilesCommand from "./commands/DeleteTagAndUntagFiles";
 import Tag from "./models/Tag";
 import { IRegister } from "./interfaces/IRegister";
+import RenameTagCommand from "./commands/RenameTag";
 
 class RegisterCommands implements IRegister {
   private context: ExtensionContext;
@@ -47,6 +48,14 @@ class RegisterCommands implements IRegister {
           const command = new DeleteTagAndUntagFilesCommand(tag, this.context);
           await command.execute();
           this.tagDataProvider.refresh();
+        }
+      ),
+      commands.registerCommand( // Add the Rename Tag command here
+        "extension.RenameTag",
+        async (tag: Tag) => {
+        const command = new RenameTagCommand(this.context); // Pass only the context to the constructor
+        await command.execute(tag.tag); // Pass the tag name to the execute method
+        this.tagDataProvider.refresh(); // Refresh the tree view
         }
       )
     ];

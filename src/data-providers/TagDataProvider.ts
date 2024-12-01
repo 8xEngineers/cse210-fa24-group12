@@ -63,7 +63,12 @@ function getTags(context: ExtensionContext): Tag[] {
         t,
         TreeItemCollapsibleState.Collapsed,
         undefined,
-        taggedFiles?.length || 0
+        taggedFiles?.length || 0,
+        {
+          command: "extension.RenameTag",
+          title: "Rename Tag",
+          arguments: [{ tag: t }] // Pass the tag as an argument
+        }
       );
     }) || []
   );
