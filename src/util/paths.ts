@@ -24,7 +24,7 @@ import * as J from '..';
 import { getDayAsString, prefixZero } from './strings';
 import { isNullOrUndefined } from './util';
 import { replaceDateTemplatesWithMomentsFormats } from './dates';
-import moment = require('moment');
+import moment from 'moment';
 
 /**
 * Returns the path for a given date as string
@@ -34,8 +34,8 @@ export function getEntryPathForDate(date: Date, base: string, ext: string): Prom
 
     return new Promise<string>((resolve, reject) => {
         try {
-            let pathStr = Path.join(getPathOfMonth(date, base), getDayAsString(date) + "." + ext);
-            let path: Path.ParsedPath = Path.parse(pathStr);
+            const pathStr = Path.join(getPathOfMonth(date, base), getDayAsString(date) + "." + ext);
+            const path: Path.ParsedPath = Path.parse(pathStr);
             resolve(Path.format(path));
 
         } catch (error) {
@@ -62,11 +62,11 @@ export async function getDateFromURI(uri: string, pathTemplate: string, fileTemp
     if (pathTemplate.startsWith("${base}/")) { pathTemplate = pathTemplate.substring("${base}/".length); }
 
     // go through each element in path and assign it to a date part or skip it
-    let pathParts = uri.split("/");
+    const pathParts = uri.split("/");
 
     // check if part is in base path (if yes, we ignore)
     // for the rest: last part is file, everything else path pattern
-    let pathElements: string[] = [];
+    const pathElements: string[] = [];
     let trimmedPathString: string = "";
     let trimmedFileString = "";
 
@@ -86,8 +86,8 @@ export async function getDateFromURI(uri: string, pathTemplate: string, fileTemp
     const entryDateFormat = replaceDateTemplatesWithMomentsFormats(fileTemplate);
     const pathDateFormat = replaceDateTemplatesWithMomentsFormats(pathTemplate);
 
-    let parsedDateFromFile = moment(trimmedFileString, entryDateFormat);
-    let parsedDateFromPath = moment(trimmedPathString, pathDateFormat);
+    const parsedDateFromFile = moment(trimmedFileString, entryDateFormat);
+    const parsedDateFromPath = moment(trimmedPathString, pathDateFormat);
 
     let result = moment();
 
@@ -129,7 +129,7 @@ export async function getDateFromURIAndConfig(entryPath: string, configCtrl: J.E
  * @returns 
  */
 export function getFileInURI(uri: string, withExtension?: boolean): string {
-    let p: string = uri.substr(uri.lastIndexOf("/") + 1, uri.length);
+    const p: string = uri.substr(uri.lastIndexOf("/") + 1, uri.length);
     if (withExtension === null || !withExtension) {
         return p.split(".")[0];
     } else {
@@ -141,8 +141,8 @@ export function getFileInURI(uri: string, withExtension?: boolean): string {
  * Returns path to month folder. 
  */
 export function getPathOfMonth(date: Date, base: string): string {
-    let year = date.getFullYear().toString();
-    let month = prefixZero(date.getMonth() + 1);
+    const year = date.getFullYear().toString();
+    const month = prefixZero(date.getMonth() + 1);
     return Path.join(base, year, month);
 }
 
@@ -152,8 +152,8 @@ export function getPathOfMonth(date: Date, base: string): string {
 // TODO: this has to be reimplemented, should consider the configuration of the path for notes in different scopes
 export async function getFilePathInDateFolder(date: Date, filename: string, base: string, ext: string): Promise<string> {
     try {
-        let pathStr = Path.join(getPathOfMonth(date, base), getDayAsString(date), filename + "." + ext);
-        let path: Path.ParsedPath = Path.parse(pathStr);
+        const pathStr = Path.join(getPathOfMonth(date, base), getDayAsString(date), filename + "." + ext);
+        const path: Path.ParsedPath = Path.parse(pathStr);
         return Path.format(path);
     } catch (error) {
         throw error;
