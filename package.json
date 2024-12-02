@@ -56,7 +56,8 @@
     "onCommand:extension.OpenTaggedFile",
     "onCommand:extension.DeleteTagFromFile",
     "onCommand:extension.DeleteTagAndUntagFiles",
-    "onView:fileTagsExplorer"
+    "onView:fileTagsExplorer",
+    "onView:journalViewExplorer"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -148,6 +149,69 @@
           "light": "./icons/light/icon-close.svg",
           "dark": "./icons/light/icon-close.svg"
         }
+      },
+      {
+        "command": "journalViewExplorer.today",
+        "title": "Today",
+        "category": "JournalView",
+        "icon": {
+            "dark": "resources/icons/dark/journal-entry.svg",
+            "light": "resources/icons/light/journal-entry.svg"
+        }
+      },
+      {
+          "command": "journalViewExplorer.todayInExplorer",
+          "title": "Today",
+          "category": "JournalView",
+          "icon": {
+              "dark": "resources/icons/dark/journal-entry.svg",
+              "light": "resources/icons/light/journal-entry.svg"
+          }
+      },
+      {
+          "command": "journalViewExplorer.refresh",
+          "title": "Refresh",
+          "category": "JournalView",
+          "icon": {
+              "dark": "resources/icons/dark/refresh.svg",
+              "light": "resources/icons/light/refresh.svg"
+          }
+      },
+      {
+          "command": "journalViewExplorer.search",
+          "title": "Search",
+          "category": "JournalView",
+          "icon": {
+              "dark": "resources/icons/dark/filter.svg",
+              "light": "resources/icons/light/filter.svg"
+          }
+      },
+      {
+          "command": "journalViewExplorer.clearFilter",
+          "title": "Clear",
+          "category": "JournalView",
+          "icon": {
+              "dark": "resources/icons/dark/clear-filter.svg",
+              "light": "resources/icons/light/clear-filter.svg"
+          }
+      },
+      {
+          "command": "journalViewExplorer.expand",
+          "title": "Expand all",
+          "category": "JournalView",
+          "icon": {
+              "dark": "resources/icons/dark/expand.svg",
+              "light": "resources/icons/light/expand.svg"
+          }
+      },
+      {
+          "command": "journalViewExplorer.collapse",
+          "title": "Collapse all",
+          "category": "JournalView",
+          "icon": {
+              "dark": "resources/icons/dark/collapse.svg",
+              "light": "resources/icons/light/collapse.svg"
+          }
       }
     ],
     "keybindings": [
@@ -197,6 +261,41 @@
           "command": "fileTagsExplorer.Refresh",
           "when": "view == fileTagsExplorer",
           "group": "inline"
+        },
+        {
+          "command": "journalViewExplorer.today",
+          "when": "view == journalViewExplorer",
+          "group": "navigation@0"
+        },
+        {
+            "command": "journalViewExplorer.todayInExplorer",
+            "when": "view == journalViewExplorer-explorer",
+            "group": "navigation@0"
+        },
+        {
+            "command": "journalViewExplorer.expand",
+            "when": "view =~ /journalViewExplorer/ && journalViewExplorer-show-expand",
+            "group": "navigation@1"
+        },
+        {
+            "command": "journalViewExplorer.collapse",
+            "when": "view =~ /journalViewExplorer/ && journalViewExplorer-show-collapse",
+            "group": "navigation@1"
+        },
+        {
+            "command": "journalViewExplorer.search",
+            "when": "view =~ /journalViewExplorer/ && !journalViewExplorer-is-filtered",
+            "group": "navigation@2"
+        },
+        {
+            "command": "journalViewExplorer.clearFilter",
+            "when": "view =~ /journalViewExplorer/ && journalViewExplorer-is-filtered",
+            "group": "navigation@2"
+        },
+        {
+            "command": "journalViewExplorer.refresh",
+            "when": "view =~ /journalViewExplorer/",
+            "group": "navigation@3"
         }
       ],
       "view/item/context": [
@@ -222,6 +321,10 @@
         {
           "id": "fileTagsExplorer",
           "name": "File Tags"
+        },
+        {
+          "id": "journalViewExplorer",
+          "name": "Journal"
         }
       ]
     },

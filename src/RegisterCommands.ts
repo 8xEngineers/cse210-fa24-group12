@@ -1,21 +1,27 @@
-import { commands, ExtensionContext, Uri, Disposable } from "vscode";
+import { commands, ExtensionContext, Uri, Disposable, workspace, window } from "vscode";
 
 import TagDataProvider from "./data-providers/TagDataProvider";
+import JournalViewDataProvider from "./data-providers/JournalViewDataProvider";
 import TagFileCommand from "./commands/TagFile";
 import OpenTaggedFileCommand from "./commands/OpenTaggedFile";
 import UntagFileCommand from "./commands/UntagFile";
 import DeleteTagAndUntagFilesCommand from "./commands/DeleteTagAndUntagFiles";
 import Tag from "./models/Tag";
 import { IRegister } from "./interfaces/IRegister";
+import RevealToday from "./commands/RevealToday";
+
 
 class RegisterCommands implements IRegister {
   private context: ExtensionContext;
   private tagDataProvider: TagDataProvider;
+  private journalViewDataProvider: JournalViewDataProvider;
 
-  constructor(context: ExtensionContext, tagDataProvider: TagDataProvider) {
+  constructor(context: ExtensionContext, tagDataProvider: TagDataProvider, journalViewDataPprovider: JournalViewDataProvider) {
     this.context = context;
     this.tagDataProvider = tagDataProvider;
+    this.journalViewDataProvider = journalViewDataPprovider;
   }
+
 
   registerAll(): Disposable[] {
     const subscriptions = [
@@ -48,11 +54,61 @@ class RegisterCommands implements IRegister {
           await command.execute();
           this.tagDataProvider.refresh();
         }
-      )
+      ),
+
+      commands.registerCommand('journalViewExplorer.refresh', () => {
+          this.journalViewDataProvider.refresh();
+      }),
+
+      commands.registerCommand(
+        "journalViewExplorer.today",
+        async () => {
+          const command = new RevealToday(false, this.context, this.journalViewDataProvider);
+          commands.executeCommand( "journal.today" ).then( async function()
+          {
+            await command.execute();
+          });
+          this.journalViewDataProvider.refresh();
+        }
+      ),
+
+    
+
+      //   context.subscriptions.push( vscode.commands.registerCommand( 'vscode-journal-view.todayInExplorer', function()
+      //   {
+      //       revealButtonPressed( true );
+      //   } ) );
+
+      //   context.subscriptions.push( vscode.commands.registerCommand( 'vscode-journal-view.today', function()
+      //   {
+      //       revealButtonPressed( false );
+      //   } ) );
+
+      // commands.registerCommand( 'vscode-journal-view.open', ( file ) =>
+      // {
+      //   workspace.openTextDocument( file ).then( function( document ) {
+      //     window.showTextDocument( document ).then( function( editor ) {
+      //       commands.executeCommand( 'workbench.action.focusActiveEditorGroup' );
+      //       // highlightSearchTerm( file !== document.fileName );
+      //     });
+      //   });
+      // }),
+
+      // commands.registerCommand('vscode-journal.showInExplorer', () => {
+      //     this.journalViewDataProvider.revealToday(true);
+      // }),
     ];
 
     return subscriptions;
   }
 }
+
+// function revealButtonPressed( revealInExplorer )
+// { 
+//     commands.executeCommand( "journal.today" ).then( function()
+//     {
+//         revealToday( revealInExplorer );
+//     } );
+// }
 
 export default RegisterCommands;
