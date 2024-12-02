@@ -133,7 +133,7 @@ export class Input {
     }
 
     public hasFlags(): boolean {
-        let res = (this._flags !== undefined) && (this._flags.length > 0); 
+        const res = (this._flags !== undefined) && (this._flags.length > 0); 
         return res; 
     }
 
@@ -142,7 +142,7 @@ export class Input {
     }
 
     public hasTask(): boolean {
-        let matches: RegExpMatchArray | null  = this.flags.match("task|todo"); 
+        const matches: RegExpMatchArray | null  = this.flags.match("task|todo");  // changed from let to const
         return (matches !== null && matches.length > 0);
     }
 	
@@ -151,7 +151,7 @@ export class Input {
 	}
 
     public generateDate(): Date {
-        let date = new Date();
+        const date = new Date();
         date.setDate(date.getDate() + this.offset);
         return date; 
 

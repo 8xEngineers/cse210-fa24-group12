@@ -25,15 +25,15 @@ import TagDataProvider from './data-providers/TagDataProvider'; // Ensure the pa
 import RegisterCommands from './RegisterCommands';
 import RegisterDataProviders from './RegisterDataProviders';
 
-export var journalStartup: J.Extension.Startup;
-export var journalConfiguration: J.Extension.Configuration;
+export let journalStartup: J.Extension.Startup; // changed from var to let
+export let journalConfiguration: J.Extension.Configuration;
 
 export function activate(context: vscode.ExtensionContext) {
     try {
         console.time("startup");
 
         // Initialize Journal Extension
-        let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
+        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
         journalStartup = new J.Extension.Startup(config);
         journalStartup.run(context);
 
