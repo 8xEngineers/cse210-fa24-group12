@@ -44,12 +44,12 @@ export class PrintTimeCommand implements vscode.Command, vscode.Disposable {
         this.ctrl.logger.trace("Executing command: ", this.command);
 
         try {
-            let editor: vscode.TextEditor = <vscode.TextEditor>vscode.window.activeTextEditor;
+            const editor: vscode.TextEditor = <vscode.TextEditor>vscode.window.activeTextEditor;
 
             // Todo: identify scope of the active editot
-            let template: J.Model.ScopedTemplate = await this.ctrl.config.getTimeStringTemplate();
+            const template: J.Model.ScopedTemplate = await this.ctrl.config.getTimeStringTemplate();
 
-            let currentPosition: vscode.Position = editor.selection.active;
+            const currentPosition: vscode.Position = editor.selection.active;
 
             this.ctrl.inject.injectString(editor.document, template.value!, currentPosition);
 
