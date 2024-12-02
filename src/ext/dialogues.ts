@@ -59,10 +59,10 @@ export class Dialogues {
                 input.show();
                 
 
-                let today: J.Model.DecoratedQuickPickItem = { label: J.Extension.getInputLabelTranslation(1), description: J.Extension.getInputDetailsTranslation(1), pickItem: J.Model.JournalPageType.entry, parsedInput: new J.Model.Input(0), alwaysShow: true, path: "" };
-                let tomorrow: J.Model.DecoratedQuickPickItem = { label: J.Extension.getInputLabelTranslation(2), description: J.Extension.getInputDetailsTranslation(2), pickItem: J.Model.JournalPageType.entry, parsedInput: new J.Model.Input(1), alwaysShow: true, path: "" };
-                let pickEntry: J.Model.DecoratedQuickPickItem = { label: J.Extension.getInputLabelTranslation(3), description: J.Extension.getInputDetailsTranslation(3), pickItem: J.Model.JournalPageType.entry, alwaysShow: true, path: "" };
-                let pickNote: J.Model.DecoratedQuickPickItem = { label: J.Extension.getInputLabelTranslation(4), description: J.Extension.getInputDetailsTranslation(4), pickItem: J.Model.JournalPageType.note, alwaysShow: true, path: "" };
+                const today: J.Model.DecoratedQuickPickItem = { label: J.Extension.getInputLabelTranslation(1), description: J.Extension.getInputDetailsTranslation(1), pickItem: J.Model.JournalPageType.entry, parsedInput: new J.Model.Input(0), alwaysShow: true, path: "" };
+                const tomorrow: J.Model.DecoratedQuickPickItem = { label: J.Extension.getInputLabelTranslation(2), description: J.Extension.getInputDetailsTranslation(2), pickItem: J.Model.JournalPageType.entry, parsedInput: new J.Model.Input(1), alwaysShow: true, path: "" };
+                const pickEntry: J.Model.DecoratedQuickPickItem = { label: J.Extension.getInputLabelTranslation(3), description: J.Extension.getInputDetailsTranslation(3), pickItem: J.Model.JournalPageType.entry, alwaysShow: true, path: "" };
+                const pickNote: J.Model.DecoratedQuickPickItem = { label: J.Extension.getInputLabelTranslation(4), description: J.Extension.getInputDetailsTranslation(4), pickItem: J.Model.JournalPageType.note, alwaysShow: true, path: "" };
                 input.items = [today, tomorrow, pickEntry, pickNote];
 
                 let selected: J.Model.DecoratedQuickPickItem | undefined;
@@ -79,7 +79,7 @@ export class Dialogues {
                     } else {
                         this.ctrl.parser.parseInput(val).then((parsed: J.Model.Input) => {
                             // this is the placeholder, which gets continuously updated when the user types in anything
-                            let item: J.Model.DecoratedQuickPickItem = {
+                            const item: J.Model.DecoratedQuickPickItem = {
                                 label: val,
                                 path: "",
                                 alwaysShow: true,
@@ -148,7 +148,7 @@ export class Dialogues {
     private generateDescription(parsed: J.Model.Input): string {
         moment.locale(this.ctrl.config.getLocale());
 
-        let date = new Date();
+        const date = new Date();
         date.setDate(date.getDate() + parsed.offset);
         return moment(date).format("ddd, LL");
     }
@@ -157,11 +157,11 @@ export class Dialogues {
     private generateDetail(parsed: J.Model.Input): string {
         moment.locale(this.ctrl.config.getLocale());
 
-        let date = new Date();
+        const date = new Date();
         date.setDate(date.getDate() + parsed.offset);
-        let t: moment.Moment = moment(date);
+        const t: moment.Moment = moment(date);
 
-        let time: string = t.calendar(moment(), this.ctrl.config.getInputDetailsTimeFormat());
+        const time: string = t.calendar(moment(), this.ctrl.config.getInputDetailsTimeFormat());
 
         if (parsed.hasWeek() && !parsed.hasTask()) { return J.Extension.getInputDetailsStringForWeekly(parsed.week); }
         if (parsed.hasWeek() && parsed.hasTask()) { return J.Extension.getInputDetailsStringForTaskInWeek(parsed.week); }
@@ -175,7 +175,7 @@ export class Dialogues {
     private collectScanDirectories(type: J.Model.JournalPageType) : Set<J.Model.ScopeDirectory> {
 
 
-        let baseDirectories: J.Model.ScopeDirectory[] = [];
+        const baseDirectories: J.Model.ScopeDirectory[] = [];
         this.ctrl.config.getScopes().forEach(scope => {
             // let dir = this.ctrl.config.getBasePath(scope); 
             let pattern = ""; 
@@ -192,15 +192,15 @@ export class Dialogues {
             pattern = Path.normalize(pattern); 
 
             // stop when date variables appear in path
-            let pathSegments: string[] = pattern.split(Path.sep); 
-            let filteredSegments: string[] = []; 
-            for(let segment of pathSegments) {
+            const pathSegments: string[] = pattern.split(Path.sep); 
+            const filteredSegments: string[] = []; 
+            for(const segment of pathSegments) {
                 if(segment.startsWith("${")) { break; } 
                 else {filteredSegments.push(segment);} 
             }
             const directory = Path.join(...filteredSegments);
 
-            let scopedBaseDirectory: J.Model.ScopeDirectory = {
+            const scopedBaseDirectory: J.Model.ScopeDirectory = {
                 path: directory,
                 scope: scope
             };
@@ -274,7 +274,7 @@ export class Dialogues {
                             }
                             return;
                         } else {
-                            let inputText = new J.Model.NoteInput();
+                            const inputText = new J.Model.NoteInput();
                             inputText.text = val;
 
 
@@ -295,7 +295,7 @@ export class Dialogues {
                                     description += " and tags " + inputText.tags;
                                 }
 
-                                let item: J.Model.DecoratedQuickPickItem = {
+                                const item: J.Model.DecoratedQuickPickItem = {
                                     label: inputText.text,
                                     path: path,
                                     alwaysShow: true,
@@ -350,7 +350,7 @@ export class Dialogues {
             this.ctrl.logger.trace("Entering getUserInput() in ext/vscode.ts");
 
             try {
-                let options: vscode.InputBoxOptions = {
+                const options: vscode.InputBoxOptions = {
                     prompt: tip
                 };
 
@@ -456,7 +456,7 @@ export class Dialogues {
                     }
                 });
 
-                let col = this.ctrl.config.isOpenInNewEditorGroup() ? 2 : 1;
+                const col = this.ctrl.config.isOpenInNewEditorGroup() ? 2 : 1;
 
                 vscode.window.showTextDocument(textDocument, col, false).then(
                     view => {
@@ -498,7 +498,7 @@ export class Dialogues {
     }
 
     private showErrorInternal(errorMessage: string): void {
-        let hint = "Open the logs to see details.";
+        const hint = "Open the logs to see details.";
         vscode.window.showErrorMessage(errorMessage, hint)
             .then(clickedHint => {
                 this.ctrl.logger.showChannel();
@@ -530,7 +530,7 @@ function addItemToPickList(entries: J.Model.FileEntry[], input: J.Model.TimedQui
 
         // if it's a journal page, we prefix the month for visualizing 
         if (type === J.Model.JournalPageType.entry) {
-            let pathItems = fe.path.split(Path.sep);
+            const pathItems = fe.path.split(Path.sep);
             displayName = pathItems[pathItems.length - 2] + Path.sep + pathItems[pathItems.length - 1];
         }
 
@@ -560,7 +560,7 @@ function addItemToPickList(entries: J.Model.FileEntry[], input: J.Model.TimedQui
         
         let displayDescription = ""; 
         try {
-            let displayDate = moment(fe.createdAt);
+            const displayDate = moment(fe.createdAt);
         
             if(displayDate.isAfter(moment().subtract(7, "d"))) {
                 displayDescription += displayDate.format(J.Extension.getPickDetailsTranslation(2));
@@ -577,7 +577,7 @@ function addItemToPickList(entries: J.Model.FileEntry[], input: J.Model.TimedQui
 
         
     
-        let item: J.Model.DecoratedQuickPickItem = {
+        const item: J.Model.DecoratedQuickPickItem = {
             label: displayName,
             path: fe.path,
             fileEntry: fe,
