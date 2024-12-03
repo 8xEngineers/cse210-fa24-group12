@@ -16,8 +16,8 @@ describe("TagDataProvider Tests", () => {
     provider = new TagDataProvider(mockContext as ExtensionContext);
   });
 
-  test("Should fetch tags from workspace", () => {
-    const tags = provider.getChildren();
+  test("Should fetch tags from workspace", async () => {
+    const tags = await provider.getChildren(); // Await the promise
     expect(tags).toHaveLength(1);
     expect(tags[0].tag).toBe("urgent");
   });
