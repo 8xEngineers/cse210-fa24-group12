@@ -63,7 +63,7 @@ function getTags(context: ExtensionContext): Tag[] {
         t,
         TreeItemCollapsibleState.Collapsed,
         undefined,
-        taggedFiles?.length || 0
+        taggedFiles?.length || 0,
       );
     }) || []
   );

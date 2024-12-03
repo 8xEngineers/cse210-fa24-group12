@@ -1,14 +1,22 @@
 import { window, Uri } from "vscode";
 
 class OpenTaggedFileCommand {
-  private filename: Uri;
+  private filename: string;
 
-  constructor(filename: Uri) {
+  constructor(filename: string) {
     this.filename = filename;
   }
 
   async execute() {
-    window.showTextDocument(this.filename);
+    try {
+      // Convert the file path to a Uri
+      const fileUri = Uri.file(this.filename);
+      await window.showTextDocument(fileUri);
+    } catch (error) {
+      // Show an error message if the file cannot be opened
+      window.showErrorMessage(`Failed to open file: ${this.filename}`);
+      console.error("Error opening file:", error);
+    }
   }
 }
 

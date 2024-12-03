@@ -142,6 +142,14 @@
         }
       },
       {
+        "command": "extension.RenameTag",
+        "title": "Rename",
+        "icon": {
+          "light": "./icons/light/icon-rename.svg",
+          "dark": "./icons/dark/icon-rename.svg"
+        }
+      },
+      {
         "command": "extension.DeleteTagAndUntagFiles",
         "title": "Delete tag and untag files",
         "icon": {
@@ -208,6 +216,11 @@
         {
           "command": "extension.DeleteTagFromFile",
           "when": "view == fileTagsExplorer && viewItem == taggedFile",
+          "group": "inline"
+        },
+        {
+          "command": "extension.RenameTag",
+          "when": "viewItem == tag",
           "group": "inline"
         },
         {
