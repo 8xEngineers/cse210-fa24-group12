@@ -48,7 +48,7 @@ export class OpenJournalWorkspaceCommand implements vscode.Command, vscode.Dispo
     public async openWorkspace(): Promise<void> {
         this.ctrl.logger.trace("Executing command: ", this.command);
 
-        let path = vscode.Uri.file(this.ctrl.config.getBasePath());
+        const path = vscode.Uri.file(this.ctrl.config.getBasePath()); // changed from let to const
 
         try {
             vscode.commands.executeCommand('vscode.openFolder', path, true);

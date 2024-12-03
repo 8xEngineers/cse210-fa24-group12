@@ -36,9 +36,9 @@ export class MatchInput {
             }
 
             try {
-                let parsedInput = new Input();
+                const parsedInput = new Input(); // changed from let to const
 
-                let res: RegExpMatchArray | null = inputString.match(this.getExpression());
+                const res: RegExpMatchArray | null = inputString.match(this.getExpression());
                 if (res === null) { 
                     reject("cancel"); 
                 }
@@ -95,7 +95,7 @@ export class MatchInput {
      * @memberof Parser
      */
     private extractTags(inputString: string): string[] {
-        let res: RegExpMatchArray | null = inputString.match(this.scopeExpression);
+        const res: RegExpMatchArray | null = inputString.match(this.scopeExpression);
         return isNullOrUndefined(res) ? [""] : res!;
     }
 
@@ -127,9 +127,9 @@ export class MatchInput {
      * 
      */
     extractWeek(inputGroups: RegExpMatchArray): number {
-        let week = inputGroups.groups!["week"];
-        let weekNum = inputGroups.groups!["weekNum"];
-        let modifier = inputGroups.groups!["modifier"];
+        const week = inputGroups.groups!["week"];
+        const weekNum = inputGroups.groups!["weekNum"];
+        const modifier = inputGroups.groups!["modifier"];
 
         if (isNotNullOrUndefined(weekNum)) {
             return this.resolveNumberedWeek(weekNum);
@@ -143,7 +143,7 @@ export class MatchInput {
 
     }
     resolveRelatedWeek(modifier: string): number {
-        let now = moment(); 
+        const now = moment(); 
 
         if(isNotNullOrUndefined(modifier) && modifier.match(/l|last/)) {
             return now.subtract(1, "week").week(); 
@@ -164,15 +164,15 @@ export class MatchInput {
         return parseInt(weekAsNumber); 
     }
 
-
-    private extractOffset(inputGroups: RegExpMatchArray): number {
-        let shortcut = inputGroups.groups!["shortcut"];
-        let offset = inputGroups.groups!["offset"];
-        let iso = inputGroups.groups!["iso"];
-        let weekday = inputGroups.groups!["weekday"];
-        let modifier = inputGroups.groups!["modifier"];
-        let dayOfMonth = inputGroups.groups!["dayOfMonth"];
-        let month = inputGroups.groups!["month"];
+    // changed from let to const
+    private extractOffset(inputGroups: RegExpMatchArray): number {   
+        const shortcut = inputGroups.groups!["shortcut"];
+        const offset = inputGroups.groups!["offset"];
+        const iso = inputGroups.groups!["iso"];
+        const weekday = inputGroups.groups!["weekday"];
+        const modifier = inputGroups.groups!["modifier"];
+        const dayOfMonth = inputGroups.groups!["dayOfMonth"];
+        const month = inputGroups.groups!["month"];
 
         if (isNotNullOrUndefined(shortcut)) {
             return this.resolveShortcutString(shortcut);
@@ -225,10 +225,10 @@ export class MatchInput {
      */
     private resolveISOString(inputString: string): number {
 
-        let todayInMS: number = Date.UTC(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
+        const todayInMS: number = Date.UTC(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
 
         inputString = inputString.replace("/", "-"); // american formatting, e.g. 11\12
-        let dt: string[] = inputString.split("-");
+        const dt: string[] = inputString.split("-");
 
         let year: number | undefined, month: number | undefined, day: number | undefined;
         if (dt.length >= 3) {
@@ -260,7 +260,7 @@ export class MatchInput {
             throw new Error("Failed to parse the date");
         }
 
-        let result: number = Math.floor((inputInMS - todayInMS) / (1000 * 60 * 60 * 24));
+        const result: number = Math.floor((inputInMS - todayInMS) / (1000 * 60 * 60 * 24));
         return result;
     }
 
@@ -275,9 +275,9 @@ export class MatchInput {
     private resolveWeekday(weekday: string, mod?: string): number {
 
         // get name of weekday in input
-        let searchedDay = getDayOfWeekForString(weekday, this.locale);
-        let currentDay: number = this.today.getDay();
-        let diff = searchedDay - currentDay;
+        const searchedDay = getDayOfWeekForString(weekday, this.locale);
+        const currentDay: number = this.today.getDay();
+        const diff = searchedDay - currentDay;
 
 
         if (isNullOrUndefined(mod)) {
@@ -285,7 +285,7 @@ export class MatchInput {
 
         } else {
             // toggle mode (next or last)
-            let next = (mod!.charAt(0).toLowerCase() === 'n') ? true : false;
+            const next = (mod!.charAt(0).toLowerCase() === 'n') ? true : false;
 
             //   today is wednesday (currentDay = 3)
             // 'last monday' (default day of week: 1)
@@ -321,9 +321,9 @@ export class MatchInput {
      * @returns 
      */
     private resolveDayOfMonth(month: string, dayOfMonth: string): number {
-            let current = moment(); 
-            let date = moment().month(getMonthForString(month)).date(parseInt(dayOfMonth)); 
-            let diff =  date.diff(current, "days"); 
+            const current = moment(); 
+            const date = moment().month(getMonthForString(month)).date(parseInt(dayOfMonth)); 
+            const diff =  date.diff(current, "days"); 
             return diff;
     }
 

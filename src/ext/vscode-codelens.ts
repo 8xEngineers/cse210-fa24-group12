@@ -37,7 +37,7 @@ export class JournalCodeLensProvider implements vscode.CodeLensProvider {
     }
 
     async getRegex() : Promise<RegExp> {
-        let template = await this.ctrl.config.getTaskInlineTemplate(); 
+        const template = await this.ctrl.config.getTaskInlineTemplate(); 
         return new RegExp(template.after);
     }
 

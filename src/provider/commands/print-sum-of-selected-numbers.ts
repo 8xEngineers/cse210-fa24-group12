@@ -44,21 +44,21 @@ export class PrintSumCommand implements vscode.Command, vscode.Disposable {
 
 
         try {
-            let editor: vscode.TextEditor = <vscode.TextEditor>vscode.window.activeTextEditor;
-            let regExp: RegExp = /(\d+[,\.]?\d*\s?)|(\s)/;
+            const editor: vscode.TextEditor = <vscode.TextEditor>vscode.window.activeTextEditor; // changed from let to const
+            const regExp: RegExp = /(\d+[,\.]?\d*\s?)|(\s)/;
 
             let target: vscode.Position;
-            let numbers: number[] = [];
+            const numbers: number[] = [];
 
             editor.selections.forEach((selection: vscode.Selection) => {
-                let range: vscode.Range | undefined = editor.document.getWordRangeAtPosition(selection.active, regExp);
+                const range: vscode.Range | undefined = editor.document.getWordRangeAtPosition(selection.active, regExp);
 
                 if (J.Util.isNullOrUndefined(range)) {
                     target = selection.active;
                     return;
                 }
 
-                let text = editor.document.getText(range);
+                const text = editor.document.getText(range);
 
                 // check if empty string
                 if (text.trim().length === 0) {
@@ -67,7 +67,7 @@ export class PrintSumCommand implements vscode.Command, vscode.Disposable {
                     return;
                 }
                 // check if number
-                let number: number = Number(text);
+                const number: number = Number(text);
                 if (number > 0) {
                     numbers.push(number);
                     return;
@@ -78,7 +78,7 @@ export class PrintSumCommand implements vscode.Command, vscode.Disposable {
             if (numbers.length < 2) { throw Error("You have to select at least two numbers"); }  // tslint:disable-line
             else if (J.Util.isNullOrUndefined(target!)) { throw Error("No valid target selected for printing the sum."); }  // tslint:disable-line  
             else {
-                let result: string = numbers.reduce((previous, current) => previous + current).toString();
+                const result: string = numbers.reduce((previous, current) => previous + current).toString();
                 this.ctrl.inject.injectString(editor.document, result + "", target!);
             }
         } catch (error) {

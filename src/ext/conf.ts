@@ -107,7 +107,7 @@ export class Configuration {
      * @param _scopeId 
      */
     public getBasePath(_scopeId?: string): string {
-        let scope: string = this.resolveScope(_scopeId);
+        const scope: string = this.resolveScope(_scopeId);
         const workspaceRoot = vscode.workspace.workspaceFolders?.length && vscode.workspace.workspaceFolders[0].uri.fsPath || '';
 
         if (scope === SCOPE_DEFAULT) {
@@ -128,10 +128,10 @@ export class Configuration {
             }
         } else {
             // there is scope in the request, let's take the base from the scope definition (if it exists)
-            let scopes: ScopeDefinition[] | undefined = this.config.get<[ScopeDefinition]>('scopes');
+            const scopes: ScopeDefinition[] | undefined = this.config.get<[ScopeDefinition]>('scopes');
             if (isNotNullOrUndefined(scopes)) {
                 try {
-                    let base: string[] = scopes!.filter(v => v.name === scope)
+                    const base: string[] = scopes!.filter(v => v.name === scope)
                         .map(scopeDefinition => scopeDefinition.base)
                         .map(scopedBase => {
                             if (Util.stringIsNotEmpty(scopedBase)) {
@@ -179,7 +179,7 @@ export class Configuration {
 
 
     public isSyntaxHighlightingEnabled(): boolean {
-        let result = this.config.get<boolean>("syntax-highlighting");
+        const result = this.config.get<boolean>("syntax-highlighting");
         return (isNullOrUndefined(result)) ? false : result!; 
     }
 
@@ -212,7 +212,7 @@ export class Configuration {
     public async getResolvedNotesPath(date: Date, _scopeId?: string): Promise<ScopedTemplate> {
         return new Promise((resolve, reject) => {
             try {
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: (this.resolveScope(_scopeId) === SCOPE_DEFAULT) ? SCOPE_DEFAULT : _scopeId!,
                     template: this.getNotesPathPattern(_scopeId)!
                 };
@@ -275,7 +275,7 @@ export class Configuration {
         return new Promise((resolve, reject) => {
             try {
                 let definition: string | undefined;
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: SCOPE_DEFAULT,
                     template: ""
                 };
@@ -306,7 +306,7 @@ export class Configuration {
         return new Promise((resolve, reject) => {
             try {
                 let definition: string | undefined;
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: SCOPE_DEFAULT,
                     template: ""
                 };
@@ -377,7 +377,7 @@ export class Configuration {
     public async getResolvedEntryPath(date: Date, _scopeId?: string): Promise<ScopedTemplate> {
         return new Promise((resolve, reject) => {
             try {
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: (this.resolveScope(_scopeId) === SCOPE_DEFAULT) ? SCOPE_DEFAULT : _scopeId!,
                     template: this.getEntryPathPattern(_scopeId)!
                 };
@@ -416,7 +416,7 @@ export class Configuration {
                 var file = this.config.get<PatternDefinition>("patterns")?.entries.file;
 
                 let definition: string | undefined;
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: SCOPE_DEFAULT,
                     template: ""
                 };
@@ -585,7 +585,7 @@ export class Configuration {
        */
     public async getNotesTemplate(_scopeId?: string): Promise<HeaderTemplate> {
 
-        let tpl: ScopedTemplate = await this.getInlineTemplate("note", "# ${input}\n${tags}\n", _scopeId);
+        const tpl: ScopedTemplate = await this.getInlineTemplate("note", "# ${input}\n${tags}\n", _scopeId);
         // backwards compatibility, replace {content} with ${input} as default
         tpl.template = tpl.template.replace("{content}", "${input}");
 
@@ -701,12 +701,12 @@ export class Configuration {
 
 
     public isDevelopmentModeEnabled(): boolean {
-        let dev: boolean | undefined = this.config.get<boolean>('dev');
+        const dev: boolean | undefined = this.config.get<boolean>('dev');
         return (!isNullOrUndefined(dev)) ? dev! : false;
     }
 
     public isOpenInNewEditorGroup(): boolean {
-        let res: boolean | undefined = this.config.get<boolean>('openInNewEditorGroup');
+        const res: boolean | undefined = this.config.get<boolean>('openInNewEditorGroup');
         return (!isNullOrUndefined(res)) ? res! : false;
     }
 
@@ -734,16 +734,16 @@ export class Configuration {
     private async getInlineTemplate(_id: string, _defaultValue: string, _scopeId?: string): Promise<InlineTemplate> {
         return new Promise<InlineTemplate>((resolve, reject) => {
             try {
-                let scope = this.resolveScope(_scopeId);
-                let defaultScpe = SCOPE_DEFAULT;
+                const scope = this.resolveScope(_scopeId);
+                const defaultScpe = SCOPE_DEFAULT;
 
                 let pattern: InlineTemplate | undefined;
                 if (scope === defaultScpe) {
                     pattern = this.config.get<InlineTemplate[]>("templates")?.find(tpl => tpl.name === _id);
                 } else {
                     // a scope was requested
-                    let scopeDefinition = this.config.get<ScopeDefinition[]>("scopes")?.find(sd => sd.name === scope);
-                    let scopePattern = scopeDefinition?.templates?.find(tpl => tpl.name === _id);
+                    const scopeDefinition = this.config.get<ScopeDefinition[]>("scopes")?.find(sd => sd.name === scope);
+                    const scopePattern = scopeDefinition?.templates?.find(tpl => tpl.name === _id);
                     if (scopePattern) {
                         pattern = scopePattern;
                     } else {
