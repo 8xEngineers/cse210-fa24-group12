@@ -14,6 +14,9 @@
   - Considering the time constraint, it may not be feasible to merge it
 - ESLint workflow setup on GitHub
   - Fixed the Exit code 1 issue with no errors
+  - Issue came up due to Node 16 and other dependencies
+
+Install act to run github workflows locally.
 We merged the pull requests and closed the issues based on these discussions. Updated the project board.
 
 ## Attendance
