@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
         const journalViewDataProvider = new JournalViewDataProvider(context, outputChannel);
         const tagDataProvider = new TagDataProvider(context);
         const registerCommands = new RegisterCommands(context, tagDataProvider, journalViewDataProvider);
-        const registerDataProviders = new RegisterDataProviders(tagDataProvider, journalViewDataProvider);
+        const registerDataProviders = new RegisterDataProviders(context, tagDataProvider, journalViewDataProvider);
 
         // const journalViewExplorer = vscode.window.createTreeView( "vscode-journal-view-explorer", { treeDataProvider: journalViewDataProvider } );
         // const journalView = vscode.window.createTreeView( "vscode-journal-view", { treeDataProvider: journalViewDataProvider} );

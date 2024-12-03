@@ -316,6 +316,15 @@
         }
       ]
     },
+    "viewsContainers": {
+        "activitybar": [
+            {
+                "id": "journalViewExplorer",
+                "title": "Journal",
+                "icon": "resources/journal-container.svg"
+            }
+        ]
+    },
     "views": {
       "explorer": [
         {

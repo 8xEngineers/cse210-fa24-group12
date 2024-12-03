@@ -9,6 +9,7 @@ import DeleteTagAndUntagFilesCommand from "./commands/DeleteTagAndUntagFiles";
 import Tag from "./models/Tag";
 import { IRegister } from "./interfaces/IRegister";
 import RevealToday from "./commands/RevealToday";
+import RefreshJournalView from "./commands/Refresh";
 
 
 class RegisterCommands implements IRegister {
@@ -56,9 +57,12 @@ class RegisterCommands implements IRegister {
         }
       ),
 
-      commands.registerCommand('journalViewExplorer.refresh', () => {
-          this.journalViewDataProvider.refresh();
-      }),
+      commands.registerCommand('journalViewExplorer.refresh',
+        async () => {
+          const command = new RefreshJournalView(this.context, this.journalViewDataProvider);
+          await command.execute();
+        }
+      ),
 
       commands.registerCommand(
         "journalViewExplorer.today",
