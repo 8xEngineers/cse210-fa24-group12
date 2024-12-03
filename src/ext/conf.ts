@@ -38,7 +38,7 @@ type PatternDefinition = {
     weeks: { path: string; file: string };
 };
 
-var defaultPatternDefinition: PatternDefinition =
+const defaultPatternDefinition: PatternDefinition =
 {
     notes: {
         path: "${base}/${year}/${month}/${day}",
@@ -82,9 +82,7 @@ export class Configuration {
 
 
     public getLocale(): string {
-
-        let locale: string | undefined = this.config.get<string>('locale');
-
+        const locale: string | undefined = this.config.get<string>('locale');
         return (isNullOrUndefined(locale) || (locale!.length === 0)) ? vscode.env.language : locale!;
     }
 
@@ -93,8 +91,8 @@ export class Configuration {
      * Returns all known scopes in the settings
      */
     public getScopes(): string[] {
-        let res = [SCOPE_DEFAULT];
-        let scopes: ScopeDefinition[] | undefined = this.config.get<[ScopeDefinition]>("scopes");
+        const res: string[] = [SCOPE_DEFAULT];
+        const scopes: ScopeDefinition[] | undefined = this.config.get<ScopeDefinition[]>("scopes");
         if (isNotNullOrUndefined(scopes) && scopes!.length > 0) {
             scopes!.map(sd => sd.name).forEach(name => res.push(name));
         }
@@ -109,7 +107,7 @@ export class Configuration {
      * @param _scopeId 
      */
     public getBasePath(_scopeId?: string): string {
-        let scope: string = this.resolveScope(_scopeId);
+        const scope: string = this.resolveScope(_scopeId);
         const workspaceRoot = vscode.workspace.workspaceFolders?.length && vscode.workspace.workspaceFolders[0].uri.fsPath || '';
 
         if (scope === SCOPE_DEFAULT) {
@@ -130,10 +128,10 @@ export class Configuration {
             }
         } else {
             // there is scope in the request, let's take the base from the scope definition (if it exists)
-            let scopes: ScopeDefinition[] | undefined = this.config.get<[ScopeDefinition]>('scopes');
+            const scopes: ScopeDefinition[] | undefined = this.config.get<[ScopeDefinition]>('scopes');
             if (isNotNullOrUndefined(scopes)) {
                 try {
-                    let base: string[] = scopes!.filter(v => v.name === scope)
+                    const base: string[] = scopes!.filter(v => v.name === scope)
                         .map(scopeDefinition => scopeDefinition.base)
                         .map(scopedBase => {
                             if (Util.stringIsNotEmpty(scopedBase)) {
@@ -173,17 +171,15 @@ export class Configuration {
             console.error("You requested a scoped file extensions, this is not supported.");
         }
 
-        let ext: string | undefined = this.config.get<string>('ext');
-        ext = (isNullOrUndefined(ext) && (ext!.length === 0)) ? 'md' : ext!;
+        const ext: string | undefined = this.config.get<string>('ext');
+        const finalExt = (isNullOrUndefined(ext) || (ext!.length === 0)) ? 'md' : ext!;
 
-        if (ext.startsWith(".")) { ext = ext.substring(1, ext.length); }
-
-        return ext!;
+        return finalExt.startsWith(".") ? finalExt.substring(1) : finalExt;
     }
 
 
     public isSyntaxHighlightingEnabled(): boolean {
-        let result = this.config.get<boolean>("syntax-highlighting");
+        const result = this.config.get<boolean>("syntax-highlighting");
         return (isNullOrUndefined(result)) ? false : result!; 
     }
 
@@ -203,11 +199,7 @@ export class Configuration {
             result = this.config.get<ScopeDefinition[]>("scopes")?.find(sd => sd.name === _scopeId)?.patterns?.notes?.path; 
         }
 
-        if (isNullOrUndefined(result) || result!.length === 0) {
-            result = defaultPatternDefinition.entries.path;
-        }
-
-        return result!;
+        return isNullOrUndefined(result) || result!.length === 0 ? defaultPatternDefinition.entries.path : result!;
     }
 
     /**
@@ -220,7 +212,7 @@ export class Configuration {
     public async getResolvedNotesPath(date: Date, _scopeId?: string): Promise<ScopedTemplate> {
         return new Promise((resolve, reject) => {
             try {
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: (this.resolveScope(_scopeId) === SCOPE_DEFAULT) ? SCOPE_DEFAULT : _scopeId!,
                     template: this.getNotesPathPattern(_scopeId)!
                 };
@@ -251,7 +243,7 @@ export class Configuration {
         return new Promise((resolve, reject) => {
             try {
                 let definition: string | undefined;
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: SCOPE_DEFAULT,
                     template: ""
                 };
@@ -283,7 +275,7 @@ export class Configuration {
         return new Promise((resolve, reject) => {
             try {
                 let definition: string | undefined;
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: SCOPE_DEFAULT,
                     template: ""
                 };
@@ -314,7 +306,7 @@ export class Configuration {
         return new Promise((resolve, reject) => {
             try {
                 let definition: string | undefined;
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: SCOPE_DEFAULT,
                     template: ""
                 };
@@ -385,7 +377,7 @@ export class Configuration {
     public async getResolvedEntryPath(date: Date, _scopeId?: string): Promise<ScopedTemplate> {
         return new Promise((resolve, reject) => {
             try {
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: (this.resolveScope(_scopeId) === SCOPE_DEFAULT) ? SCOPE_DEFAULT : _scopeId!,
                     template: this.getEntryPathPattern(_scopeId)!
                 };
@@ -424,7 +416,7 @@ export class Configuration {
                 var file = this.config.get<PatternDefinition>("patterns")?.entries.file;
 
                 let definition: string | undefined;
-                let scopedTemplate: ScopedTemplate = {
+                const scopedTemplate: ScopedTemplate = {
                     scope: SCOPE_DEFAULT,
                     template: ""
                 };
@@ -465,19 +457,30 @@ export class Configuration {
      * FIXME: Externalise to properties (multilanguage)
      */
     public getInputDetailsTimeFormat() {
-        let labels: string[] = new Array(4);
+        const labels: string[] = new Array(4);
 
         if (this.getLocale().startsWith("en")) {
-            labels = ["for today", "for tomorrow", "for yesterday", "last"];
+            labels[0] = "for today";
+            labels[1] = "for tomorrow";
+            labels[2] = "for yesterday";
+            labels[3] = "last";
         } else if (this.getLocale().startsWith("de")) {
-            labels = ["für heute", "für morgen", " für gestern", "letzten"];
+            labels[0] = "für heute";
+            labels[1] = "für morgen";
+            labels[2] = "für gestern";
+            labels[3] = "letzten";
         } else if (this.getLocale().startsWith("fr")) {
-            labels = ["pour aujourd'hui", "pour demain", "d'hier"];
+            labels[0] = "pour aujourd'hui";
+            labels[1] = "pour demain";
+            labels[2] = "d'hier";
         } else if (this.getLocale().startsWith("es")) {
-            labels = ["para hoy", "de mañana", "de ayer", "del último"];
+            labels[0] = "para hoy";
+            labels[1] = "de mañana";
+            labels[2] = "de ayer";
+            labels[3] = "del último";
         }
 
-        let config = {
+        const config = {
             sameDay: `[${labels[0]}]`,
             nextDay: `[${labels[1]}]`,
             nextWeek: 'dddd',
@@ -515,9 +518,9 @@ export class Configuration {
     /**
      * Helper Method, threshold (maximal age) of files shown in the quick picker
      */
-    getInputTimeThreshold(): number {
-        let offset = -60;
-        let d: Date = new Date();
+    public getInputTimeThreshold(): number {
+        const offset = -60;
+        const d: Date = new Date();
         d.setDate(d.getDate() + offset);
         return d.getTime();
     }
@@ -582,7 +585,7 @@ export class Configuration {
        */
     public async getNotesTemplate(_scopeId?: string): Promise<HeaderTemplate> {
 
-        let tpl: ScopedTemplate = await this.getInlineTemplate("note", "# ${input}\n${tags}\n", _scopeId);
+        const tpl: ScopedTemplate = await this.getInlineTemplate("note", "# ${input}\n${tags}\n", _scopeId);
         // backwards compatibility, replace {content} with ${input} as default
         tpl.template = tpl.template.replace("{content}", "${input}");
 
@@ -698,12 +701,12 @@ export class Configuration {
 
 
     public isDevelopmentModeEnabled(): boolean {
-        let dev: boolean | undefined = this.config.get<boolean>('dev');
+        const dev: boolean | undefined = this.config.get<boolean>('dev');
         return (!isNullOrUndefined(dev)) ? dev! : false;
     }
 
     public isOpenInNewEditorGroup(): boolean {
-        let res: boolean | undefined = this.config.get<boolean>('openInNewEditorGroup');
+        const res: boolean | undefined = this.config.get<boolean>('openInNewEditorGroup');
         return (!isNullOrUndefined(res)) ? res! : false;
     }
 
@@ -731,16 +734,16 @@ export class Configuration {
     private async getInlineTemplate(_id: string, _defaultValue: string, _scopeId?: string): Promise<InlineTemplate> {
         return new Promise<InlineTemplate>((resolve, reject) => {
             try {
-                let scope = this.resolveScope(_scopeId);
-                let defaultScpe = SCOPE_DEFAULT;
+                const scope = this.resolveScope(_scopeId);
+                const defaultScpe = SCOPE_DEFAULT;
 
                 let pattern: InlineTemplate | undefined;
                 if (scope === defaultScpe) {
                     pattern = this.config.get<InlineTemplate[]>("templates")?.find(tpl => tpl.name === _id);
                 } else {
                     // a scope was requested
-                    let scopeDefinition = this.config.get<ScopeDefinition[]>("scopes")?.find(sd => sd.name === scope);
-                    let scopePattern = scopeDefinition?.templates?.find(tpl => tpl.name === _id);
+                    const scopeDefinition = this.config.get<ScopeDefinition[]>("scopes")?.find(sd => sd.name === scope);
+                    const scopePattern = scopeDefinition?.templates?.find(tpl => tpl.name === _id);
                     if (scopePattern) {
                         pattern = scopePattern;
                     } else {
@@ -792,14 +795,12 @@ export class Configuration {
      */
     private getInlineTemplateCached(_id: string, _defaultValue: string, _scopeId: string): Promise<InlineTemplate> {
         return new Promise<InlineTemplate>((resolve, reject) => {
-
             try {
-                let key: string = _scopeId + "." + _id;
+                const key: string = _scopeId + "." + _id;
                 let pattern: InlineTemplate = <InlineTemplate>this.patterns.get(key);
                 if (isNullOrUndefined(pattern)) {
-
-                    let tpl = this.config.get<string>(_id);
-                    let after = this.config.get<string>(_id + '-after');
+                    const tpl = this.config.get<string>(_id);
+                    const after = this.config.get<string>(_id + '-after');
 
                     pattern = {
                         scope: this.resolveScope(_scopeId),
@@ -807,8 +808,6 @@ export class Configuration {
                         after: isNullOrUndefined(after) ? '' : after!
                     };
                     this.patterns.set(key, pattern);
-
-
                 }
 
                 pattern.value = pattern.template;
@@ -816,7 +815,6 @@ export class Configuration {
             } catch (error) {
                 reject(error);
             }
-
         });
     }
 

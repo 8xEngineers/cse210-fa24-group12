@@ -49,7 +49,7 @@ export class Parser {
             this.ctrl.logger.trace("Entering resolveNotePathForInput() in actions/parser.ts");
             
             // Unscoped Notes are always created in today's folder
-            let date = new Date();
+            const date = new Date();
             let path: string = "";
             input.scope = SCOPE_DEFAULT;  
 
@@ -67,7 +67,7 @@ export class Parser {
 
                 // identify scope, input is #tag
                 this.ctrl.logger.trace("Scopes defined in configuration: "+this.ctrl.config.getScopes());
-                let scope: string | undefined = this.ctrl.config.getScopes().filter((name: string) => name === tag.trim().substring(1, tag.length)).pop(); 
+                const scope: string | undefined = this.ctrl.config.getScopes().filter((name: string) => name === tag.trim().substring(1, tag.length)).pop(); 
                
                 
                 if(J.Util.isNotNullOrUndefined(scope) && scope!.length > 0) {
@@ -79,7 +79,7 @@ export class Parser {
             });
 
 
-            let inputForFileName: string = J.Util.normalizeFilename(input.text);
+            const inputForFileName: string = J.Util.normalizeFilename(input.text);
 
             Promise.all([
                 this.ctrl.config.getNotesFilePattern(date, inputForFileName, input.scope), 
@@ -111,7 +111,7 @@ export class Parser {
      * @memberof Parser
      */
     public async parseInput(inputString: string): Promise<J.Model.Input> {
-        let inputMatcher = new J.Provider.MatchInput(this.ctrl.logger, this.ctrl.config.getLocale());
+        const inputMatcher = new J.Provider.MatchInput(this.ctrl.logger, this.ctrl.config.getLocale());
         return inputMatcher.parseInput(inputString); 
 
     }

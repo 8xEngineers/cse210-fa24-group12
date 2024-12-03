@@ -13,8 +13,8 @@ class TagFileCommand {
   }
 
   async execute() {
-    let currentTags = this.context.workspaceState.get<string[]>(TAGS_KEY) || [];
-    let value = await InputQuickPick(currentTags);
+    const currentTags = this.context.workspaceState.get<string[]>(TAGS_KEY) || [];
+    const value = await InputQuickPick(currentTags);
 
     if (!value) {
       return value;

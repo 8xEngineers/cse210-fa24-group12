@@ -30,7 +30,7 @@ export class ShowEntryForTomorrowCommand extends AbstractLoadEntryForDateCommand
     public static create(ctrl: J.Util.Ctrl): vscode.Disposable {
         const cmd = new this(ctrl);
 
-        let input = new J.Model.Input();
+        const input = new J.Model.Input();
         input.offset = 1;
 
         vscode.commands.registerCommand(cmd.command, () => cmd.execute(input));

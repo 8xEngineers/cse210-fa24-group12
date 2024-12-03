@@ -92,7 +92,7 @@ export class ScanEntries {
 
         // we add everything from the cache 
         if (this.cache.size > 0) {
-            let cachedEntries: FileEntry[] = Array.from(this.cache.values()).filter(fe => fe.type === type).sort(sortPickEntries);
+            const cachedEntries: FileEntry[] = Array.from(this.cache.values()).filter(fe => fe.type === type).sort(sortPickEntries);
             callback(cachedEntries, picker, type);
         }
 
@@ -150,8 +150,8 @@ export class ScanEntries {
             const foundFiles: FileEntry[] = [];
 
             files.forEach(f => {
-                let dirPath = Path.join(dir, f);
-                let stats: fs.Stats = fs.statSync(dirPath);
+                const dirPath = Path.join(dir, f);
+                const stats: fs.Stats = fs.statSync(dirPath);
                 if (f.startsWith(".")) {return;}
                 if (stats.isDirectory()) {
 
@@ -179,8 +179,8 @@ export class ScanEntries {
         fs.readdirSync(dir).forEach(f => {
             if (f.startsWith(".")) { return; }
 
-            let dirPath = Path.join(dir, f);
-            let stats: fs.Stats = fs.statSync(dirPath);
+            const dirPath = Path.join(dir, f);
+            const stats: fs.Stats = fs.statSync(dirPath);
 
             // if last access time after threshold and item is directory
             if ((stats.atimeMs > thresholdDateInMs) && (stats.isDirectory())) {

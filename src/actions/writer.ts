@@ -118,7 +118,7 @@ export class Writer {
 
         return new Promise<vscode.TextDocument>((resolve, reject) => {
             this.ctrl.logger.trace("Entering createSaveLoadTextDocument() in ext/writer.ts for path: ", path);
-            let uri: vscode.Uri = vscode.Uri.parse('untitled:' + path);
+            const uri: vscode.Uri = vscode.Uri.parse('untitled:' + path); // changed from let to const
 
             this.ctrl.ui.openDocument(uri)
                 .then((doc: vscode.TextDocument) => this.ctrl.inject.injectHeader(doc, content))
