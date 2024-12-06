@@ -199,23 +199,43 @@ class JournalDataProvider implements vscode.TreeDataProvider<JournalTreeItem> {
     private filterTree(items: JournalTreeItem[], filterText: string): JournalTreeItem[] {
         const result: JournalTreeItem[] = [];
         for (const item of items) {
+            const labelMatch = item.label.toLowerCase().includes(filterText.toLowerCase());
             if (item.children.length === 0) {
                 // Leaf node
-                if (item.label.toLowerCase().includes(filterText.toLowerCase())) {
-                    // Matches filter
+                if (labelMatch) {
+                    // Leaf matches
                     result.push(this.cloneItem(item));
                 }
             } else {
                 // Non-leaf node
-                const filteredChildren = this.filterTree(item.children, filterText);
-                if (filteredChildren.length > 0) {
+                if (labelMatch) {
+                    // If the parent node itself matches, include it and all its descendants unfiltered
                     const newItem = this.cloneItem(item);
-                    newItem.children = filteredChildren;
+                    // Just clone children as they are
+                    newItem.children = this.cloneChildren(item.children);
                     result.push(newItem);
+                } else {
+                    // Otherwise, filter children
+                    const filteredChildren = this.filterTree(item.children, filterText);
+                    if (filteredChildren.length > 0) {
+                        const newItem = this.cloneItem(item);
+                        newItem.children = filteredChildren;
+                        result.push(newItem);
+                    }
                 }
             }
         }
         return result;
+    }
+    
+    private cloneChildren(items: JournalTreeItem[]): JournalTreeItem[] {
+        return items.map(child => {
+            const c = this.cloneItem(child);
+            if (child.children.length > 0) {
+                c.children = this.cloneChildren(child.children);
+            }
+            return c;
+        });
     }
 
     private cloneItem(item: JournalTreeItem): JournalTreeItem {
