@@ -134,27 +134,75 @@
         }
       },
       {
-        "command": "extension.DeleteTagFromFile",
-        "title": "Delete",
+      "command": "extension.DeleteTagFromFile",
+      "title": "Delete",
+      "icon": {
+        "light": "./icons/light/icon-close.svg",
+        "dark": "./icons/light/icon-close.svg"
+      }
+      },
+      {
+      "command": "extension.RenameTag",
+      "title": "Rename",
+      "icon": {
+        "light": "./icons/light/icon-rename.svg",
+        "dark": "./icons/dark/icon-rename.svg"
+      }
+      },
+      {
+      "command": "extension.DeleteTagAndUntagFiles",
+      "title": "Delete tag and untag files",
+      "icon": {
+        "light": "./icons/light/icon-close.svg",
+        "dark": "./icons/light/icon-close.svg"
+      }
+      },
+      {
+        "command": "journal-view.today",
+        "title": "Jump to Today",
         "icon": {
-          "light": "./icons/light/icon-close.svg",
-          "dark": "./icons/light/icon-close.svg"
+          "dark": "icons/dark/journal-entry.svg",
+          "light": "icons/light/journal-entry.svg"
         }
       },
       {
-        "command": "extension.RenameTag",
-        "title": "Rename",
+        "command": "journal-view.expandAll",
+        "title": "Expand All",
         "icon": {
-          "light": "./icons/light/icon-rename.svg",
-          "dark": "./icons/dark/icon-rename.svg"
+            "dark": "icons/dark/expand.svg",
+            "light": "icons/light/expand.svg"
         }
       },
       {
-        "command": "extension.DeleteTagAndUntagFiles",
-        "title": "Delete tag and untag files",
+        "command": "journal-view.collapseAll",
+        "title": "Collapse All",
         "icon": {
-          "light": "./icons/light/icon-close.svg",
-          "dark": "./icons/light/icon-close.svg"
+          "dark": "icons/dark/collapse.svg",
+          "light": "icons/light/collapse.svg"
+        }
+      },
+      {
+        "command": "journal-view.refresh",
+        "title": "Refresh",
+        "icon": {
+          "dark": "icons/dark/refresh.svg",
+          "light": "icons/light/refresh.svg"
+        }
+      },
+      {
+        "command": "journal-view.filter",
+        "title": "Filter",
+        "icon": {
+          "dark": "icons/dark/filter.svg",
+          "light": "icons/light/filter.svg"
+        }
+      },
+      {
+        "command": "journal-view.clear-filter",
+        "title": "Clear Filter",
+        "icon": {
+          "dark": "icons/dark/clear-filter.svg",
+          "light": "icons/light/clear-filter.svg"
         }
       }
     ],
@@ -205,6 +253,36 @@
           "command": "fileTagsExplorer.Refresh",
           "when": "view == fileTagsExplorer",
           "group": "inline"
+        },
+        {
+          "command": "journal-view.today",
+          "when": "view == journalViewExplorer || view == journalViewActivityBar",
+          "group": "navigation@0"
+        },
+        {
+          "command": "journal-view.expandAll",
+          "when": "(view == journalViewExplorer ||  view == journalViewActivityBar) && !treeViewExpanded",
+          "group": "navigation@1"
+        },
+        {
+          "command": "journal-view.collapseAll",
+          "when": "(view == journalViewExplorer || view == journalViewActivityBar ) && treeViewExpanded",
+          "group": "navigation@1"
+        },
+        {
+          "command": "journal-view.filter",
+          "when": "(view == journalViewExplorer || view == journalViewActivityBar) && !filterApplied",
+          "group": "navigation@2"
+        },
+        {
+          "command": "journal-view.clear-filter",
+          "when": "(view == journalViewExplorer || view == journalViewActivityBar) && filterApplied",
+          "group": "navigation@2"
+        },
+        {
+          "command": "journal-view.refresh",
+          "when": "view == journalViewExplorer || view == journalViewActivityBar",
+          "group": "navigation@3"
         }
       ],
       "view/item/context": [
@@ -233,8 +311,27 @@
     "views": {
       "explorer": [
         {
+          "id": "journalViewExplorer", 
+          "name": "Journal"
+        },
+        {
           "id": "fileTagsExplorer",
           "name": "File Tags"
+        }
+      ],
+      "journal-view": [
+        {
+          "id": "journalViewActivityBar",
+          "name": "Journal"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "journal-view",
+          "title": "Journal",
+          "icon": "icons/journal-container.svg"
         }
       ]
     },
@@ -242,6 +339,11 @@
       "type": "object",
       "title": "VSCode Journal ",
       "properties": {
+        "vscode-journal-view.expanded": {
+            "type": "boolean",
+            "default": true,
+            "description": "Automatically expand all root nodes in the Journal view."
+        },
         "journal.base": {
           "type": "string",
           "default": "",
