@@ -156,6 +156,31 @@
           "light": "./icons/light/icon-close.svg",
           "dark": "./icons/light/icon-close.svg"
         }
+      },
+      {
+        "command": "journal.note",
+        "title": "New Journal Note",
+        "category": "Journal"
+      },
+      {
+        "command": "vscode-journal-view.refresh",
+        "title": "Refresh Journal"
+      },
+      {
+        "command": "vscode-journal-view.search",
+        "title": "Search Journal"
+      },
+      {
+        "command": "vscode-journal-view.clearFilter",
+        "title": "Clear Filter"
+      },
+      {
+        "command": "vscode-journal-view.expand",
+        "title": "Expand All"
+      },
+      {
+        "command": "vscode-journal-view.collapse",
+        "title": "Collapse All"
       }
     ],
     "keybindings": [
@@ -235,7 +260,17 @@
         {
           "id": "fileTagsExplorer",
           "name": "File Tags"
-        }
+        },
+      {
+        "id": "vscode-journal-view-explorer",
+        "name": "Journal Explorer"
+      }
+    ],
+    "activitybar": [
+      {
+        "id": "vscode-journal-view",
+        "name": "Journal View"
+      }
       ]
     },
     "configuration": {
