@@ -24,6 +24,7 @@ import * as J from './';
 import TagDataProvider from './data-providers/TagDataProvider'; // Ensure the path matches your structure
 import RegisterCommands from './RegisterCommands';
 import RegisterDataProviders from './RegisterDataProviders';
+import { JournalDataProvider } from './dataProvider'; // Adjust path as necessary
 
 export let journalStartup: J.Extension.Startup; // changed from var to let
 export let journalConfiguration: J.Extension.Configuration;
@@ -48,6 +49,28 @@ export function activate(context: vscode.ExtensionContext) {
             ...registerDataProviders.registerAll()
         ].forEach(sub => context.subscriptions.push(sub));
 
+        // Initialize Journal View Functionality
+        const journalDataProvider = new JournalDataProvider(context);
+
+        // Register tree data providers for both views
+        vscode.window.registerTreeDataProvider('fileTagsExplorer', tagDataProvider); // Existing view
+        vscode.window.registerTreeDataProvider('vscode-journal-view-explorer', journalDataProvider);
+
+        // Register commands for Journal View
+        context.subscriptions.push(
+            vscode.commands.registerCommand('vscode-journal-view.refresh', () => journalDataProvider.refresh()),
+            vscode.commands.registerCommand('vscode-journal-view.search', () => {
+                vscode.window.showInputBox({ prompt: 'Search the journal' }).then(term => {
+                    if (term) journalDataProvider.search(term);
+                });
+            }),
+            vscode.commands.registerCommand('vscode-journal-view.clearFilter', () => journalDataProvider.clearFilter()),
+            vscode.commands.registerCommand('vscode-journal-view.expand', () => journalDataProvider.expandAll()),
+            vscode.commands.registerCommand('vscode-journal-view.collapse', () => journalDataProvider.collapseAll())
+        );
+
+        console.timeEnd("startup");
+
         // Return public API of the Journal Extension
         return {
             getJournalConfiguration() {
@@ -61,10 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {
-}
-
-
+export function deactivate() {}
 
 
 
