@@ -29,6 +29,8 @@ jobs:
       
     - name: Install vscode
       run: npm install -g @vscode/test-electron
+    
+    - name: Install typesrcipt type for vscode API
       run: npm install @types/vscode --save-dev
         
     - name: Run tests
