@@ -153,11 +153,11 @@ suite("Open Tagged File Command Tests", () => {
   });
 
   test("Open file in editor", async () => {
-    // Create a test Uri
-    const testUri = Uri.file("/test/path/file.txt");
+    // Create a test file path
+    const testFilePath = "/test/path/file.txt";
     
     // Create and execute the command
-    const command = new OpenTaggedFileCommand(testUri);
+    const command = new OpenTaggedFileCommand(testFilePath);
     await command.execute();
 
     // Verify that showTextDocument was called with the correct Uri
@@ -167,20 +167,19 @@ suite("Open Tagged File Command Tests", () => {
       "showTextDocument should be called exactly once"
     );
     assert.strictEqual(
-      showTextDocumentStub.firstCall.args[0], 
-      testUri, 
+      showTextDocumentStub.firstCall.args[0].fsPath.replace(/\\/g, '/'), 
+      testFilePath, 
       "showTextDocument should be called with the correct Uri"
     );
   });
 
   test("Handle file path with spaces", async () => {
-    const testUri = Uri.file("/test/path/file with spaces.txt");
-    
-    const command = new OpenTaggedFileCommand(testUri);
+    const testFilePath = "/test/path/file with spaces.txt"
+    const command = new OpenTaggedFileCommand(testFilePath);
     await command.execute();
 
     assert.strictEqual(showTextDocumentStub.calledOnce, true);
-    assert.strictEqual(showTextDocumentStub.firstCall.args[0], testUri);
+    assert.strictEqual(showTextDocumentStub.firstCall.args[0].fsPath.replace(/\\/g, '/'), testFilePath);
   });
 });
 
