@@ -16,11 +16,9 @@
 // along with vscode-journal.  If not, see <http://www.gnu.org/licenses/>.
 // 
 
-
-
 'use strict';
 
-import moment = require("moment");
+import moment from "moment";
 
 
 /**
@@ -28,17 +26,7 @@ import moment = require("moment");
 */
 export function formatDate(date: Date, template: string, locale: string): string {
     moment.locale(locale);
-    let now = moment(date).format(template);
-    /*
-
-    let dateFormatOptions: Intl.DateTimeFormatOptions = {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    };
-    return date.toLocaleDateString(locale, dateFormatOptions);
-    */
+    const now = moment(date).format(template);
     return now;
 }
 
@@ -70,13 +58,13 @@ export function getDayOfWeekForString(day: string, locale: string): number {
         { regex: /thursday|thu|th|donnerstag|don|jeu|jeudi|jue|jueves|giovedì|quinta-feira|qui|donderdag|do|четверг|чт|xīngqī sì|mokuyōbi|الخميس/i, index: 4 },
         { regex: /friday|fri|fr|freitag|fre|ven|vendredi|vie|viernes|venerdì|sexta-feira|sex|vrijdag|vr|пятница|пт|xīngqī wǔ|kin'yōbi|الجمعة/i, index: 5 },
         { regex: /saturday|sat|sa|samstag|sam|samedi|sáb|sábado|sabato|sábado|zaterdag|za|суббота|сб|xīngqī liù|doyōbi|السبت/i, index: 6 },
-        { regex: /sunday|sun|su|sonntag|dim|dimanche|dom|domingo|domenica|domingo|zondag|zo|воскресенье|вс|xīngqī rì|nichiyōbi|الأحد/i, index: 7 }
+        { regex: /sunday|sun|su|sonntag|dim|dimanche|dom|domingo|domenica|domingo|zondag|zo|воскресенье|вс|nichiyōbi|الأحد/i, index: 7 }
     ];
     return matchStringToIndex(day, patterns);
 }
 
 /**
- * Return day of week for given string. 
+ * Return month for given string. 
  * 
  * Update: Using momentjs to support locales (since first day of week differs internationally)
  */
@@ -90,7 +78,7 @@ export function getMonthForString(month: string): number {
     if (month.match(/jun|june|juin|junio|giugno|junho|juni|июнь|liùyuè|rokugatsu|يونيو/i)) { return 5; }
     if (month.match(/jul|july|juli|juillet|julio|luglio|julho|июль|qīyuè|shichigatsu|يوليو/i)) { return 6; }
     if (month.match(/aug|august|août|agosto|agosto|augustus|авг|август|bāyuè|hachigatsu|أغسطس/i)) { return 7; }
-    if (month.match(/sep|sept|september|septembre|septiembre|settembre|setembro|september|сент|сентябрь|jiǔyuè|kugatsu|سبتمبر/i)) { return 8; }
+    if (month.match(/sep|sept|september|septembre|septiembre|settembre|setembro|сент|сентябрь|jiǔyuè|kugatsu|سبتمبر/i)) { return 8; }
     if (month.match(/oct|october|oktober|octobre|octubre|ottobre|outubro|oktober|окт|октябрь|shíyuè|jugatsu|أكتوبر/i)) { return 9; }
     if (month.match(/nov|november|novembre|noviembre|novembro|ноя|ноябрь|shíyīyuè|juichigatsu|نوفمبر/i)) { return 10; }
     if (month.match(/dec|december|dezember|décembre|diciembre|dicembre|dezembro|декабрь|shí'èryuè|juunigatsu|ديسمبر/i)) { return 11; }
@@ -105,19 +93,15 @@ export function getMonthForString(month: string): number {
      * @param st
      * @param date 
      */
-    // https://regex101.com/r/i5MUpx/1/
-    // private regExpDateFormats: RegExp = new RegExp(/\$\{(?:(year|month|day|localTime|localDate|weekday)|(d:\w+))\}/g);
-    // fix for #52
-    // private regExpDateFormats: RegExp = new RegExp(/\$\{(?:(year|month|day|localTime|localDate|weekday)|(d:\w+))\}/g);
     const regExpDateFormats: RegExp = new RegExp(/\$\{(?:(year|month|day|localTime|localDate|weekday)|(d:[\s\S]+?))\}/g);
 
     export function replaceDateFormats(template: string, date: Date, locale?: string): string {
-        let matches : RegExpMatchArray | null = template.match(regExpDateFormats);
+        const matches: RegExpMatchArray | null = template.match(regExpDateFormats);
         if(matches === null) {
             return template; 
         }
 
-        let mom: moment.Moment = moment(date);
+        const mom: moment.Moment = moment(date);
         moment.locale(locale);
 
         matches.forEach(match => {
@@ -139,10 +123,7 @@ export function getMonthForString(month: string): number {
                 default:
                     // check if custom format
                     if (match.startsWith("${d:")) {
-
-                        let modifier = match.substring(match.indexOf("d:") + 2, match.length - 1); // includes } at the end
-                        // st.template = st.template.replace(match, mom.format(modifier));
-                        // fix for #51
+                        const modifier = match.substring(match.indexOf("d:") + 2, match.length - 1);
                         template = template.replace(match, mom.format(modifier));
                         break;
                     }
@@ -154,7 +135,7 @@ export function getMonthForString(month: string): number {
     }
 
     export function replaceDateTemplatesWithMomentsFormats(template: string): string {
-        let matches: RegExpMatchArray | null = template.match(regExpDateFormats);
+        const matches: RegExpMatchArray | null = template.match(regExpDateFormats);
         if (matches === null) {
             return template;
         }
@@ -176,10 +157,7 @@ export function getMonthForString(month: string): number {
                 default:
                     // check if custom format
                     if (match.startsWith("${d:")) {
-
-                        let modifier = match.substring(match.indexOf("d:") + 2, match.length - 1); // includes } at the end
-                        // st.template = st.template.replace(match, mom.format(modifier));
-                        // fix for #51
+                        const modifier = match.substring(match.indexOf("d:") + 2, match.length - 1);
                         template = template.replace(match, modifier);
                         break;
                     }
@@ -194,8 +172,7 @@ export function getMonthForString(month: string): number {
      * Utility function to replace date format placeholders in a template.
      */
     function replaceDatePlaceholders(template: string, mom: moment.Moment): string {
-        const regExpDateFormats: RegExp = new RegExp(/\$\{(?:(year|month|day|localTime|localDate|weekday)|(d:[\s\S]+?))\}/g);
-        let matches: RegExpMatchArray | null = template.match(regExpDateFormats);
+        const matches: RegExpMatchArray | null = template.match(regExpDateFormats);
         if (matches === null) {
             return template; 
         }
@@ -219,11 +196,8 @@ export function getMonthForString(month: string): number {
                 default:
                     // check if custom format
                     if (match.startsWith("${d:")) {
-
-                        let modifier = match.substring(match.indexOf("d:") + 2, match.length - 1); // includes } at the end
-                        // st.template = st.template.replace(match, mom.format(modifier));
-                        // fix for #51
-                        template = template.replace(match, modifier);
+                        const modifier = match.substring(match.indexOf("d:") + 2, match.length - 1);
+                        template = template.replace(match, mom.format(modifier));
                         break;
                     }
                     break;

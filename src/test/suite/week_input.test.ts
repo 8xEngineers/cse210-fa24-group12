@@ -6,18 +6,18 @@ import moment from 'moment';
 import * as vscode from 'vscode';
 import * as J from '../..';
 import { TestLogger } from '../TestLogger';
-import {suite, before,test} from 'mocha';
+import { suite, before, test } from 'mocha';
 
 // Utility function to create a new Ctrl instance
 const createCtrl = () => {
-	let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
-	let ctrl = new J.Util.Ctrl(config);
+	const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
+	const ctrl = new J.Util.Ctrl(config);
 	ctrl.logger = new TestLogger(false);
 	return ctrl;
 };
 
-// Utility function to run common assertions
-const runCommonAssertions = (input: any, expectedWeek: number) => {
+// Utility function to run common assertions are provided below
+const runCommonAssertions = (input: J.Model.Input, expectedWeek: number) => {
 	assert.ok(!input.hasOffset(), "Offset is set, is " + input.offset);
 	assert.ok(!input.hasFlags(), "Input has flags " + JSON.stringify(input));
 	assert.ok(!input.hasTask(), "Input has task flag " + JSON.stringify(input));
@@ -35,29 +35,26 @@ suite('Open Week Entries', () => {
 	}); 
 
 	test("Input 'w13'", async () => {
-
-		let parser = new J.Actions.Parser(ctrl);
-		let input = await parser.parseInput("w13");
+		const parser = new J.Actions.Parser(ctrl);
+		const input = await parser.parseInput("w13");
 
 		runCommonAssertions(input, 13);
 	});
 
-
 	test("Input 'w'", async () => {
-		let parser = new J.Actions.Parser(ctrl);
-		let input = await parser.parseInput("w");
-		let currentWeek = moment().week();
+		const parser = new J.Actions.Parser(ctrl);
+		const input = await parser.parseInput("w");
+		const currentWeek = moment().week();
 
 		runCommonAssertions(input, currentWeek);
 	});
 
 	test("Input 'next week'", async () => {
-		let parser = new J.Actions.Parser(ctrl);
-		let input = await parser.parseInput("next week");
+		const parser = new J.Actions.Parser(ctrl);
+		const input = await parser.parseInput("next week");
 
-		let currentWeek = moment().week();
+		const currentWeek = moment().week();
 
 		runCommonAssertions(input, currentWeek + 1);
 	});
-
 });

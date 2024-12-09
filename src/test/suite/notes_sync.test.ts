@@ -22,28 +22,30 @@ suite('Test Notes Syncing', () => {
 
     test('Sync notes', async () => {
         let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
-		let ctrl = new J.Util.Ctrl(config);
-		ctrl.logger = new TestLogger(false); 
+
+        let ctrl = new J.Util.Ctrl(config);
+        ctrl.logger = new TestLogger(false); 
 
         // create a new entry.. remember length
-        let editor = await openTodayJournal();
+        let editor = await openTodayJournal();  
         let originalLength  = editor.document.getText().length;
-        
+
         assert.ok(originalLength > 0, "Nothing in document"); 
 
         // create a new note
         let input = new J.Model.NoteInput(); 
         input.text = "This is a test note";
-        let notesDoc : vscode.TextDocument = await new LoadNotes(input, ctrl).load();
-        let notesEditor  = await ctrl.ui.showDocument(notesDoc); 
+
+        let notesDoc: vscode.TextDocument = await new LoadNotes(input, ctrl).load();
+
+        let notesEditor = await ctrl.ui.showDocument(notesDoc); 
         assert.ok(notesEditor, "Failed to open note");
 
         await new Promise( resolve => setTimeout(resolve, 2000));  
 
         let editorAgain = await openTodayJournal();
-        let newLength  = editorAgain.document.getText().length; 
-        
-        assert.ok(newLength > originalLength, "Notes link wasn't injected"); 
+        let newLength = editorAgain.document.getText().length; 
+        assert.ok(newLength > originalLength, "Notes link wasn't injected");
 
         // check length of new entry
 	}).timeout(5000)

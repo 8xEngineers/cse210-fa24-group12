@@ -17,7 +17,7 @@
 // 
 'use strict';
 
-import moment = require('moment');
+import moment from 'moment';
 import * as vscode from 'vscode';
 import * as J from '../..';
 
@@ -49,8 +49,8 @@ export class PrintDurationCommand implements vscode.Command, vscode.Disposable {
 
 
         try {
-            let editor: vscode.TextEditor = <vscode.TextEditor>vscode.window.activeTextEditor;
-            let regExp: RegExp = /\d{1,2}:?\d{0,2}(?:\s?(?:am|AM|pm|PM))?|\s/;
+            const editor: vscode.TextEditor = <vscode.TextEditor>vscode.window.activeTextEditor;
+            const regExp: RegExp = /\d{1,2}:?\d{0,2}(?:\s?(?:am|AM|pm|PM))?|\s/;
             // let regExp: RegExp = /(\d{1,2}:?\d{2}\s)|(\d{1,4}\s?(?:am|pm)\s)|(\d{1,2}[,\.]\d{1,2}\s)|(\s)/;
 
             if (editor.selections.length !== 3) {
@@ -64,7 +64,7 @@ export class PrintDurationCommand implements vscode.Command, vscode.Disposable {
 
 
             editor.selections.forEach((selection: vscode.Selection) => {
-                let range: vscode.Range | undefined = editor.document.getWordRangeAtPosition(selection.active, regExp);
+                const range: vscode.Range | undefined = editor.document.getWordRangeAtPosition(selection.active, regExp);
 
 
                 if (J.Util.isNullOrUndefined(range)) {
@@ -85,7 +85,7 @@ export class PrintDurationCommand implements vscode.Command, vscode.Disposable {
 
                 if (!time.isValid()) {
                     // 123pm
-                    let mod: number = text.search(/am|pm/);
+                    const mod: number = text.search(/am|pm/);
                     if (mod > 0) {
                         if (text.charAt(mod - 1) !== " ") {
                             text = text.substr(0, mod - 1) + " " + text.substr(mod);
@@ -96,7 +96,7 @@ export class PrintDurationCommand implements vscode.Command, vscode.Disposable {
 
                 if (!time.isValid()) {
                     // 123AM
-                    let mod: number = text.search(/AM|PM/);
+                    const mod: number = text.search(/AM|PM/);
                     if (mod > 0) {
                         if (text.charAt(mod - 1) !== " ") {
                             text = text.substring(0, mod - 1) + " " + text.substr(mod);
@@ -125,8 +125,8 @@ export class PrintDurationCommand implements vscode.Command, vscode.Disposable {
             else if (J.Util.isNullOrUndefined(end)) { throw new Error("No valid end time selected"); }  // tslint:disable-line
             else if (J.Util.isNullOrUndefined(target)) { throw new Error("No valid target selected for printing the duration."); }  // tslint:disable-line  
             else {
-                let duration = moment.duration(start!.diff(end!));
-                let formattedDuration = Math.abs(duration.asHours()).toFixed(2);
+                const duration = moment.duration(start!.diff(end!));
+                const formattedDuration = Math.abs(duration.asHours()).toFixed(2);
                 this.ctrl.inject.injectString(editor.document, formattedDuration, target!);
             }
 

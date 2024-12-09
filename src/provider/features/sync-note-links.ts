@@ -3,7 +3,6 @@ import * as J from '../..';
 import * as Path from 'path';
 import * as fs from 'fs';
 
-
 /**
  * Feature responsible for finding existing references to notes in current view as well as scanning the configured folders for unreferenced files. 
  * Syncs the two lists with the goal, to have easy access to all notes from the journal entries. 
@@ -13,16 +12,15 @@ export class SyncNoteLinks {
     constructor(public ctrl: J.Util.Ctrl) {
     }
 
-     /**
+    /**
      * Checks for the given text document if it contains references to notes (and if there are notes in the associated folders)
      * It compares the two lists and creates (or deletes) any missing links
      * 
      * @param doc 
      */
-      public async injectAttachementLinks(doc: vscode.TextDocument, date: Date): Promise<vscode.TextDocument> {
+    public async injectAttachementLinks(doc: vscode.TextDocument, date: Date): Promise<vscode.TextDocument> {
         return new Promise((resolve, reject) => {
             this.ctrl.logger.trace("Entering injectAttachementLinks() in features/sync-note-links for date: ", date);
-
 
             this.ctrl.ui.saveDocument(doc)
                 .then(() =>
@@ -36,20 +34,17 @@ export class SyncNoteLinks {
                     ])
                 )
                 .then(found => {
-                    let referencedFiles = found[0];
-                    let foundFiles = found[1];
+                    const referencedFiles = found[0];
+                    const foundFiles = found[1];
 
                     // for each file, check whether it is in the list of referenced files
-                    let promises: Promise<J.Model.InlineString>[] = [];
+                    const promises: Promise<J.Model.InlineString>[] = [];
 
-                    foundFiles.forEach((file, index, array) => {
-                        let foundFile: vscode.Uri | undefined = referencedFiles.find(match => match.fsPath === file.fsPath);
+                    foundFiles.forEach((file, index) => {
+                        const foundFile: vscode.Uri | undefined = referencedFiles.find(match => match.fsPath === file.fsPath);
                         if (J.Util.isNullOrUndefined(foundFile)) {
                             this.ctrl.logger.debug("injectAttachementLinks() - File link not present in entry: ", file);
-                            // files.push(file); 
-                            // we don't execute yet, just collect the promises
                             promises.push(this.buildReference(doc, file));
-
                         }
                     });
                     return Promise.all(promises);
@@ -61,15 +56,15 @@ export class SyncNoteLinks {
                         this.ctrl.inject.injectInlineString(inlineStrings[0], ...inlineStrings.splice(1))
                             .catch(reason => {
                                 // do nothing
-                            }); 
+                            });
                     }
 
-                   return doc; 
+                    return doc;
 
                 })
                 .then(doc => {
-                    this.ctrl.ui.saveDocument(doc); 
-                    resolve(doc); 
+                    this.ctrl.ui.saveDocument(doc);
+                    resolve(doc);
                 })
                 .catch((err: Error) => {
                     this.ctrl.logger.error("Failed to synchronize page with notes folder.", err);
@@ -78,39 +73,34 @@ export class SyncNoteLinks {
         });
     }
 
-
-
-
     public async getFilesInNotesFolderAllScopes(doc: vscode.TextDocument, date: Date): Promise<vscode.Uri[]> {
         return new Promise<vscode.Uri[]>((resolve, reject) => {
             this.ctrl.logger.trace("Entering getFilesInNotesFolderAllScopes() in features/sync-note-links for document: ", doc.fileName);
 
             // scan attachement folders for each scope
-            let promises: Promise<vscode.Uri[]>[] = [];
+            const promises: Promise<vscode.Uri[]>[] = [];
             this.ctrl.config.getScopes().forEach(scope => {
-                let promise: Promise<vscode.Uri[]> = this.getFilesInNotesFolder(doc, date, scope);
+                const promise: Promise<vscode.Uri[]> = this.getFilesInNotesFolder(doc, date, scope);
                 promises.push(promise);
             });
 
             // map to consolidated list of uris
-
             Promise.all(promises)
                 .then((uriArrays: vscode.Uri[][]) => {
-                    let locations: vscode.Uri[] = [];
+                    const locations: vscode.Uri[] = [];
                     uriArrays.forEach(uriArray => {
                         uriArray.forEach(uri => {
                             // scopes might also point to the default location, which results in duplicate entries    
                             if (!locations.find(elem => elem.path === uri.path)) {
                                 locations.push(uri);
                             }
-                        }); 
+                        });
                     });
                     return locations;
                 })
                 .then(resolve)
                 .catch(reject);
         });
-
     }
 
 
@@ -149,52 +139,39 @@ export class SyncNoteLinks {
                                     try {
                                         if (J.Util.isNotNullOrUndefined(err)) { reject(err!.message); }
                                         
-                                        this.ctrl.logger.debug("Found ", files.length+"", " objects in notes folder at path: ", JSON.stringify(pathPattern.value!));
+                                        this.ctrl.logger.debug("Found ", files.length + "", " objects in notes folder at path: ", JSON.stringify(pathPattern.value!));
 
-                                        
-
-                                        let result = files.filter((name: string) => {
-                                            // filter, check if no temporary files are included (since Office tends to do it this alot)
-                                            return (!name.startsWith("~") || !name.startsWith("."));
-                                           
-                                        })    
+                                        const result = files.filter((name: string) => {
+                                            // filter, check if no temporary files are included (since Office tends to do it this a lot)
+                                            return (!name.startsWith("~") && !name.startsWith("."));
+                                        })
                                         .map((name: string) => Path.normalize(pathPattern.value! + Path.sep + name))
 
                                         // read out the file stats (sync, since I don't really understand how to flatten the promise within this context)
-                                        .map((file: fs.PathLike) => { return { file: file, stats: fs.statSync(file)}; })
+                                        .map((file: fs.PathLike) => { return { file: file, stats: fs.statSync(file) }; })
                                         
                                         // fix for #100, exclude subdirectories
-                                        .filter(fileWithStats => ! fileWithStats.stats.isDirectory())
-                                         // filter: check if the current file was last modified at the current day
+                                        .filter(fileWithStats => !fileWithStats.stats.isDirectory())
+                                        // filter: check if the current file was last modified at the current day
                                         .filter(fileWithStats => {
-                                            let fileDate: Date =  fileWithStats.stats.mtime;
+                                            const fileDate: Date = fileWithStats.stats.mtime;
 
-                                            let res =  (fileDate.getDate() === date.getDate()) &&
+                                            const res = (fileDate.getDate() === date.getDate()) &&
                                             (fileDate.getMonth() === date.getMonth()) &&
                                             (fileDate.getFullYear() === date.getFullYear()); 
                                             return res; 
-
                                         })
                                         .map(fileWithStats => vscode.Uri.file(fileWithStats.file.toString()));
-                                        
-
-                                        
-
-
 
                                         resolve(result);
                                     } catch (error) {
                                         reject(error);
                                     }
-
                                 });
                             } else {
                                 resolve([]);
                             }
-
                         });
-
-
                     });
 
                 /*
@@ -208,7 +185,7 @@ export class SyncNoteLinks {
 
 
             } catch (error) {
-                if(error instanceof Error) {
+                if (error instanceof Error) {
                     this.ctrl.logger.error(error.message);
                     reject(error); 
                 } else {
@@ -231,16 +208,16 @@ export class SyncNoteLinks {
 
         return new Promise<vscode.Uri[]>((resolve, reject) => {
             try {
-                let references: vscode.Uri[] = [];
-                let regexp: RegExp = new RegExp(/\[.*\]\((.*)\)/, 'g');
+                const references: vscode.Uri[] = [];
+                const regexp: RegExp = new RegExp(/\[.*\]\((.*)\)/, 'g');
                 let match: RegExpExecArray | null;
 
                 while (match = regexp.exec(doc.getText())) {
-                    let loc = match![1];
+                    const loc = match![1];
 
                     // parse to path to resolve relative paths (starting with ./)
-                    let dirToEntry: string = Path.parse(doc.uri.fsPath).dir; // resolve assumes directories, not files
-                    let absolutePath : string = Path.join(dirToEntry, loc); 
+                    const dirToEntry: string = Path.parse(doc.uri.fsPath).dir;
+                    const absolutePath: string = Path.join(dirToEntry, loc);
 
                     references.push(vscode.Uri.file(absolutePath));
                 }
@@ -252,55 +229,47 @@ export class SyncNoteLinks {
                 reject(error);
             }
         });
-
     }
 
-
-
-        /**
+    /**
      * Injects a reference to a file associated with the given document. The reference location can be configured in the template (after-flag)
      * @param doc the document which we will inject into
      * @param file the referenced path 
      */
-         private async buildReference(doc: vscode.TextDocument, file: vscode.Uri): Promise<J.Model.InlineString> {
-            return new Promise<J.Model.InlineString>((resolve, reject) => {
-                try {
-                    this.ctrl.logger.trace("Entering injectReference() in ext/inject.ts for document: ", doc.fileName, " and file ", file);
-    
-                    this.ctrl.config.getFileLinkInlineTemplate()
-                        .then(tpl => {
-                            // fix for #70 
-                            const pathToLinkedFile: Path.ParsedPath = Path.parse(file.fsPath);
-                            const pathToEntry: Path.ParsedPath = Path.parse(doc.uri.fsPath);
-                            const relativePath = Path.relative(pathToEntry.dir, pathToLinkedFile.dir);
-                            const path = Path.join(relativePath, pathToLinkedFile.name + pathToLinkedFile.ext);
-                            const link = path.replace(/\\/g, "/");
-    
-                            let title = pathToLinkedFile.name.replace(/_/g, " ");
-                            if (pathToLinkedFile.ext.slice(1) !== this.ctrl.config.getFileExtension()) {
-                                title = "(" + pathToLinkedFile.ext + ") " + title;
-                            };
-    
-    
-                            return this.ctrl.inject.buildInlineString(
-                                doc,
-                                tpl,
-                                ["${title}", title],
-                                // TODO: reference might refer to other locations 
-                                ["${link}", link]
-                            );
+    private async buildReference(doc: vscode.TextDocument, file: vscode.Uri): Promise<J.Model.InlineString> {
+        return new Promise<J.Model.InlineString>((resolve, reject) => {
+            try {
+                this.ctrl.logger.trace("Entering injectReference() in ext/inject.ts for document: ", doc.fileName, " and file ", file);
+
+                this.ctrl.config.getFileLinkInlineTemplate()
+                    .then(tpl => {
+                        // fix for #70 
+                        const pathToLinkedFile: Path.ParsedPath = Path.parse(file.fsPath);
+                        const pathToEntry: Path.ParsedPath = Path.parse(doc.uri.fsPath);
+                        const relativePath = Path.relative(pathToEntry.dir, pathToLinkedFile.dir);
+                        const path = Path.join(relativePath, pathToLinkedFile.name + pathToLinkedFile.ext);
+                        const link = path.replace(/\\/g, "/");
+
+                        let title = pathToLinkedFile.name.replace(/_/g, " ");
+                        if (pathToLinkedFile.ext.slice(1) !== this.ctrl.config.getFileExtension()) {
+                            title = "(" + pathToLinkedFile.ext + ") " + title;
                         }
-                        )
-                        .then(inlineString => resolve(inlineString))
-                        .catch(error => {
-                            this.ctrl.logger.error("Failed to inject reference. Reason: ", error);
-                            reject(error);
-                        });
-    
-    
-                } catch (error) {
-                    reject(error);
-                }
-            });
-        }
+
+                        return this.ctrl.inject.buildInlineString(
+                            doc,
+                            tpl,
+                            ["${title}", title],
+                            ["${link}", link]
+                        );
+                    })
+                    .then(inlineString => resolve(inlineString))
+                    .catch(error => {
+                        this.ctrl.logger.error("Failed to inject reference. Reason: ", error);
+                        reject(error);
+                    });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 }

@@ -16,24 +16,20 @@
 // along with vscode-journal.  If not, see <http://www.gnu.org/licenses/>.
 // 
 
-
-import moment = require('moment');
+import moment from 'moment';
 import * as vscode from 'vscode';
 import * as J from '../.';
 
 export interface Logger {
-    trace(message: string, ...optionalParams: any[]): void; 
-    debug(message: string, ...optionalParams: any[]): void; 
-    error(message: string, ...optionalParams: any[]): void; 
+    trace(message: string, ...optionalParams: unknown[]): void; 
+    debug(message: string, ...optionalParams: unknown[]): void; 
+    error(message: string, ...optionalParams: unknown[]): void; 
     printError(error: Error): void;
     showChannel(): void;
 }
 
-
-
 export class ConsoleLogger implements Logger {
     private devMode = false; 
-
 
     constructor(public ctrl: J.Util.Ctrl, public channel: vscode.OutputChannel) {
         this.devMode = ctrl.config.isDevelopmentModeEnabled();
@@ -43,33 +39,32 @@ export class ConsoleLogger implements Logger {
         this.channel.show(); 
     }
 
-    public traceLine(message: string, ...optionalParams: any[]): void {
+    public traceLine(message: string, ...optionalParams: unknown[]): void {
         if (this.devMode === true) {
             this.appendCurrentTime();
             this.channel.append(" [trace] "); 
 
             this.channel.append(message); 
-            optionalParams.forEach(msg => this.channel.append(msg+"")); 
+            optionalParams.forEach(msg => this.channel.append(msg + "")); 
 
             this.channel.appendLine(""); 
-
 
             console.trace("[TRACE]", message, ...optionalParams);
         }
     }
 
-    public trace(message: string, ...optionalParams: any[]): void {
+    public trace(message: string, ...optionalParams: unknown[]): void {
         this.logMessage("trace", message, optionalParams);
     }
 
-    public debug(message: string, ...optionalParams: any[]): void {
+    public debug(message: string, ...optionalParams: unknown[]): void {
         this.logMessage("debug", message, optionalParams);
     }
 
     /**
      * Utility function to log messages with a specific log level.
      */
-    private logMessage(level: string, message: string, optionalParams: any[]): void {
+    private logMessage(level: string, message: string, optionalParams: unknown[]): void {
         if (this.devMode === true) {
             this.appendCurrentTime();
             this.channel.append(` [${level}] `);
@@ -94,37 +89,32 @@ export class ConsoleLogger implements Logger {
 
     public printError(error: Error): void {
         this.error(error.message, error); 
-
-   
     }
 
-    public error(message: string, ...optionalParams: any[]): void {
-
+    public error(message: string, ...optionalParams: unknown[]): void {
         this.appendCurrentTime();
         this.channel.append(" [ERROR] "); 
 
         this.channel.append(message); 
 
-        if(optionalParams.length > 0) {
+        if (optionalParams.length > 0) {
             this.channel.append(" ");
         }
         optionalParams.forEach(msg => {
-            if(J.Util.isString(msg)) {
-                this.channel.append(msg+""); 
-            }
-            else if(J.Util.isError(msg)) { 
-                if(J.Util.isNotNullOrUndefined(msg.stack)) {
-                    let method: string | undefined = /at \w+\.(\w+)/.exec(msg.stack!.split('\n')[2])?.pop(); 
-                    this.channel.append("("+method+")"); 
+            if (J.Util.isString(msg)) {
+                this.channel.append(msg + ""); 
+            } else if (J.Util.isError(msg)) { 
+                const errorMsg = msg as Error;
+                if (J.Util.isNotNullOrUndefined(errorMsg.stack)) {
+                    const method: string | undefined = /at \w+\.(\w+)/.exec(errorMsg.stack!.split('\n')[2])?.pop(); 
+                    this.channel.append("(" + method + ")"); 
                 }
 
                 this.channel.appendLine("See Exception below."); 
-                if(J.Util.isNotNullOrUndefined(msg.stack)) {
-                    this.channel.append(msg.stack); 
+                if (errorMsg.stack) {
+                    this.channel.append(errorMsg.stack); 
                 }
-
-            }
-            else {
+            } else {
                 this.channel.appendLine(JSON.stringify(msg)); 
             }
         });
@@ -133,9 +123,7 @@ export class ConsoleLogger implements Logger {
         console.error("[ERROR]", message, ...optionalParams);
     }
 
-
-
-    private appendCurrentTime() : void {
+    private appendCurrentTime(): void {
         this.channel.append("[");
         this.channel.append(moment(new Date()).format('HH:mm:ss.SSS'));
         this.channel.append("]");

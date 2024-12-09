@@ -17,7 +17,7 @@
 // 
 'use strict';
 
-import moment = require('moment');
+import moment from 'moment';
 import * as vscode from 'vscode';
 import * as J from '../..';
 import { ShiftTarget } from '../commands/copy-task';

@@ -71,7 +71,7 @@ export class Startup {
     public registerLoggingChannel(ctrl: J.Util.Ctrl, context: vscode.ExtensionContext): Promise<J.Util.Ctrl> {
         return new Promise<J.Util.Ctrl>((resolve, reject) => {
             try {
-                let channel: vscode.OutputChannel = vscode.window.createOutputChannel("Journal");
+                const channel: vscode.OutputChannel = vscode.window.createOutputChannel("Journal");
                 context.subscriptions.push(channel);
                 ctrl.logger = new J.Util.ConsoleLogger(ctrl, channel);
                 ctrl.logger.debug("VSCode Journal is starting");
@@ -182,11 +182,11 @@ export class Startup {
 
         return new Promise<J.Util.Ctrl>((resolve, reject) => {
             try {
-                let tokenColorCustomizations: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('editor.tokenColorCustomizations');
+                const tokenColorCustomizations: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('editor.tokenColorCustomizations');
                 if (!tokenColorCustomizations.has("textMateRules")) { resolve(ctrl); }
     
                 const rules: TextMateRule[] = tokenColorCustomizations.get<TextMateRule[]>("textMateRules")!;
-                let result: TextMateRule[] = new Array();
+                const result: TextMateRule[] = new Array();
                 rules.forEach(rule => {
                     if (!rule.scope.includes("journal")) {
                         result.push(rule);
@@ -219,7 +219,7 @@ export class Startup {
 
             // check if current theme is dark, light or highcontrast
             let style: string = "";
-            let theme: string | undefined = vscode.workspace.getConfiguration().get<string>("workbench.colorTheme");
+            const theme: string | undefined = vscode.workspace.getConfiguration().get<string>("workbench.colorTheme");
             if (J.Util.isNullOrUndefined(theme) || theme!.search('Light') > -1) { style = "light"; }
             else if (theme!.search('High Contrast') > -1) { style = "high-contrast"; }
             else { style = "dark"; }
@@ -241,20 +241,20 @@ export class Startup {
                 if (style.startsWith("high-contrast")) { resolve(ctrl); }
 
                 // no custom rules set by user, we add predefined syntax colors from extension
-                let ext: vscode.Extension<any> | undefined = vscode.extensions.getExtension("pajoma.vscode-journal");
+                const ext: vscode.Extension<any> | undefined = vscode.extensions.getExtension("pajoma.vscode-journal");
                 if (J.Util.isNullOrUndefined(ext)) { throw Error("Failed to load this extension"); }
 
-                let colorConfigDir: string = Path.join(ext!.extensionPath, "res", "colors");
+                const colorConfigDir: string = Path.join(ext!.extensionPath, "res", "colors");
 
                 fs.promises.readFile(Path.join(colorConfigDir, style + ".json"), { encoding: "utf-8" })
                     .then((data) => {
                         // convert inmutable config object to json mutable object
                         // FIXME: this is a workaround, since we can't simply inject the textMateRules here (not registered configuration)
-                        let existingConfig = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations');
-                        let mutableExistingConfig = JSON.parse(JSON.stringify(existingConfig));
+                        const existingConfig = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations');
+                        const mutableExistingConfig = JSON.parse(JSON.stringify(existingConfig));
 
                         // inject our rules
-                        let rules: any[] = JSON.parse(data.toString());
+                        const rules: any[] = JSON.parse(data.toString());
                         mutableExistingConfig.textMateRules = rules;
 
                         // overwrite config with new config

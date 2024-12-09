@@ -13,16 +13,16 @@ export class LoadNotes {
     }
 
     public async load(): Promise<vscode.TextDocument> {
-        let path = await this.ctrl.parser.resolveNotePathForInput(this.input);
+        const path = await this.ctrl.parser.resolveNotePathForInput(this.input); // changed from let to const 
         return this.loadWithPath(path); 
     }
 
 
     public async loadWithPath(path: string): Promise<vscode.TextDocument> {
 
-        let content: string = await this.ctrl.inject.formatNote(this.input); 
-
-        let document : vscode.TextDocument = await this.loadNote(path, content);
+        const content: string = await this.ctrl.inject.formatNote(this.input); // changed from let to const 
+ 
+        const document : vscode.TextDocument = await this.loadNote(path, content); // changed from let to const 
 
         // inject reference to new note in today's journal page
         await this.ctrl.reader.loadEntryForInput(new J.Model.Input(0))  // triggered automatically by loading today's page (we don't show it though)
