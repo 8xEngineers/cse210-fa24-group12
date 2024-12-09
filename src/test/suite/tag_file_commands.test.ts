@@ -4,6 +4,7 @@ import TagFileCommand from "../../commands/TagFile";
 import UntagFile from '../../commands/UntagFile';
 import OpenTaggedFileCommand from '../../commands/OpenTaggedFile';
 import DeleteTagAndUntagFiles from '../../commands/DeleteTagAndUntagFiles';
+import RenameTagCommand from '../../commands/RenameTag';
 import { suite, test, beforeEach, afterEach } from 'mocha';
 import proxyquire from 'proxyquire';
 import Tag from "../../models/Tag";
@@ -279,4 +280,116 @@ suite("Delete Tag And Untag Files Command Tests", () => {
     assert.deepStrictEqual(updateCalls[1], [TAGS_KEY, []]);
   });
 
+});
+
+
+suite("Rename Tag Command Tests", () => {
+  let mockContext: ExtensionContext;
+  let updateCalls: [string, any][];
+  let showInputBoxStub: sinon.SinonStub;
+  let showErrorMessageStub: sinon.SinonStub;
+  let showInfoMessageStub: sinon.SinonStub;
+  let consoleErrorStub: sinon.SinonStub;
+
+  beforeEach(() => {
+    updateCalls = [];
+    mockContext = {
+      workspaceState: {
+        get: (key: string) => {
+          if (key === TAGS_KEY) {
+            return ["urgent", "review", "bug"];
+          }
+          if (key === "urgent") {
+            return ["/test/file1.txt", "/test/file2.txt"];
+          }
+          return [];
+        },
+        update: (key: string, value: any) => {
+          updateCalls.push([key, value]);
+          return Promise.resolve();
+        },
+        keys: () => []
+      } as Memento,
+    } as ExtensionContext;
+
+    // Stub VS Code window methods
+    showInputBoxStub = sinon.stub(window, 'showInputBox');
+    showErrorMessageStub = sinon.stub(window, 'showErrorMessage');
+    showInfoMessageStub = sinon.stub(window, 'showInformationMessage');
+    consoleErrorStub = sinon.stub(console, 'error');
+  });
+
+  afterEach(() => {
+    showInputBoxStub.restore();
+    showErrorMessageStub.restore();
+    showInfoMessageStub.restore();
+    consoleErrorStub.restore();
+  });
+
+  test("Rename a tag", async () => {
+    showInputBoxStub.resolves("important");
+    
+    const command = new RenameTagCommand(mockContext);
+    await command.execute("urgent");
+
+    // Verify the updates
+    assert.strictEqual(updateCalls.length, 3, "Should make three updates");
+    
+    // Check new tag was created with old files
+    assert.deepStrictEqual(
+      updateCalls[0], 
+      ["important", ["/test/file1.txt", "/test/file2.txt"]], 
+      "Should create new tag with old files"
+    );
+    
+    // Check old tag was removed
+    assert.deepStrictEqual(
+      updateCalls[1], 
+      ["urgent", undefined], 
+      "Should remove old tag"
+    );
+    
+    // Check tags list was updated
+    assert.deepStrictEqual(
+      updateCalls[2], 
+      [TAGS_KEY, ["review", "bug", "important"]], 
+      "Should update tags list"
+    );
+
+    // Verify success message
+    assert.strictEqual(
+      showInfoMessageStub.calledOnceWith("Tag 'urgent' renamed to 'important'."), 
+      true
+    );
+  });
+
+  test("Handle user cancellation", async () => {
+    showInputBoxStub.resolves(undefined);
+    
+    const command = new RenameTagCommand(mockContext);
+    await command.execute("urgent");
+
+    assert.strictEqual(updateCalls.length, 0, "Should not make any updates");
+    assert.strictEqual(showErrorMessageStub.called, false, "Should not show error");
+    assert.strictEqual(showInfoMessageStub.called, false, "Should not show info");
+  });
+
+  test("Validate new tag name", async () => {
+    // Set up input box to simulate validation
+    showInputBoxStub.callsFake(async (options: any) => {
+      const emptyResult = options.validateInput("");
+      assert.strictEqual(emptyResult, "Tag name cannot be empty.");
+
+      const existingResult = options.validateInput("review");
+      assert.strictEqual(existingResult, "A tag with this name already exists.");
+
+      const validResult = options.validateInput("important");
+      assert.strictEqual(validResult, null);
+
+      return "important";
+    });
+
+    const command = new RenameTagCommand(mockContext);
+    await command.execute("urgent");
+  });
 });
