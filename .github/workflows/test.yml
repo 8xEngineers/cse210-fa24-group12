@@ -28,9 +28,8 @@ jobs:
       run: npm install
       
     - name: Install vscode
-      run: 
-      npm install -g @vscode/test-electron
-      npm install @types/vscode --save-dev
+      run: npm install -g @vscode/test-electron
+      run: npm install @types/vscode --save-dev
         
     - name: Run tests
       run: npm test
