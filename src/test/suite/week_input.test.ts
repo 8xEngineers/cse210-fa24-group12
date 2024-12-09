@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import moment = require('moment');
+import moment from 'moment';
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it

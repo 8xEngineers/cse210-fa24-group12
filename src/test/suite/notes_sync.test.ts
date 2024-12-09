@@ -21,8 +21,6 @@ suite('Test Notes Syncing', () => {
 
 
     test('Sync notes', async () => {
-       
-
         let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
 		let ctrl = new J.Util.Ctrl(config);
 		ctrl.logger = new TestLogger(false); 
