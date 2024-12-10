@@ -13,17 +13,16 @@ export class LoadNotes {
     }
 
     public async load(): Promise<vscode.TextDocument> {
-        const path = await this.ctrl.parser.resolveNotePathForInput(this.input); // changed from let to const 
+        const path = await this.ctrl.parser.resolveNotePathForInput(this.input);
         return this.loadWithPath(path); 
     }
 
 
     public async loadWithPath(path: string): Promise<vscode.TextDocument> {
 
-        const content: string = await this.ctrl.inject.formatNote(this.input); // changed from let to const 
+        const content: string = await this.ctrl.inject.formatNote(this.input);
  
-        const document : vscode.TextDocument = await this.loadNote(path, content); // changed from let to const 
-
+        const document : vscode.TextDocument = await this.loadNote(path, content); 
         // inject reference to new note in today's journal page
         await this.ctrl.reader.loadEntryForInput(new J.Model.Input(0))  // triggered automatically by loading today's page (we don't show it though)
         .catch(reason => this.ctrl.logger.error("Failed to load today's page for injecting link to note.", reason)); 
