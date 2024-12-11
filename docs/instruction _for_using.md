@@ -4,41 +4,65 @@ This Visual Studio Code (VS Code) extension enhances your development workflow b
 
 ## Installation and Setup
 
-1. **Install Visual Studio Code**: Ensure that you have VS Code installed on your system. You can download it from the [official website](https://code.visualstudio.com/).
+### 1. **Install Visual Studio Code**:
 
-2. **Clone the Repository**:
+Ensure that you have VS Code installed on your system. You can download it from the [official website](https://code.visualstudio.com/).
+
+---
+
+### 2. **Clone the Repository**:
 
    ```bash
    git clone https://github.com/8xEngineers/cse210-fa24-group12.git
    ```
 
-3. **Navigate to the cloned directory**:
+---
+
+### 3. **Navigate to the Cloned Directory**:
 
     ```bash 
     cd cse210-fa24-group12
     ```
 
-4. **Install Dependencies**:
+---
+
+### 4. **Install Dependencies**:
 
     ```bash 
+    npm install -g @vscode/vsce
+    npm install webpack
     npm install
+    vsce package
     ```
 
-5. **Open in VS Code**:
+---
 
-    ```bash
-    code .
-    ```
+### 5. **Install Resulting File in VSCode**:
 
-6. **Build the Extension**:
+    a. Open VSCode
+    b. Open the Extensions view (`Ctrl+Shift+X`)
+    c. Click the `...` button and select `Install from VSIX...`
+    d. Alternately, press `Ctrl+Shift+P (Cmd+Shift+P on macOS)` and select `Extensions: Install from VSIX...`
+    e. Select the `.vsix` file
+
+---
+
+### 6. **Build the Extension**:
 
     ```bash
     npm run compile
     ```
 
-7. **Launch the Extension**:
+---
+
+### 7. **Launch the Extension**:
 
     Press `F5` to open a new VS Code window with the extension loaded.
+
+## Issues
+
+### 1. If you face version not supported issues, please change the VSCode version in package.json to corresponding version
+### 2. If you see that `vsce: command`
 
 ## Features and Usage
 
