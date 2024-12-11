@@ -17,7 +17,6 @@ class JournalDataProvider implements vscode.TreeDataProvider<JournalTreeItem> {
     }
 
     refresh(): void {
-        console.log("Refreshing journal view...");
         // Load full entries
         this.allJournalEntries = [];
         this.loadJournalEntries();
@@ -27,8 +26,6 @@ class JournalDataProvider implements vscode.TreeDataProvider<JournalTreeItem> {
         } else {
             this.journalEntries = this.allJournalEntries;
         }
-
-        console.log("Journal Entries Structure: ", JSON.stringify(this.journalEntries, null, 2));
         this._onDidChangeTreeData.fire();
     }
 
@@ -47,13 +44,11 @@ class JournalDataProvider implements vscode.TreeDataProvider<JournalTreeItem> {
     }
 
     setFilter(filterText: string): void {
-        console.log("Setting filter:", filterText);
         this.filterText = filterText.trim();
         this.refresh();
     }
 
     clearFilter(): void {
-        console.log("Clearing filter...");
         this.filterText = '';
         this.refresh();
     }
@@ -82,7 +77,6 @@ class JournalDataProvider implements vscode.TreeDataProvider<JournalTreeItem> {
     }
 
     getTreeItem(element: JournalTreeItem): vscode.TreeItem {
-        console.log("Using cached value for 'vscode-journal-view.expanded':", this.isExpanded);
 
         const treeItem = new vscode.TreeItem(
             element.label,
