@@ -38,7 +38,7 @@ This Visual Studio Code (VS Code) extension enhances your development workflow b
 
 7. **Launch the Extension**:
 
-    Press F5 to open a new VS Code window with the extension loaded.
+    Press `F5` to open a new VS Code window with the extension loaded.
 
 ## Features and Usage
 
