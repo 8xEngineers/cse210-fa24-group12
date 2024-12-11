@@ -14,9 +14,9 @@ This Visual Studio Code (VS Code) extension enhances your development workflow b
 
 ### Navigate to the cloned directory:
 
-    ```bash
+```bash 
 cd cse210-fa24-group12
-    ```
+```
 
 ### Install Dependencies:
 
