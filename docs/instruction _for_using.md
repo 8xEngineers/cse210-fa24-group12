@@ -134,7 +134,6 @@ Press F5 to open a new VS Code window with the extension loaded.
 
 ## Troubleshooting
 
-- **Issue**: If you encounter [specific issue], try [solution].
 - **Support**: For further assistance, please open an issue on the [GitHub repository](https://github.com/8xEngineers/cse210-fa24-group12/issues).
 
 By following these steps, you can integrate this extension into your development environment and leverage its capabilities to meet your needs.
