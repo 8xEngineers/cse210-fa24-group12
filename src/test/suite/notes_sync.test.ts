@@ -18,39 +18,6 @@ suite('Test Notes Syncing', () => {
         return editor;
     }
 
-    // Helper function to clean up test content from today's journal
-    async function cleanupTodayJournal() {
-        const editor = await openTodayJournal();
-        const document = editor.document;
-        const text = document.getText();
-        
-        // Remove the test note and any related content
-        const cleanedText = text.replace(/- NOTE: \[This is a test note\].*\.md\)(\r?\n|$)/g, '');
-        
-        // Create a WorkspaceEdit to modify the file
-        const edit = new vscode.WorkspaceEdit();
-        edit.replace(
-            document.uri,
-            new vscode.Range(
-                document.positionAt(0),
-                document.positionAt(text.length)
-            ),
-            cleanedText
-        );
-
-        // Apply the edit
-        await vscode.workspace.applyEdit(edit);
-        await document.save();
-    }
-
-    // Run cleanup after each test
-    afterEach(async () => {
-        if (testNotePath && fs.existsSync(testNotePath)) {
-            fs.unlinkSync(testNotePath);
-        }
-        await cleanupTodayJournal();
-    });
-
     test('Sync notes', async () => {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
 
