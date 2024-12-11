@@ -9,7 +9,7 @@ export class TestLogger implements Logger {
         console.error("ERROR", message, ...optionalParams); 
     }
     printError(error: Error): void {
-        throw new Error("Method not implemented.");
+        throw new Error("Method not implemented.",error);
     }
     showChannel(): void {
         throw new Error("Method not implemented.");
