@@ -10,7 +10,7 @@ Ensure that you have VS Code installed on your system. You can download it from 
 
 ### 2. **Clone the Repository**:
 
-   git clone https://github.com/8xEngineers/cse210-fa24-group12.git
+    git clone https://github.com/8xEngineers/cse210-fa24-group12.git
 
 ### 3. **Navigate to the Cloned Directory**:
 
