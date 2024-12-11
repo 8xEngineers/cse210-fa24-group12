@@ -56,7 +56,8 @@
     "onCommand:extension.OpenTaggedFile",
     "onCommand:extension.DeleteTagFromFile",
     "onCommand:extension.DeleteTagAndUntagFiles",
-    "onView:fileTagsExplorer"
+    "onView:fileTagsExplorer",
+    "onView:todoView"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -204,6 +205,22 @@
           "dark": "icons/dark/clear-filter.svg",
           "light": "icons/light/clear-filter.svg"
         }
+      },
+      {
+        "command": "todo-view.refresh",
+        "title": "Refresh TODOs",
+        "icon": {
+          "dark": "icons/dark/refresh.svg",
+          "light": "icons/light/refresh.svg"
+        }
+      },
+      {
+        "command": "todo-view.openTodo",
+        "title": "Open TODO",
+        "icon": {
+          "light": "./icons/light/icon-open-file.svg",
+          "dark": "./icons/light/icon-open-file.svg"
+        }
       }
     ],
     "keybindings": [
@@ -283,6 +300,11 @@
           "command": "journal-view.refresh",
           "when": "view == journalViewExplorer || view == journalViewActivityBar",
           "group": "navigation@3"
+        },
+        {
+          "command": "todo-view.refresh",
+          "when": "view == todoView",
+          "group": "navigation@4"
         }
       ],
       "view/item/context": [
@@ -317,6 +339,10 @@
         {
           "id": "fileTagsExplorer",
           "name": "File Tags"
+        },
+        {
+          "id": "todoView",
+          "name": "TODOs"
         }
       ],
       "journal-view": [
