@@ -5,6 +5,7 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 import * as J from '../..';
 import { TestLogger } from '../TestLogger';
+import { suite, test} from 'mocha';
 
 // Helper function to reduce duplication in date input tests
 async function testDateInput(inputString: string, expectedOffsetCondition: (offset: number) => boolean) {

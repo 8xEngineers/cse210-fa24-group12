@@ -411,9 +411,9 @@ export class Configuration {
     public async getEntryFilePattern(date: Date, _scopeId?: string): Promise<ScopedTemplate> {
         return new Promise((onSuccess, onError) => {
             try {
-                var patternsa = this.config.get<PatternDefinition>("patterns");
-                var entries = this.config.get<PatternDefinition>("patterns")?.entries;
-                var file = this.config.get<PatternDefinition>("patterns")?.entries.file;
+                const patternsa = this.config.get<PatternDefinition>("patterns");
+                const entries = this.config.get<PatternDefinition>("patterns")?.entries;
+                const file = this.config.get<PatternDefinition>("patterns")?.entries.file;
 
                 let definition: string | undefined;
                 const scopedTemplate: ScopedTemplate = {

@@ -1,6 +1,5 @@
 import * as assert from 'assert';
-import { ExtensionContext, Memento, TreeItemCollapsibleState, window, Uri } from "vscode";
-import TagFileCommand from "../../commands/TagFile";
+import { ExtensionContext, Memento, TreeItemCollapsibleState, window} from "vscode";
 import UntagFile from '../../commands/UntagFile';
 import OpenTaggedFileCommand from '../../commands/OpenTaggedFile';
 import DeleteTagAndUntagFiles from '../../commands/DeleteTagAndUntagFiles';
@@ -16,7 +15,7 @@ suite("Tag File Command Tests", () => {
   let TagFileCommandWithMock: any;
 
   beforeEach(() => {
-    let updateCalls: string[][] = [];
+    const updateCalls: string[][] = [];
     mockContext = {
       workspaceState: {
         get: () => [],
@@ -269,7 +268,7 @@ suite("Delete Tag And Untag Files Command Tests", () => {
 
   test("Handle empty tags list", async () => {
     // Override get method to return empty/undefined tags
-    mockContext.workspaceState.get = (key: string) => undefined;
+    mockContext.workspaceState.get = () => undefined;
 
     const tag = new Tag("urgent", TreeItemCollapsibleState.Collapsed, "/test/file1.txt");
     const command = new DeleteTagAndUntagFiles(tag, mockContext);

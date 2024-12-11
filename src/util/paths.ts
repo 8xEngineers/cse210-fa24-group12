@@ -151,13 +151,9 @@ export function getPathOfMonth(date: Date, base: string): string {
 */
 // TODO: this has to be reimplemented, should consider the configuration of the path for notes in different scopes
 export async function getFilePathInDateFolder(date: Date, filename: string, base: string, ext: string): Promise<string> {
-    try {
-        const pathStr = Path.join(getPathOfMonth(date, base), getDayAsString(date), filename + "." + ext);
-        const path: Path.ParsedPath = Path.parse(pathStr);
-        return Path.format(path);
-    } catch (error) {
-        throw error;
-    }
+    const pathStr = Path.join(getPathOfMonth(date, base), getDayAsString(date), filename + "." + ext);
+    const path: Path.ParsedPath = Path.parse(pathStr);
+    return Path.format(path);
 }
 
 /**
