@@ -12,28 +12,27 @@ Ensure that you have VS Code installed on your system. You can download it from 
 
 ### 2. **Clone the Repository**:
 
-   ```
    git clone https://github.com/8xEngineers/cse210-fa24-group12.git
-   ```
+   
 
 ---
 
 ### 3. **Navigate to the Cloned Directory**:
 
-    ```
+    
     cd cse210-fa24-group12
-    ```
+    
 
 ---
 
 ### 4. **Install Dependencies**:
 
-    ```
+    
     npm install -g @vscode/vsce
     npm install webpack
     npm install
     vsce package
-    ```
+    
 
 ---
 
@@ -49,9 +48,9 @@ Ensure that you have VS Code installed on your system. You can download it from 
 
 ### 6. **Build the Extension**:
 
-    ```
+    
     npm run compile
-    ```
+    
 
 ---
 
