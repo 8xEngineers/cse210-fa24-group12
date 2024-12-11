@@ -38,11 +38,11 @@ Ensure that you have VS Code installed on your system. You can download it from 
 
 ### 5. **Install Resulting File in VSCode**:
 
-    a. Open VSCode
-    b. Open the Extensions view (`Ctrl+Shift+X`)
-    c. Click the `...` button and select `Install from VSIX...`
-    d. Alternately, press `Ctrl+Shift+P (Cmd+Shift+P on macOS)` and select `Extensions: Install from VSIX...`
-    e. Select the `.vsix` file
+a. Open VSCode
+b. Open the Extensions view (`Ctrl+Shift+X`)
+c. Click the `...` button and select `Install from VSIX...`
+d. Alternately, press `Ctrl+Shift+P (Cmd+Shift+P on macOS)` and select `Extensions: Install from VSIX...`
+e. Select the `.vsix` file
 
 ---
 
