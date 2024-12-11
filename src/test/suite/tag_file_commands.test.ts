@@ -16,7 +16,7 @@ suite("Tag File Command Tests", () => {
   let TagFileCommandWithMock: any;
 
   beforeEach(() => {
-    let updateCalls: string[][] = [];
+    const updateCalls: string[][] = [];
     mockContext = {
       workspaceState: {
         get: () => [],
