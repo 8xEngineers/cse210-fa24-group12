@@ -77,6 +77,62 @@ suite('Journal View Extended Tests', () => {
         assert.strictEqual(filteredEntries.length, 0, 'Filter with invalid text should result in no entries');
     });
 
+    test('Initial load of journal entries', async () => {
+        journalProvider.refresh();
+        const rootEntries = await journalProvider.getChildren();
+
+        assert.strictEqual(rootEntries.length, 1, 'Should have one year entry');
+        assert.strictEqual(rootEntries[0].label, '2024', 'Year should be 2024');
+
+        const monthEntries = await journalProvider.getChildren(rootEntries[0]);
+        assert.strictEqual(monthEntries.length, 2, 'Should have two month entries');
+        assert.strictEqual(monthEntries[0].label, 'January', 'First month should be January');
+        assert.strictEqual(monthEntries[1].label, 'February', 'Second month should be February');
+
+        const januaryEntries = await journalProvider.getChildren(monthEntries[0]);
+        assert.strictEqual(januaryEntries.length, 3, 'January should have 3 entries');
+    });
+
+    test('Filter functionality', async () => {
+        journalProvider.refresh();
+
+        // Apply filter
+        journalProvider.setFilter('January');
+        const filteredEntries = await journalProvider.getChildren();
+
+        assert.strictEqual(filteredEntries.length, 1, 'Should show year containing January');
+        const monthEntries = await journalProvider.getChildren(filteredEntries[0]);
+        assert.strictEqual(monthEntries.length, 1, 'Should only show January');
+
+        // Clear filter
+        journalProvider.clearFilter();
+        const unfilteredEntries = await journalProvider.getChildren();
+        assert.strictEqual(unfilteredEntries.length, 1, 'Should show all years after clearing filter');
+    });
+
+    test('Expand and collapse functionality', async () => {
+        journalProvider.refresh();
+
+        // Test expand
+        journalProvider.expandAll();
+        const expandedItem = (await journalProvider.getChildren())[0];
+        const expandedTreeItem = journalProvider.getTreeItem(expandedItem);
+        assert.strictEqual(
+            expandedTreeItem.collapsibleState,
+            vscode.TreeItemCollapsibleState.Expanded,
+            'Items should be expanded'
+        );
+
+        // Test collapse
+        journalProvider.collapseAll();
+        const collapsedItem = (await journalProvider.getChildren())[0];
+        const collapsedTreeItem = journalProvider.getTreeItem(collapsedItem);
+        assert.strictEqual(
+            collapsedTreeItem.collapsibleState,
+            vscode.TreeItemCollapsibleState.Collapsed,
+            'Items should be collapsed'
+        );
+    });
 
     test('Edge case: Jump to today with missing directories', async () => {
         journalProvider.refresh();
