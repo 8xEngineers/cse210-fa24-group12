@@ -28,7 +28,7 @@ class JournalDataProvider implements vscode.TreeDataProvider<JournalTreeItem> {
             this.journalEntries = this.allJournalEntries;
         }
 
-        console.log("Journal Entries Structure: ", JSON.stringify(this.journalEntries, null, 2));
+        // console.log("Journal Entries Structure: ", JSON.stringify(this.journalEntries, null, 2));
         this._onDidChangeTreeData.fire();
     }
 
