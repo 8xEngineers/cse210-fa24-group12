@@ -21,7 +21,7 @@ suite('Test Notes Syncing', () => {
 
     // Helper function to clean up test content from today's journal
     async function cleanupTodayJournal() {
-        let editor = await openTodayJournal();
+        const editor = await openTodayJournal();
         const document = editor.document;
         const text = document.getText();
         
@@ -53,14 +53,14 @@ suite('Test Notes Syncing', () => {
     });
 
     test('Sync notes', async () => {
-        let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
+        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
 
         const ctrl = new J.Util.Ctrl(config);
         ctrl.logger = new TestLogger(false); 
 
         // create a new entry.. remember length
-        let editor = await openTodayJournal();  
-        let originalLength = editor.document.getText().length;
+        const editor = await openTodayJournal();  
+        const originalLength = editor.document.getText().length;
 
         assert.ok(originalLength > 0, "Nothing in document"); 
 
@@ -68,7 +68,7 @@ suite('Test Notes Syncing', () => {
         const input = new J.Model.NoteInput(); 
         input.text = "This is a test note";
 
-        let notesDoc: vscode.TextDocument = await new LoadNotes(input, ctrl).load();
+        const notesDoc: vscode.TextDocument = await new LoadNotes(input, ctrl).load();
         
         // Store the path of the test note for cleanup
         testNotePath = notesDoc.uri.fsPath;
@@ -78,8 +78,8 @@ suite('Test Notes Syncing', () => {
 
         await new Promise(resolve => setTimeout(resolve, 2000));  
 
-        let editorAgain = await openTodayJournal();
-        let newLength = editorAgain.document.getText().length; 
+        const editorAgain = await openTodayJournal();
+        const newLength = editorAgain.document.getText().length; 
         assert.ok(newLength > originalLength, `Notes link wasn't injected. Original length: ${originalLength}, New length: ${newLength}`);
     }).timeout(5000); 
 });
