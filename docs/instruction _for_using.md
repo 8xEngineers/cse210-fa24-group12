@@ -2,7 +2,7 @@
 
 This Visual Studio Code (VS Code) extension enhances your development workflow by providing [specific functionalities]. Follow the steps below to install and utilize the extension effectively.
 
-## Installation
+## Installation and Setup
 
 1. **Install Visual Studio Code**: Ensure that you have VS Code installed on your system. You can download it from the [official website](https://code.visualstudio.com/).
 
@@ -12,33 +12,33 @@ This Visual Studio Code (VS Code) extension enhances your development workflow b
    git clone https://github.com/8xEngineers/cse210-fa24-group12.git
    ```
 
-### Navigate to the cloned directory:
+3. **Navigate to the cloned directory**:
 
-```bash 
-cd cse210-fa24-group12
-```
+    ```bash 
+    cd cse210-fa24-group12
+    ```
 
-### Install Dependencies:
+4. **Install Dependencies**:
 
-```bash 
-npm install
-```
+    ```bash 
+    npm install
+    ```
 
-### **Open in VS Code**:
+5. **Open in VS Code**:
 
-```bash
-code .
-```
+    ```bash
+    code .
+    ```
 
-### Build the Extension:
+6. **Build the Extension**:
 
-```bash
-npm run build
-```
+    ```bash
+    npm run build
+    ```
 
-### **Launch the Extension**:
+7. **Launch the Extension**:
 
-Press F5 to open a new VS Code window with the extension loaded.
+    Press F5 to open a new VS Code window with the extension loaded.
 
 ## Features and Usage
 
