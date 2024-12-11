@@ -1,7 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as J from '../..';
 import { LoadNotes } from '../../provider';
 //import { ShowEntryForInputCommand, ShowEntryForTodayCommand } from '../../provider/commands';

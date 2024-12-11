@@ -269,7 +269,7 @@ suite("Delete Tag And Untag Files Command Tests", () => {
 
   test("Handle empty tags list", async () => {
     // Override get method to return empty/undefined tags
-    mockContext.workspaceState.get = (key: string) => undefined;
+    mockContext.workspaceState.get = () => undefined;
 
     const tag = new Tag("urgent", TreeItemCollapsibleState.Collapsed, "/test/file1.txt");
     const command = new DeleteTagAndUntagFiles(tag, mockContext);
