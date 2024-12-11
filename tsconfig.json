@@ -11,16 +11,15 @@
         "resolveJsonModule": true,
         "strict": true,
         "sourceMap": true,
-        "declaration": true
+        "declaration": true,
+        "types": ["node", "mocha", "vscode"]
     },
     "include": [
         "src/**/*",
         "src/**/*.ts",
-        // other includes if necessary
     ],
     "exclude": [
         "node_modules",
         "src/test/suite/read_templates.test.ts",
-        // other excludes if necessary
     ]
 }
