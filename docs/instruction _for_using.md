@@ -33,7 +33,7 @@ This Visual Studio Code (VS Code) extension enhances your development workflow b
 6. **Build the Extension**:
 
     ```bash
-    npm run build
+    npm run compile
     ```
 
 7. **Launch the Extension**:
