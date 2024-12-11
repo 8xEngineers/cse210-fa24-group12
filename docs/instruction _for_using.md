@@ -8,22 +8,14 @@ This Visual Studio Code (VS Code) extension enhances your development workflow b
 
 Ensure that you have VS Code installed on your system. You can download it from the [official website](https://code.visualstudio.com/).
 
----
-
 ### 2. **Clone the Repository**:
 
    git clone https://github.com/8xEngineers/cse210-fa24-group12.git
-   
-
----
 
 ### 3. **Navigate to the Cloned Directory**:
 
     
     cd cse210-fa24-group12
-    
-
----
 
 ### 4. **Install Dependencies**:
 
@@ -32,27 +24,19 @@ Ensure that you have VS Code installed on your system. You can download it from 
     npm install webpack
     npm install
     vsce package
-    
-
----
 
 ### 5. **Install Resulting File in VSCode**:
 
-a. Open VSCode
-b. Open the Extensions view (`Ctrl+Shift+X`)
-c. Click the `...` button and select `Install from VSIX...`
-d. Alternately, press `Ctrl+Shift+P (Cmd+Shift+P on macOS)` and select `Extensions: Install from VSIX...`
-e. Select the `.vsix` file
-
----
+1. Open VSCode
+2. Open the Extensions view (`Ctrl+Shift+X`)
+3. Click the `...` button and select `Install from VSIX...`
+4. Alternately, press `Ctrl+Shift+P (Cmd+Shift+P on macOS)` and select `Extensions: Install from VSIX...`
+5. Select the `.vsix` file
 
 ### 6. **Build the Extension**:
 
     
     npm run compile
-    
-
----
 
 ### 7. **Launch the Extension**:
 
@@ -60,8 +44,8 @@ e. Select the `.vsix` file
 
 ## Issues
 
-### 1. If you face version not supported issues, please change the VSCode version in package.json to corresponding version
-### 2. If you see that `vsce: command`
+- If you face version not supported issues, please change the VSCode version in package.json to corresponding version
+- If you see that `vsce: command`
 
 ## Features and Usage
 
