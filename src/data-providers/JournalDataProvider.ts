@@ -27,8 +27,6 @@ class JournalDataProvider implements vscode.TreeDataProvider<JournalTreeItem> {
         } else {
             this.journalEntries = this.allJournalEntries;
         }
-
-        console.log("Journal Entries Structure: ", JSON.stringify(this.journalEntries, null, 2));
         this._onDidChangeTreeData.fire();
     }
 
@@ -82,7 +80,6 @@ class JournalDataProvider implements vscode.TreeDataProvider<JournalTreeItem> {
     }
 
     getTreeItem(element: JournalTreeItem): vscode.TreeItem {
-        console.log("Using cached value for 'vscode-journal-view.expanded':", this.isExpanded);
 
         const treeItem = new vscode.TreeItem(
             element.label,

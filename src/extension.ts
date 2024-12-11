@@ -25,6 +25,7 @@ import TagDataProvider from './data-providers/TagDataProvider';
 import RegisterCommands from './RegisterCommands';
 import RegisterDataProviders from './RegisterDataProviders';
 import JournalDataProvider from './data-providers/JournalDataProvider';
+import { TodoDataProvider } from './data-providers/TodoDataProvider';
 
 export let journalStartup: J.Extension.Startup;
 export let journalConfiguration: J.Extension.Configuration;
@@ -33,33 +34,41 @@ export function activate(context: vscode.ExtensionContext) {
     try {
         console.time("startup");
 
+        // Initialize Journal Extension
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("journal");
         journalStartup = new J.Extension.Startup(config);
         journalStartup.run(context);
 
+        // Initialize Tagged Files Functionality
         const tagDataProvider = new TagDataProvider(context);
         const registerCommands = new RegisterCommands(context, tagDataProvider);
         const registerDataProviders = new RegisterDataProviders(tagDataProvider);
 
+        // Register all Tagged Files commands and data providers
         [
             ...registerCommands.registerAll(),
             ...registerDataProviders.registerAll()
         ].forEach(sub => context.subscriptions.push(sub));
 
+        // Initialize Journal View Functionality
         console.log("Initializing JournalDataProvider");
         const journalDataProvider = new JournalDataProvider(context);
 
+        // Determine initial expansion from configuration
         const initialExpanded = vscode.workspace.getConfiguration('vscode-journal-view').get<boolean>('expanded', false);
         vscode.commands.executeCommand('setContext', 'treeViewExpanded', initialExpanded);
 
-        // Initially, no filter is applied
-        vscode.commands.executeCommand('setContext', 'filterApplied', false);
+        // Register Journal View for Explorer
+        const journalViewExplorer = vscode.window.createTreeView('journalViewExplorer', { treeDataProvider: journalDataProvider });
+        context.subscriptions.push(journalViewExplorer);
 
-        vscode.window.createTreeView('journalViewExplorer', { treeDataProvider: journalDataProvider });
-        vscode.window.createTreeView('journalViewActivityBar', { treeDataProvider: journalDataProvider });
+        // Register Journal View for Activity Bar
+        const journalViewActivityBar = vscode.window.createTreeView('journalViewActivityBar', { treeDataProvider: journalDataProvider });
+        context.subscriptions.push(journalViewActivityBar);
 
         console.log("Journal view registered");
 
+        // Register Journal View Commands
         context.subscriptions.push(
             vscode.commands.registerCommand('journal-view.refresh', () => journalDataProvider.refresh()),
             vscode.commands.registerCommand('journal-view.open', (filePath: string) => {
@@ -81,19 +90,44 @@ export function activate(context: vscode.ExtensionContext) {
                 const input = await vscode.window.showInputBox({ placeHolder: 'Enter text to filter journal entries' });
                 if (input !== undefined) {
                     journalDataProvider.setFilter(input);
-                    // If filter text is non-empty, set filterApplied to true
                     vscode.commands.executeCommand('setContext', 'filterApplied', Boolean(input.trim()));
                 }
             }),
             vscode.commands.registerCommand('journal-view.clear-filter', () => {
                 journalDataProvider.clearFilter();
-                // Clear filterApplied context
                 vscode.commands.executeCommand('setContext', 'filterApplied', false);
             })
         );
 
-        journalDataProvider.refresh();
+        // Initialize TODO Data Provider
+        console.log("Initializing TodoDataProvider");
+        const todoDataProvider = new TodoDataProvider(context);
 
+        // Register TODO View in Explorer
+        const todoView = vscode.window.createTreeView('todoView', { treeDataProvider: todoDataProvider });
+        context.subscriptions.push(todoView);
+
+        // Register TODO Commands
+        context.subscriptions.push(
+            vscode.commands.registerCommand('todo-view.refresh', () => todoDataProvider.refresh()),
+            vscode.commands.registerCommand('todo-view.openTodo', (filePath: string, lineNumber: number) => {
+                vscode.workspace.openTextDocument(filePath).then(doc => {
+                    vscode.window.showTextDocument(doc, { preview: false }).then(editor => {
+                        const position = new vscode.Position(lineNumber, 0);
+                        editor.selection = new vscode.Selection(position, position);
+                        editor.revealRange(new vscode.Range(position, position));
+                    });
+                });
+            })
+        );
+
+        // Refresh the providers on Activation
+        journalDataProvider.refresh();
+        todoDataProvider.refresh();
+
+        console.timeEnd("startup");
+
+        // Return public API of the Journal Extension
         return {
             getJournalConfiguration() {
                 return journalStartup.getJournalController().config;
@@ -105,4 +139,5 @@ export function activate(context: vscode.ExtensionContext) {
     }
 }
 
+// Deactivate function
 export function deactivate() {}
