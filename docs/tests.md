@@ -38,19 +38,9 @@ Verifies the behavior of different data input inside the VSCode extension.
 Handles the case where input string can have offset(relative time),flags(additional data),task and text.
 Covers wide range of scenarios to maintain reliability and accuracy. 
 
-## read_templates.test.ts
-Verifes that journal extension can read configuration correctly
-Resolves notes paths based on their scope(work or private)
-Tests the creation and managing of notes within different scopes.
-
 ## week_input.test.ts
 Focuses on handling of input related to weeks like w13,w,next week
 Validates that the extension can correctly handled different week input and provide correct result.
-
-## sync_note.test.ts
-
-
-## 
 
 
 
