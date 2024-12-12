@@ -24,7 +24,10 @@ Simple Hello world file, nothing else
 ## directTestRunner.ts
 Same as input_parser.ts file.
 
+
+
 ## index.ts
+*** Entry point for Mocha tests ***
 Utilizes Mocha which is a JS testing framework for unit and integration testing
 Acts as a test runner for .test.ts files.
 After running all the test scripts if there is any failure provides an error with the number of tests failed
@@ -34,11 +37,6 @@ Used assert for verifying correctness and vscode and J module to get access to V
 Verifies the behavior of different data input inside the VSCode extension.
 Handles the case where input string can have offset(relative time),flags(additional data),task and text.
 Covers wide range of scenarios to maintain reliability and accuracy. 
-
-## read_templates.test.ts
-Verifes that journal extension can read configuration correctly
-Resolves notes paths based on their scope(work or private)
-Tests the creation and managing of notes within different scopes.
 
 ## week_input.test.ts
 Focuses on handling of input related to weeks like w13,w,next week

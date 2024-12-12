@@ -51,7 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
         ].forEach(sub => context.subscriptions.push(sub));
 
         // Initialize Journal View Functionality
-        console.log("Initializing JournalDataProvider");
+        // console.log("Initializing JournalDataProvider");
         const journalDataProvider = new JournalDataProvider(context);
 
         // Determine initial expansion from configuration
@@ -66,7 +66,7 @@ export function activate(context: vscode.ExtensionContext) {
         const journalViewActivityBar = vscode.window.createTreeView('journalViewActivityBar', { treeDataProvider: journalDataProvider });
         context.subscriptions.push(journalViewActivityBar);
 
-        console.log("Journal view registered");
+        //console.log("Journal view registered");
 
         // Register Journal View Commands
         context.subscriptions.push(
@@ -75,7 +75,7 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.workspace.openTextDocument(filePath).then(doc => vscode.window.showTextDocument(doc));
             }),
             vscode.commands.registerCommand('journal-view.today', () => {
-                console.log('Jump to Today executed');
+                //console.log('Jump to Today executed');
                 journalDataProvider.jumpToToday();
             }),
             vscode.commands.registerCommand('journal-view.expandAll', () => {
@@ -100,7 +100,7 @@ export function activate(context: vscode.ExtensionContext) {
         );
 
         // Initialize TODO Data Provider
-        console.log("Initializing TodoDataProvider");
+        //console.log("Initializing TodoDataProvider");
         const todoDataProvider = new TodoDataProvider(context);
 
         // Register TODO View in Explorer

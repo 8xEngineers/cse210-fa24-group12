@@ -30,14 +30,14 @@ class JournalDataProvider implements vscode.TreeDataProvider<JournalTreeItem> {
     }
 
     expandAll(): void {
-        console.log("Expanding all nodes...");
+        //console.log("Expanding all nodes...");
         this.isExpanded = true;
         this.refreshVersion++;
         this.refresh();
     }
 
     collapseAll(): void {
-        console.log("Collapsing all nodes...");
+        //console.log("Collapsing all nodes...");
         this.isExpanded = false;
         this.refreshVersion++;
         this.refresh();
