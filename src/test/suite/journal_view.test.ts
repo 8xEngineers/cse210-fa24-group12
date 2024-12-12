@@ -69,29 +69,6 @@ suite('Journal View Extended Tests', () => {
         await cleanupTestJournalStructure();
     });
 
-    
-    test('Invalid filter application', async () => {
-        journalProvider.refresh();
-        journalProvider.setFilter('NonexistentMonth');
-        const filteredEntries = await journalProvider.getChildren();
-        assert.strictEqual(filteredEntries.length, 0, 'Filter with invalid text should result in no entries');
-    });
-
-    test('Initial load of journal entries', async () => {
-        journalProvider.refresh();
-        const rootEntries = await journalProvider.getChildren();
-
-        assert.strictEqual(rootEntries.length, 1, 'Should have one year entry');
-        assert.strictEqual(rootEntries[0].label, '2024', 'Year should be 2024');
-
-        const monthEntries = await journalProvider.getChildren(rootEntries[0]);
-        assert.strictEqual(monthEntries.length, 2, 'Should have two month entries');
-        assert.strictEqual(monthEntries[0].label, 'January', 'First month should be January');
-        assert.strictEqual(monthEntries[1].label, 'February', 'Second month should be February');
-
-        const januaryEntries = await journalProvider.getChildren(monthEntries[0]);
-        assert.strictEqual(januaryEntries.length, 3, 'January should have 3 entries');
-    });
 
     test('Filter functionality', async () => {
         journalProvider.refresh();
@@ -108,6 +85,42 @@ suite('Journal View Extended Tests', () => {
         journalProvider.clearFilter();
         const unfilteredEntries = await journalProvider.getChildren();
         assert.strictEqual(unfilteredEntries.length, 1, 'Should show all years after clearing filter');
+    });
+
+    test('Invalid filter application', async () => {
+        journalProvider.refresh();
+        journalProvider.setFilter('NonexistentMonth');
+        const filteredEntries = await journalProvider.getChildren();
+        assert.strictEqual(filteredEntries.length, 0, 'Filter with invalid text should result in no entries');
+    });
+
+    test('Filtering by month-specific keyword', async () => {
+        journalProvider.refresh();
+        // Apply filter for "January"
+        journalProvider.setFilter('January');
+        const filteredEntries = await journalProvider.getChildren();
+        // Expect to match one year since "January" is in 2024
+        assert.strictEqual(filteredEntries.length, 1, 'Filter should match one year');
+        const monthEntries = await journalProvider.getChildren(filteredEntries[0]);
+        assert.strictEqual(monthEntries.length, 1, 'Filter should only show January');
+        const dayEntries = await journalProvider.getChildren(monthEntries[0]);
+        assert.strictEqual(dayEntries.length, 3, 'January should show all 3 days');
+    });
+
+    test('Initial load of journal entries', async () => {
+        journalProvider.refresh();
+        const rootEntries = await journalProvider.getChildren();
+
+        assert.strictEqual(rootEntries.length, 1, 'Should have one year entry');
+        assert.strictEqual(rootEntries[0].label, '2024', 'Year should be 2024');
+
+        const monthEntries = await journalProvider.getChildren(rootEntries[0]);
+        assert.strictEqual(monthEntries.length, 2, 'Should have two month entries');
+        assert.strictEqual(monthEntries[0].label, 'January', 'First month should be January');
+        assert.strictEqual(monthEntries[1].label, 'February', 'Second month should be February');
+
+        const januaryEntries = await journalProvider.getChildren(monthEntries[0]);
+        assert.strictEqual(januaryEntries.length, 3, 'January should have 3 entries');
     });
 
     test('Expand and collapse functionality', async () => {
@@ -131,6 +144,30 @@ suite('Journal View Extended Tests', () => {
             collapsedTreeItem.collapsibleState,
             vscode.TreeItemCollapsibleState.Collapsed,
             'Items should be collapsed'
+        );
+    });
+
+
+    test('Toggle expanded state', async () => {
+        journalProvider.refresh();
+        // Expand and verify
+        journalProvider.expandAll();
+        let rootEntries = await journalProvider.getChildren();
+        let firstYearTreeItem = journalProvider.getTreeItem(rootEntries[0]);
+        assert.strictEqual(
+            firstYearTreeItem.collapsibleState,
+            vscode.TreeItemCollapsibleState.Expanded,
+            'First node should be expanded'
+        );
+
+        // Collapse and verify
+        journalProvider.collapseAll();
+        rootEntries = await journalProvider.getChildren();
+        firstYearTreeItem = journalProvider.getTreeItem(rootEntries[0]);
+        assert.strictEqual(
+            firstYearTreeItem.collapsibleState,
+            vscode.TreeItemCollapsibleState.Collapsed,
+            'First node should be collapsed'
         );
     });
 
@@ -173,39 +210,4 @@ suite('Journal View Extended Tests', () => {
         );
     });
 
-    test('Filtering by month-specific keyword', async () => {
-        journalProvider.refresh();
-        // Apply filter for "January"
-        journalProvider.setFilter('January');
-        const filteredEntries = await journalProvider.getChildren();
-        // Expect to match one year since "January" is in 2024
-        assert.strictEqual(filteredEntries.length, 1, 'Filter should match one year');
-        const monthEntries = await journalProvider.getChildren(filteredEntries[0]);
-        assert.strictEqual(monthEntries.length, 1, 'Filter should only show January');
-        const dayEntries = await journalProvider.getChildren(monthEntries[0]);
-        assert.strictEqual(dayEntries.length, 3, 'January should show all 3 days');
-    });
-
-    test('Toggle expanded state', async () => {
-        journalProvider.refresh();
-        // Expand and verify
-        journalProvider.expandAll();
-        let rootEntries = await journalProvider.getChildren();
-        let firstYearTreeItem = journalProvider.getTreeItem(rootEntries[0]);
-        assert.strictEqual(
-            firstYearTreeItem.collapsibleState,
-            vscode.TreeItemCollapsibleState.Expanded,
-            'First node should be expanded'
-        );
-
-        // Collapse and verify
-        journalProvider.collapseAll();
-        rootEntries = await journalProvider.getChildren();
-        firstYearTreeItem = journalProvider.getTreeItem(rootEntries[0]);
-        assert.strictEqual(
-            firstYearTreeItem.collapsibleState,
-            vscode.TreeItemCollapsibleState.Collapsed,
-            'First node should be collapsed'
-        );
-    });
 });
