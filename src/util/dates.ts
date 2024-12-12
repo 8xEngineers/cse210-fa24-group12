@@ -51,7 +51,7 @@ function matchStringToIndex(input: string, patterns: { regex: RegExp; index: num
  * Update: Using momentjs to support locales (since first day of week differs internationally)
  */
 export function getDayOfWeekForString(day: string, locale: string): number {
-    console.log("locale:",locale);
+    //console.log("locale:",locale);
     const patterns = [
         { regex: /monday|mon|mo|montag|lun|lundi|lunes|lunedì|segunda-feira|seg|maandag|ma|понедельник|пн|xīngqī yī|getsuyōbi|الإثنين/i, index: 1 },
         { regex: /tuesday|tue|tu|dienstag|die|mar|mardi|martes|martedì|terça-feira|ter|dinsdag|di|вторник|вт|xīngqī èr|kayōbi|الثلاثاء/i, index: 2 },
