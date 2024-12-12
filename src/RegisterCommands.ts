@@ -10,9 +10,7 @@ import { IRegister } from "./interfaces/IRegister";
 import RenameTagCommand from "./commands/RenameTag";
 
 interface TagFileArgs {
-  // Define the properties of args here
-  // For example:
-  someProperty: string; // Replace with actual properties
+  tagName: string;
 }
 
 class RegisterCommands implements IRegister {
